@@ -1,0 +1,14 @@
+<root>
+  <person>
+      <name>John Doe</name>
+        <age>30</age>
+        <address>
+          <street>123 Main St</street>
+            <city>New York</city>
+        </address>
+        <phones>
+          <item>123-456-7890</item>
+            <item>987-654-3210</item>
+        </phones>
+    </person>
+</root>

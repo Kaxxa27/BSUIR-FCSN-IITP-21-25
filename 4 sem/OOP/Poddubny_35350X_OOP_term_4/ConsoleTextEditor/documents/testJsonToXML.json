@@ -1,0 +1,11 @@
+{
+    "person": {
+        "name": "John Doe",
+        "age": 30,
+        "address": {
+            "street": "123 Main St",
+            "city": "New York"
+        },
+        "phones": ["123-456-7890", "987-654-3210"]
+    }
+}

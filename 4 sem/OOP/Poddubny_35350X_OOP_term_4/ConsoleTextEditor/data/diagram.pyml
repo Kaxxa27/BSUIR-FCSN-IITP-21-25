@@ -1,0 +1,99 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+
+' #########################
+' ### Адаптеры документов #
+' #########################
+
+interface DocumentAdapter {
+  + {abstract} convert(data)
+}
+
+class JsonToXmlAdapter {
+  - indent: int = 4
+  + convert(json_data): str
+  - _indent(elem, level)
+}
+
+class XmlToJsonAdapter {
+  + convert(xml_data): str
+}
+
+DocumentAdapter <|.. JsonToXmlAdapter
+DocumentAdapter <|.. XmlToJsonAdapter
+
+' #########################
+' ### Основные классы    #
+' #########################
+
+class User {
+  - _login: String
+  - _password: String
+  - _notifications: List<String>
+  + notify(message: String)
+  + get_notifications(): List<String>
+  + redact_roles(document, r_or_v, user)
+}
+
+class Document {
+  - _name: String
+  - _author: User
+  - _redactors: List<User>
+  + add_redactor(user: User)
+  + {property} redactors: List<User>
+}
+
+class TextEditor {
+  - _users: List<User>
+  - _authorized_user: User
+  - _documents: Dictionary<String, Document>
+  - _current_document: Document
+  - _text: String
+  + sign_in(login: String, password: String)
+  + log_in(login: String, password: String)
+  + open_document(name: String)
+  + save_document()
+  + save_document_cloud()
+  + delete_document()
+  + {property} documents: Dictionary<String, Document>
+}
+
+class TextEditorApp {
+  - editor: TextEditor
+  + start()
+  + stop()
+  + serialize()
+  + deserialize()
+}
+
+class TextEditorWidget {
+  - editor: TextEditor
+  - text: String
+  + action_save()
+  + action_search()
+  + on_text_area_changed()
+}
+
+class serializer {
+  + save_editor_state(editor: TextEditor, filename: String)
+  + load_editor_state(filename: String): TextEditor
+}
+
+' #########################
+' ### Связи между классами #
+' #########################
+
+User "1" *-- "*" Document : author
+Document "1" o-- "*" User : redactors
+
+TextEditor "1" *-- "*" User : users
+TextEditor "1" *-- "*" Document : documents
+
+TextEditorApp --> TextEditor : editor
+TextEditorWidget --> TextEditor : editor
+
+serializer ..> TextEditor : serializing
+TextEditorApp ..> serializer : using
+
+@enduml

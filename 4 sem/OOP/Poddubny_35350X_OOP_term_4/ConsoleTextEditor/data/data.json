@@ -1,0 +1,111 @@
+{
+  "users": [
+    {
+      "login": "Artem",
+      "password": "123",
+      "notifications": [
+        "document 'y.txt' was changed by Ivan"
+      ]
+    },
+    {
+      "login": "Yana",
+      "password": "123",
+      "notifications": []
+    },
+    {
+      "login": "Ivan",
+      "password": "123",
+      "notifications": [
+        "document 'y.txt' was changed by Ivan"
+      ]
+    },
+    {
+      "login": "uwygdgbwdugwdhb hwdg",
+      "password": "123",
+      "notifications": []
+    }
+  ],
+  "authorized_user": null,
+  "documents": [
+    {
+      "name": "default.txt",
+      "author": "Ivan",
+      "redactors": [
+        "Artem",
+        "Yana"
+      ]
+    },
+    {
+      "name": "ok.json",
+      "author": "Yana",
+      "redactors": [
+        "Ivan"
+      ]
+    },
+    {
+      "name": "aga.json",
+      "author": "Ivan",
+      "redactors": []
+    },
+    {
+      "name": "l.txt",
+      "author": "Ivan",
+      "redactors": []
+    },
+    {
+      "name": "testJsonToXML.json",
+      "author": "Ivan",
+      "redactors": []
+    },
+    {
+      "name": "testXMLToJson.xml",
+      "author": "Ivan",
+      "redactors": []
+    },
+    {
+      "name": "test.md",
+      "author": "Ivan",
+      "redactors": []
+    },
+    {
+      "name": "d.txt",
+      "author": "Ivan",
+      "redactors": [
+        "Yana"
+      ]
+    },
+    {
+      "name": "egor.txt",
+      "author": "uwygdgbwdugwdhb hwdg",
+      "redactors": []
+    },
+    {
+      "name": "testJsonToXML.xml",
+      "author": "Ivan",
+      "redactors": []
+    },
+    {
+      "name": "zxc.txt",
+      "author": "Ivan",
+      "redactors": [
+        "Artem"
+      ]
+    },
+    {
+      "name": "name.txt",
+      "author": "Ivan",
+      "redactors": [
+        "Artem"
+      ]
+    },
+    {
+      "name": "y.txt",
+      "author": "Ivan",
+      "redactors": [
+        "Artem"
+      ]
+    }
+  ],
+  "current_document": null,
+  "text": null
+}

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Paint.ConsolePaint">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAECIQBAAABAAAAAAAEGADBAAgABAAAAAAQAABBAI=</HashCode>
+      <FileName>ConsolePaint.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="shapes" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Paint.Circle">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAIAAAgAAAAAAAAAAAAAQCAAAAAAAAAAAYBA=</HashCode>
+      <FileName>Circle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Paint.Rectangle">
+    <Position X="11.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABIAAAgAAAAAAAEAAAAAQCAAAAAAAAAAAYBA=</HashCode>
+      <FileName>Rectangle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Paint.ShapeConverter">
+    <Position X="3" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>ShapeConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Paint.Triangle">
+    <Position X="9.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAABIAAAhAAgAAAAAAAAAAQCAAAAEAAAAAAYBA=</HashCode>
+      <FileName>Triangle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Paint.IShape">
+    <Position X="7.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAgAAAAAAAAAAAAAQCAAAAAAAAAAAYBA=</HashCode>
+      <FileName>IShape.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

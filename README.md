@@ -23,6 +23,9 @@
 Особая благодарность:
 
 - [denis_pptx](https://github.com/denis-pptx) ❤️
+- [VadVergasov](https://github.com/VadVergasov)
+- [ALFecki](https://github.com/ALFecki)
+- [PaShampusik](https://github.com/PaShampusik)
 
 ---
 

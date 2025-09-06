@@ -1,0 +1,17 @@
+name: '💡 Suggest an improvement or an enhancement'
+description: Propose an enhancement, modification or idea
+title: "[ENHANCEMENT] - Enter your description here"
+labels: ["enhancement"]
+body:
+  - type: textarea
+    attributes:
+      label: Description of the modification, idea or suggestion
+      placeholder: Explain how do you see this enhancement, providing as much details as possible about it
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Proposed implementation details (optional)
+      placeholder: Suggest how to implement this feature
+    validations:
+      required: false

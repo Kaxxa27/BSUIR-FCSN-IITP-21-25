@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap');
+
+#scroll-container {
+    position: relative;
+    height: 600px;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 20px;
+    border-radius: 20px;
+
+    pointer-events: none;
+    user-select: none;
+}
+
+#left-car {
+    position: absolute;
+
+    height: 290px;
+    left: 40px;
+    bottom: 0;
+}
+
+#right-car {
+    position: absolute;
+
+    height: 430px;
+    right: 40px;
+    bottom: -60px;
+}
+
+#bg {
+    width: 100%;
+    object-fit: cover;
+}
+
+#text {
+    position: absolute;
+    color: rgb(213, 246, 0);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 12em;
+    top: 0;
+    font-family: 'Oswald', sans-serif;
+}

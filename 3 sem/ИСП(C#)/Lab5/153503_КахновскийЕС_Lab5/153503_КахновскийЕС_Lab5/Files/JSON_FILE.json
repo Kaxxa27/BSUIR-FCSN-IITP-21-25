@@ -1,0 +1,27 @@
+[
+  {
+    "Name": null,
+    "YearOfPublication": 0,
+    "Availability": false
+  },
+  {
+    "Name": "Book1",
+    "YearOfPublication": 1890,
+    "Availability": false
+  },
+  {
+    "Name": "Book2",
+    "YearOfPublication": 2022,
+    "Availability": true
+  },
+  {
+    "Name": "Book3",
+    "YearOfPublication": 2010,
+    "Availability": true
+  },
+  {
+    "Name": "Book4",
+    "YearOfPublication": 1099,
+    "Availability": false
+  }
+]

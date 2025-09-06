@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lab1_Calculator.View.SqlLitePickerPage"
+             xmlns:viewmodel="clr-namespace:Lab1_Calculator.ViewModel"
+             x:DataType="viewmodel:SqlLitePickerViewModel"
+             xmlns:entities="clr-namespace:Lab1_Calculator.Entities"
+             Title="SqlLitePickerPage">
+    <VerticalStackLayout Background="{StaticResource Purple_IntegralColor}">
+        
+        <Picker 
+                Margin="20"
+                Title="Pick Brigade"  
+                TitleColor="{StaticResource Orange_IntegralCalculate}"
+                ItemsSource="{Binding Brigades}"
+                ItemDisplayBinding="{Binding Title}"
+                SelectedItem="{Binding Brigade}">
+        </Picker>
+
+        <RefreshView Command="{Binding RefreshCommand}"
+                     IsRefreshing="{Binding IsRefreshing}">
+            
+            <VerticalStackLayout>
+                <Label Text="{Binding Brigade.Specialization, StringFormat='Специализация бригады: {0}'}"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Orange_IntegralCalculate}"
+                       HorizontalOptions="CenterAndExpand"/>
+                <CollectionView ItemsSource="{Binding Jobs}"
+                            HeightRequest="400"
+                           >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="entities:Job">
+
+                            <VerticalStackLayout>
+
+                                <Frame CornerRadius="10"
+                               BorderColor="Black"
+                               BackgroundColor="{StaticResource Pink0_IntegralCalculate}"
+                               Margin="10"
+                               WidthRequest="400"
+                               HeightRequest="100">
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Title, StringFormat='Title: {0}'}"/>
+                                        <Label Text="{Binding Price, StringFormat='Price: {0}'}"/>
+                                        <Label Text="{Binding ExecutionTimeDay, StringFormat='ExecutionTimeDay: {0}'}"/>
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </VerticalStackLayout>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+            
+        </RefreshView>
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,23 @@
+table tr:last-child{
+    background-color: crimson;
+}
+
+table tr:nth-child(even){
+    background-color: springgreen;
+}
+
+table tr:nth-child(odd){
+    background-color: sandybrown;
+}
+
+table tr:nth-child(4){
+    background-color: darkorchid;
+}
+
+table tr:first-child{
+    background-color: aqua;
+}
+
+table tr:last-child{
+    background-color: crimson;
+}

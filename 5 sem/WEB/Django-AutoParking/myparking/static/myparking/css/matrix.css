@@ -1,0 +1,41 @@
+.my-main-container{
+    display: block;
+}
+
+button{
+    margin: 5px;
+    
+}
+table {
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-right: 30px;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    width: 10px;
+    height: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.selected-even {
+    background-color: crimson;
+}
+
+.selected-odd{
+    background-color: deepskyblue;
+}
+input {
+    margin-top: 10px;
+    height: 20px;
+    width: 100px;
+}

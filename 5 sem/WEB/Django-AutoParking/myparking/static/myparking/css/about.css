@@ -1,0 +1,100 @@
+.sertificat{
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: white;
+    font-size: 50px;
+    z-index: 1;
+    border: 100px solid black;
+    border-image: url('../images/sertificate/sertificate_ramka.jpg') 250;
+
+    -webkit-border-image: url('../images/sertificate/sertificate_ramka.jpg') 250;
+    -moz-border-image: url('../images/sertificate/sertificate_ramka.jpg') 250;
+    -o-border-image: url('../images/sertificate/sertificate_ramka.jpg') 250;
+}
+
+
+@media (max-width: 500px){
+    .sertificat{
+        border: 2px solid black;
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background-color: aqua;
+    }
+}
+
+@media (min-width: 2000px){
+    .sertificat{
+        border: 2px solid black;
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background-color: red;
+    }
+}
+
+.block-logo-promo{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-bottom: 10px;
+}
+
+.image-logo{
+    width: 100px;
+}
+.image-logo:hover{
+    transform: scale(2.2) rotate(30deg);
+}
+
+.promo-video{
+    width: 50%;
+    border: 10px solid orange;
+}
+
+dt::first-letter {
+  font-size: 150%; /* Изменяет размер первой буквы */
+  font-weight: bold; /* Делает первую букву жирной */
+  color: red;
+}
+
+/* Выделение первой строки текста */
+dt::first-line {
+  font-weight: bold; /* Делает первую строку жирной */
+}
+dt:before, dt:after{
+content: "*";
+}
+
+dt::selection {
+  background-color: yellow; /* Изменяет фон при выделении текста */
+  color: black; /* Изменяет цвет текста при выделении */
+}
+
+ul {
+  list-style-type: none;
+}
+
+ul li{
+    font-family: 'Dancing Script', cursive;
+    font-size: 30px;
+    color: transparent;
+	-webkit-background-clip: text;
+	background-clip: text;
+	background-image: linear-gradient(to right, #03001e, #7303c0,#ec38bc,#fdeff9);
+}
+
+ul li:before{
+    content: "\20000    ";
+}
+
+audio {
+    padding: 4px;
+    position: relative;
+    width: 300px;
+    top: 100px;
+    right: 100px;
+    background-color: deeppink;
+    box-shadow: 20px 10px 10px rgba(0, 0, 0, 0.5);
+}

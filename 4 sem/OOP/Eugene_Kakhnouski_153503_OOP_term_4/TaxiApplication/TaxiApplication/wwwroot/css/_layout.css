@@ -1,0 +1,27 @@
+﻿
+.main-nav-color-bg-gold {
+    background-color: gold;
+}
+
+.main-nav-color-bg-yellow {
+    background-color: #ffe259;
+}
+.main-nav-color-bg-gradient {
+    background: linear-gradient(to bottom right, #ffe259, #ffa751);
+}
+
+.main-nav-style-bold-20px {
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.contact-icons {
+    text-align: center;
+    margin: 100px 0px 20px 0px;
+}
+
+.contact-icons a {
+    display: inline-block;
+    margin-right: 10px;
+}

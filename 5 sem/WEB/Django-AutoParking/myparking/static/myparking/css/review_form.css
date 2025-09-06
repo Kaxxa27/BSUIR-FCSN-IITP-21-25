@@ -1,0 +1,19 @@
+input, textarea{
+    background-color: lightgrey;
+    font-family: 'Dancing Script', cursive;
+    font-size: 30px;
+}
+input{
+    width: 100px;
+    margin: 5px;
+}
+
+input:focus, textarea:focus{
+    border: 2px solid springgreen;
+    background-color: aquamarine;
+}
+
+input[type="number"]:out-of-range {
+  border: 10px solid red;
+  background-color: crimson;
+}

@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+.my-main-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg-site {
+    background: beige;
+}
+
+.bebas-font{
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.dancing-script-font{
+    font-family: 'Dancing Script', cursive;
+}
+
+.my-align-center{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.my-align-left{
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+}
+
+.main-container{
+    margin: 0;
+    padding: 0 5% 0 5%;
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+}
+
+td:empty {
+    background-color: purple;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 2px solid black;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+
+/* Измененный стиль курсора при наведении на кнопку */
+button[type="submit"]:hover {
+  cursor: pointer;
+}
+
+.grad-text{
+    font-family: 'Dancing Script', cursive;
+    font-size: 30px;
+    color: transparent;
+	-webkit-background-clip: text;
+	background-clip: text;
+	background-image: linear-gradient(to right, #03001e, #7303c0,#ec38bc,#fdeff9);
+}

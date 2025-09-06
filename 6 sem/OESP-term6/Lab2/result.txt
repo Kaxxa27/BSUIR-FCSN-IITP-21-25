@@ -1,0 +1,30 @@
+{
+    "Name": "Porshe",
+    "Count": 20,
+    "Average Price": 4000.00,
+    "Total Price": 80000.00
+}
+{
+    "Name": "Mersedes",
+    "Count": 300,
+    "Average Price": 1250.00,
+    "Total Price": 375000.00
+}
+{
+    "Name": "BMW",
+    "Count": 110,
+    "Average Price": 954.55,
+    "Total Price": 105000.00
+}
+{
+    "Name": "Nissan Skyline",
+    "Count": 10,
+    "Average Price": 7777.00,
+    "Total Price": 77770.00
+}
+{
+    "Name": "BMW E39",
+    "Count": 121,
+    "Average Price": 1000.00,
+    "Total Price": 121000.00
+}

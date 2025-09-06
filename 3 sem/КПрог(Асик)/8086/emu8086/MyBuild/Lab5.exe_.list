@@ -1,0 +1,308 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+Lab5.exe_ -- emu8086 assembler version: 4.05  
+ 
+[ 01.12.2022  --  9:08:27 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       .model small
+[   2]        :                                       .stack 100h
+[   3]        :                                       .data
+[   4]    0100: 0D 0A 24                              crlf db 0Dh, 0Ah, '$'
+[   5]    0103: 0A 00 24 24 24 24 24 24 24 24 24 24   word db 10, 0, 15 dup('$'), '$'
+                24 24 24 24 24 24                   
+[   6]    0115: 02 00 24 24 24                        buf db 2, 0, 2 dup('$'), '$'
+[   7]    011A: 45 6E 74 65 72 20 74 68 65 20 77 6F   msg_prompt_to_input db 'Enter the word to search', 0Dh, 0Ah, '$'
+                72 64 20 74 6F 20 73 65 61 72 63 68 
+                0D 0A 24                            
+[   8]    0135: 0D 0A 43 6F 75 6E 74 20 6F 66 20 73   msg_result db 0Dh, 0Ah, 'Count of strings: $'
+                74 72 69 6E 67 73 3A 20 24          
+[   9]    014A: 0D 0A 6F 76 65 72 66 6C 6F 77 24      msg_bad db 0Dh, 0Ah, 'overflow$'
+[  10]    0155: 0D 0A 65 72 72 6F 72 0D 0A 24         msg_error db 0Dh, 0Ah, 'error', 0Dh, 0Ah, '$'
+[  11]        :                                       word_capacity equ 50
+[  12]    015F: 00 00 00 00 00 00 00 00 00 00 00 00   word_buffer db word_capacity + 2 dup(0)
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00                         
+[  13]        :                                       cmd_capacity equ 127
+[  14]    0193: 00                                    cmd_length db ?
+[  15]    0194: 24 24 24 24 24 24 24 24 24 24 24 24   cmd_text db cmd_capacity dup('$')
+                24 24 24 24 24 24 24 24 24 24 24 24 
+                24 24 24 24 24 24 24 24 24 24 24 24 
+                24 24 24 24 24 24 24 24 24 24 24 24 
+                24 24 24 24 24 24 24 24 24 24 24 24 
+                24 24 24 24 24 24 24 24 24 24 24 24 
+                24 24 24 24 24 24 24 24 24 24 24 24 
+                24 24 24 24 24 24 24 24 24 24 24 24 
+                24 24 24 24 24 24 24 24 24 24 24 24 
+                24 24 24 24 24 24 24 24 24 24 24 24 
+                24 24 24 24 24 24 24                
+[  16]    0213: 41 73 73 2E 74 78 74 00               file_path db 'Ass.txt', 0
+[  17]        :                                       
+[  18]        :                                       .code
+[  19]        :                                       
+[  20]        :                                       ;-----macros--------------------
+[  21]        :                                       
+[  22]        :                                       is_empty macro str, is_0
+[  23]        :                                       push si
+[  24]        :                                       lea si, str
+[  25]        :                                       call strlen
+[  26]        :                                       pop si
+[  27]        :                                       
+[  28]        :                                       cmp ax, 0
+[  29]        :                                       je is_0
+[  30]        :                                       endm
+[  31]        :                                       
+[  32]        :                                       ; string output macro
+[  33]        :                                       puts macro str
+[  34]        :                                       push ax
+[  35]        :                                       push dx
+[  36]        :                                       lea dx, str
+[  37]        :                                       mov ah, 9
+[  38]        :                                       int 21h
+[  39]        :                                       pop dx
+[  40]        :                                       pop ax
+[  41]        :                                       endm
+[  42]        :                                       
+[  43]        :                                       ; string input marco
+[  44]        :                                       gets macro str
+[  45]        :                                       push bx
+[  46]        :                                       push cx
+[  47]        :                                       push dx
+[  48]        :                                       
+[  49]        :                                       again:                          ; check empty word input
+[  50]        :                                       mov ah, 0Ah
+[  51]        :                                       lea dx, str
+[  52]        :                                       int 21h
+[  53]        :                                       
+[  54]        :                                       xor ax, ax
+[  55]        :                                       xor cx, cx
+[  56]        :                                       
+[  57]        :                                       mov cl, [word + 1]
+[  58]        :                                       cmp cl, 0                   ; if str is empty
+[  59]        :                                       je again
+[  60]        :                                       
+[  61]        :                                       pop dx
+[  62]        :                                       pop cx
+[  63]        :                                       pop bx
+[  64]        :                                       endm
+[  65]        :                                       
+[  66]        :                                       puti macro                      ; integer number output
+[  67]        :                                       local put1
+[  68]        :                                       local put2
+[  69]        :                                       local ex
+[  70]        :                                       
+[  71]        :                                       push ax
+[  72]        :                                       push cx
+[  73]        :                                       push -1                     ; break condition
+[  74]        :                                       mov cx, 10
+[  75]        :                                       put1:
+[  76]        :                                       xor dx, dx
+[  77]        :                                       xor ah, ah
+[  78]        :                                       div cl                      ; al - result, ah - remainder
+[  79]        :                                       mov dl, ah
+[  80]        :                                       push dx
+[  81]        :                                       cmp al, 0
+[  82]        :                                       jne put1
+[  83]        :                                       
+[  84]        :                                       mov ah, 2
+[  85]        :                                       
+[  86]        :                                       put2:
+[  87]        :                                       pop dx
+[  88]        :                                       cmp dx, -1          ; if -1 break
+[  89]        :                                       je ex
+[  90]        :                                       add dl, '0'         ; to char
+[  91]        :                                       int 21h
+[  92]        :                                       jmp put2
+[  93]        :                                       ex:
+[  94]        :                                       mov dl, ' '
+[  95]        :                                       int 21h
+[  96]        :                                       pop cx
+[  97]        :                                       pop ax
+[  98]        :                                       endm
+[  99]        :                                       
+[ 100]        :                                       fopen macro
+[ 101]        :                                       lea dx, file_path
+[ 102]        :                                       mov ah, 3Dh
+[ 103]        :                                       mov al, 00h
+[ 104]        :                                       int 21h
+[ 105]        :                                       jc exit
+[ 106]        :                                       
+[ 107]        :                                       mov bx, ax
+[ 108]        :                                       endm
+[ 109]        :                                       
+[ 110]        :                                       fclose macro
+[ 111]        :                                       mov ah, 3Eh     ; close file function
+[ 112]        :                                       int 21h
+[ 113]        :                                       endm
+[ 114]        :                                       
+[ 115]        :                                       fread macro
+[ 116]        :                                       local continue
+[ 117]        :                                       push ax
+[ 118]        :                                       push cx
+[ 119]        :                                       push dx
+[ 120]        :                                       
+[ 121]        :                                       mov cx, 1
+[ 122]        :                                       lea dx, buf
+[ 123]        :                                       
+[ 124]        :                                       mov ah, 3Fh         ; read from file
+[ 125]        :                                       int 21h             ; bx - file id
+[ 126]        :                                       jc exit             ; cx - bytes count for reading
+[ 127]        :                                       ; cf == 1 -> error
+[ 128]        :                                       mov cx, ax          ; returns bytes have been read to ax
+[ 129]        :                                       test cx, cx         ; if eof
+[ 130]        :                                       jnz continue
+[ 131]        :                                       fclose
+[ 132]        :                                       
+[ 133]        :                                       jmp good_exit
+[ 134]        :                                       
+[ 135]        :                                       continue:
+[ 136]        :                                       pop dx
+[ 137]        :                                       pop cx
+[ 138]        :                                       pop ax
+[ 139]        :                                       endm
+[ 140]        :                                       ;------main---------------------------------
+[ 141]        :                                       
+[ 142]    0220:                                       count_raws:
+[ 143]    0220: 33 D2                                 xor dx, dx
+[ 144]        :                                       
+[ 145]    0222:                                       search:
+[ 146]    0222: 50 51 52 B9 01 00 BA 15 00 B4 3F CD   fread
+                21 73 03 E9 07 01 8B C8 85 C9 75 07 
+                B4 3E CD 21 E9 0D 01 5A 59 58       
+[ 147]    0244: A0 05 00                              mov al, [word+2]
+[ 148]    0247: 8A 0E 15 00                           mov cl, [buf]
+[ 149]    024B: 3A C8                                 cmp cl, al
+[ 150]    024D: 74 02                                 je check_word
+[ 151]    024F: EB D1                                 jmp search
+[ 152]        :                                       
+[ 153]    0251:                                       check_word:
+[ 154]    0251: BE 05 00                              lea si, word+2
+[ 155]    0254: 8A 04                                 mov al, [si]
+[ 156]    0256: B4 01                                 mov ah, 1
+[ 157]        :                                       
+[ 158]    0258:                                       while:
+[ 159]    0258: FE C4                                 inc ah
+[ 160]    025A: 46                                    inc si
+[ 161]    025B: 8A 04                                 mov al, [si]
+[ 162]    025D: 8A 0E 04 00                           mov cl, [word+1]
+[ 163]    0261: 3A E1                                 cmp ah, cl
+[ 164]    0263: 7F 2C                                 jg success
+[ 165]    0265: 50 51 52 B9 01 00 BA 15 00 B4 3F CD   fread
+                21 73 03 E9 C4 00 8B C8 85 C9 75 07 
+                B4 3E CD 21 E9 CA 00 5A 59 58       
+[ 166]    0287: 8A 0E 15 00                           mov cl, [buf]
+[ 167]    028B: 3A C1                                 cmp al, cl
+[ 168]    028D: 75 93                                 jne search
+[ 169]    028F: 74 C7                                 je while
+[ 170]        :                                       
+[ 171]    0291:                                       success:
+[ 172]    0291: 42                                    inc dx
+[ 173]        :                                       
+[ 174]    0292:                                       skip:
+[ 175]    0292: 50 51 52 B9 01 00 BA 15 00 B4 3F CD   fread
+                21 73 03 E9 97 00 8B C8 85 C9 75 07 
+                B4 3E CD 21 E9 9D 00 5A 59 58       
+[ 176]    02B4: B0 0D                                 mov al, 13             ;    \n
+[ 177]    02B6: 8A 0E 15 00                           mov cl, [buf]
+[ 178]    02BA: 3A C1                                 cmp al, cl
+[ 179]    02BC: 75 D4                                 jne skip
+[ 180]    02BE: 50 51 52 B9 01 00 BA 15 00 B4 3F CD   fread
+                21 72 6E 8B C8 85 C9 75 06 B4 3E CD 
+                21 EB 75 5A 59 58                   
+[ 181]    02DC: E9 43 FF                              jmp search
+[ 182]        :                                       
+[ 183]    02DF: EB 5A                                 jmp count_raws_end
+[ 184]        :                                       
+[ 185]    02E1:                                       start:
+[ 186]    02E1: B8 10 00                              mov ax, @data
+[ 187]    02E4: 8E C0                                 mov es, ax
+[ 188]    02E6: 32 ED                                 xor ch, ch
+[ 189]    02E8: 3E 8A 0E 80 00                        mov cl, ds:[80h]
+[ 190]    02ED: 88 0E 93 00                           mov cmd_length, cl
+[ 191]    02F1: BE 82 00                              mov si, 82h
+[ 192]    02F4: BF 94 00                              lea di, cmd_text
+[ 193]    02F7: F3 A4                                 rep movsb               ;text from command line to variable cmd_text
+[ 194]    02F9: 8E D8                                 mov ds, ax
+[ 195]        :                                       
+[ 196]    02FB: 50 52 BA 1A 00 B4 09 CD 21 5A 58      puts msg_prompt_to_input
+[ 197]    0306: 53 51 52 B4 0A BA 03 00 CD 21 33 C0   gets word
+                33 C9 8A 0E 04 00 80 F9 00 74 EC 5A 
+                59 5B                               
+[ 198]    0320: BA 13 01 B4 3D B0 00 CD 21 72 10 8B   fopen
+                D8                                  
+[ 199]    032D: 50 52 BA 35 00 B4 09 CD 21 5A 58      puts msg_result
+[ 200]    0338: E9 E5 FE                              jmp count_raws
+[ 201]        :                                       
+[ 202]    033B:                                       count_raws_end:
+[ 203]        :                                       
+[ 204]    033B:                                       exit:
+[ 205]    033B: 50 52 BA 55 00 B4 09 CD 21 5A 58      puts msg_error
+[ 206]    0346: 5A                                    pop dx
+[ 207]    0347: 59                                    pop cx
+[ 208]    0348: 58                                    pop ax
+[ 209]    0349: B8 00 4C                              mov ax, 4c00h
+[ 210]    034C: CD 21                                 int 21h
+[ 211]    034E:                                       good_exit:
+[ 212]    034E: 50 52 BA 00 00 B4 09 CD 21 5A 58      puts crlf
+[ 213]    0359: 5A                                    pop dx
+[ 214]    035A: 59                                    pop cx
+[ 215]    035B: 58                                    pop ax
+[ 216]    035C: 8B C2                                 mov ax, dx
+[ 217]    035E: 50 51 6A FF B9 0A 00 33 D2 32 E4 F6   puti
+                F1 8A D4 52 3C 00 75 F3 B4 02 5A 83 
+                FA FF 74 07 80 C2 30 CD 21 EB F3 B2 
+                20 CD 21 59 58                      
+[ 218]    0387: B8 00 4C                              mov ax, 4c00h
+[ 219]    038A: CD 21                                 int 21h
+[ 220]        :                                       end start
+[ 221]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: 8C      -   bytes on last page (l.byte)
+0003: 01      -   bytes on last page (h.byte)
+0004: 03      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 00      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 00      -   SP - stack pointer (l.byte)
+0011: 01      -   SP - stack pointer (h.byte)
+0012: 64      -   check sum (l.byte)
+0013: 34      -   check sum (h.byte)
+0014: C1      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 22      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: C2      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 22      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================

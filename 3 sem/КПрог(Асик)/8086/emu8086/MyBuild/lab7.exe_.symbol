@@ -1,0 +1,73 @@
+< THE SYMBOL TABLE >  lab7.exe_  --  emu8086 assembler version: 4.05 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+CODE                     	00000     	-5        	SEGMENT   	(ITSELF)  
+START                    	00000     	-1        	LABEL     	code      
+_LOCATION_COUNTER__N1_L22	00007     	-1        	LABEL     	code      
+RANGE_INPUT              	00061     	-1        	LABEL     	code      
+ASK                      	000C2     	-1        	LABEL     	code      
+INPUTWHILE               	00159     	-1        	LABEL     	code      
+NEW_MAX                  	0018E     	-1        	LABEL     	code      
+NOT_NEW_MAX              	0019B     	-1        	LABEL     	code      
+FOR                      	001C9     	-1        	LABEL     	code      
+STARTPRINTSYMBOLS        	001E7     	-1        	LABEL     	code      
+SYMBOLSOUTPUT            	001F7     	-1        	LABEL     	code      
+NOSYMBOLS                	00208     	-1        	LABEL     	code      
+NOTFROMRANGE             	00230     	-1        	LABEL     	code      
+NONUMBERSFROMRANGE       	0023C     	-1        	LABEL     	code      
+END                      	00252     	-1        	LABEL     	code      
+ENTERNUMBER              	00257     	-1        	NEAR      	code      
+ENTERNUMBERPROCSTART     	00257     	-1        	LABEL     	code      
+FROMCHECK                	00257     	-1        	LABEL     	code      
+TOCHECK                  	00269     	-1        	LABEL     	code      
+NUMBEROFNUMBERCHECK      	0027B     	-1        	LABEL     	code      
+DONTPRINT                	00299     	-1        	LABEL     	code      
+WHILE                    	002BA     	-1        	LABEL     	code      
+OVERFLOW                 	002EA     	-1        	LABEL     	code      
+STRINVALID               	00326     	-1        	LABEL     	code      
+PRINTSTRBYSYMBOLPROC     	00361     	-1        	NEAR      	code      
+WHILE1                   	00375     	-1        	LABEL     	code      
+STRISEMPTY               	0037E     	-1        	LABEL     	code      
+PRINTNUMBERPROC          	0037F     	-1        	NEAR      	code      
+PUSHDIGITSWHILE          	00382     	-1        	LABEL     	code      
+PRINTDIGITSWHILE         	0039B     	-1        	LABEL     	code      
+DATA                     	0003C     	-5        	SEGMENT   	(ITSELF)  
+TESTSTRING               	00000     	1         	VAR       	data      
+TESTRSTRING_SIZE         	0002E     	1         	VAR       	data      
+STRNUMBER                	0002F     	1         	VAR       	data      
+NUMBER                   	00039     	2         	VAR       	data      
+STRFORMAT                	0003B     	1         	VAR       	data      
+STROVERFLOW              	00091     	1         	VAR       	data      
+STRINVALIDFORMAT         	000B3     	1         	VAR       	data      
+STRREPEAT                	000CD     	1         	VAR       	data      
+TEN                      	000F2     	2         	VAR       	data      
+NUMBEROFNUMBER           	000F4     	2         	VAR       	data      
+NEEDNUMBEROFNUMBER       	000F6     	1         	VAR       	data      
+ARRAY_SIZE               	000F7     	2         	VAR       	data      
+ARRAY                    	000F9     	2         	VAR       	data      
+MAX_ITEM                 	00149     	2         	VAR       	data      
+EXISTSMAXITEMFROMRANGE   	0014B     	1         	VAR       	data      
+STRENTERARRAY            	0014C     	1         	VAR       	data      
+STRASKSYMBOLSAMOUNT      	00164     	1         	VAR       	data      
+MAX_SYMB                 	001A0     	2         	VAR       	data      
+SYMB                     	001A2     	1         	VAR       	data      
+SYMBSTART                	001A4     	1         	VAR       	data      
+NUMBERFROM               	001A7     	2         	VAR       	data      
+NUMBERTO                 	001A9     	2         	VAR       	data      
+STRRANGE                 	001AB     	1         	VAR       	data      
+STRFROM                  	001C7     	1         	VAR       	data      
+STRTO                    	001CE     	1         	VAR       	data      
+STRRANGEFORMAT           	001D5     	1         	VAR       	data      
+STRNONUMBERSFROMRANGE    	001EC     	1         	VAR       	data      
+NEEDPRINTFROM            	00220     	1         	VAR       	data      
+NEEDPRINTTO              	00221     	1         	VAR       	data      
+TONEWLINE                	00222     	1         	VAR       	data      
+STRGENERAL_OFFSET        	00225     	2         	VAR       	data      
+STRGENERAL_SIZE          	00227     	1         	VAR       	data      
+NUMBERGENERAL            	00228     	2         	VAR       	data      
+STACK                    	0005F     	-5        	SEGMENT   	(ITSELF)  
+===================================================================================================
+[ 06.12.2022  --  17:59:11 ] 
+< END >
+ 

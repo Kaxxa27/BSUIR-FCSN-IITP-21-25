@@ -1,0 +1,21 @@
+.model
+.code
+org 100h
+start:
+string  db 50 dup('$')
+len  db 50
+mov dx, offset len
+mov ah, 0Ah
+
+int 21h
+
+lea si, string
+mov dx, si
+
+mov ah, 09h
+int 21h
+ret
+
+
+
+; [SOURCE]: C:\Users\Lenovo\Desktop\mycode.asm

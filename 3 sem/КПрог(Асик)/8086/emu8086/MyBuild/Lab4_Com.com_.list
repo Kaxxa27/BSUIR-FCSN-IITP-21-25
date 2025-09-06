@@ -1,0 +1,493 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+Lab4_Com.com_ -- emu8086 assembler version: 4.05  
+ 
+[ 13.12.2022  --  21:40:47 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ; Распечатать строку [Макрос]
+[   2]        :                                       Print macro str
+[   3]        :                                       push ax
+[   4]        :                                       push dx
+[   5]        :                                       
+[   6]        :                                       mov ah,09h ; Номер функции DOS
+[   7]        :                                       lea dx,str ; Смещение str в DX
+[   8]        :                                       int 21h    ; 21 прерывание
+[   9]        :                                       
+[  10]        :                                       pop dx
+[  11]        :                                       pop ax
+[  12]        :                                       endm
+[  13]        :                                       
+[  14]        :                                       readChars MACRO id, number, buf
+[  15]        :                                       mov ah,3Fh    ; Функция DOS (чтение из файла)
+[  16]        :                                       mov bx,id     ; Загрузка дескриптора
+[  17]        :                                       mov cx,number ; Количество считываемых чисволов
+[  18]        :                                       lea dx,buf    ; Загрузка буфера
+[  19]        :                                       int 21h       ; Считать данные
+[  20]        :                                       endm
+[  21]        :                                       
+[  22]        :                                       writeChars MACRO id, number, buf
+[  23]        :                                       mov ah,40h    ; Функция DOS (запись в файл)
+[  24]        :                                       mov bx,id     ; Дескриптор
+[  25]        :                                       mov cx,number ; Количество записываемых символов
+[  26]        :                                       lea dx,buf    ; Буфер
+[  27]        :                                       int 21h       ; Записать данные
+[  28]        :                                       endm
+[  29]        :                                       
+[  30]        :                                       
+[  31]        :                                       setCursor MACRO id, distance, type
+[  32]        :                                       mov ah,42h      ; Функция DOS (переместить указатель чтения/записи)
+[  33]        :                                       mov bx,id       ; Идентификатор
+[  34]        :                                       mov cx,0h       ;
+[  35]        :                                       mov dx,distance ;
+[  36]        :                                       mov al,type     ; Относительно чего
+[  37]        :                                       int 21h         ; Переместить указатель
+[  38]        :                                       endm
+[  39]        :                                       
+[  40]        :                                       closeFile MACRO id
+[  41]        :                                       mov bx,id  ; Дескриптор
+[  42]        :                                       mov ah,3Eh ; Функция DOS 3Eh
+[  43]        :                                       int 21h    ; Закрыть файл
+[  44]        :                                       endm
+[  45]        :                                       
+[  46]        :                                       deleteFile MACRO name
+[  47]        :                                       mov ah,41h  ; Функция DOS 41h (удалить файл)
+[  48]        :                                       lea dx,name ; Адрес ASCIZ-строки с именем файла
+[  49]        :                                       int 21h     ; Удалить файл
+[  50]        :                                       endm
+[  51]        :                                       
+[  52]        :                                       createFile MACRO name, id
+[  53]        :                                       mov ah,3Ch       ; Функция DOS 3Ch (создать файл)
+[  54]        :                                       mov cx,00100000b ; Атрибут файла
+[  55]        :                                       lea dx,name      ; Адрес ASCIZ-строки с именем файла
+[  56]        :                                       int 21h          ; Создать файл
+[  57]        :                                       mov id,ax        ; Сохранить дескриптор
+[  58]        :                                       endm
+[  59]        :                                       
+[  60]        :                                       
+[  61]        :                                       openFile MACRO name, id
+[  62]        :                                       lea dx,name ; адрес ASCIZ-строки с именем файла
+[  63]        :                                       mov ah,3Dh  ; Функция DOS 3Dh (открыть существующий файл)
+[  64]        :                                       mov al,02h  ; 02 - для чтения и записи
+[  65]        :                                       int 21h     ; Открыть файл
+[  66]        :                                       mov id,ax   ; Сохранить дескриптор
+[  67]        :                                       endm
+[  68]        :                                       
+[  69]        :                                       .model tiny
+[  70]    0100:                                       .code
+[  71]        :                                       org 100h
+[  72]    0100:                                       START:
+[  73]        :                                       
+[  74]    0100: 8C C8                                 mov ax,@data  ; @data - идентификатор сегмента данных
+[  75]    0102: 8E D8                                 mov ds,ax     ; Адрес сегмента данных — в DS
+[  76]    0104: 8E C0                                 mov es,ax     ; Адрес сегмента данных — в ES
+[  77]        :                                       
+[  78]    0106: 50 52 B4 09 BA A2 03 CD 21 5A 58      Print Start_Info_String
+[  79]    0111: 50 52 B4 09 BA BA 03 CD 21 5A 58      Print New_line
+[  80]        :                                       
+[  81]    011C: BA BF 03 B4 3D B0 02 CD 21 A3 CB 03   openFile source_file_name, source_file_ID            ; Открыть исходный файл
+                                                    
+[  82]    0128: B4 3C B9 20 00 BA DD 03 CD 21 A3 E9   createFile temp_file_name,temp_file_ID               ; Создать временный файл
+                03                                  
+[  83]    0135: B4 3C B9 20 00 BA CD 03 CD 21 A3 DB   createFile destination_file_name,destination_file_ID ; Создать файл с результатом
+                03                                  
+[  84]        :                                       
+[  85]    0142:                                       mainWhile:
+[  86]        :                                       
+[  87]        :                                       ; Считывание порции символов
+[  88]    0142: B4 3F 8B 1E CB 03 8B 0E 4F 04 BA EB   readChars source_file_ID, buffer_dose, buffer
+                03 CD 21                            
+[  89]    0151: A3 54 04                              mov charsRead,ax
+[  90]        :                                       
+[  91]        :                                       ; Поиск симола 0Dh в считанном буфере
+[  92]    0154: 8B 0E 54 04                           mov cx,charsRead ; Количество считанных символов
+[  93]    0158: B0 0D                                 mov al,0Dh       ; Символ 0Dh
+[  94]    015A: BF EB 03                              lea di,buffer    ; Смещение буфера
+[  95]    015D: F2 AE                                 repne scasb      ; Сравниваем, пока не равны
+[  96]    015F: 74 2A                                 jz Exists0Dh     ; ZF = 1?
+[  97]        :                                       
+[  98]        :                                       ; Действие, если нет символа 0Dh
+[  99]    0161:                                       NotExists0Dh:
+[ 100]        :                                       
+[ 101]    0161: 8B 16 54 04                           mov dx,charsRead           ; Число символов в порции =
+[ 102]    0165: 89 16 56 04                           mov charsOfStringInDose,dx ; = число считанных символов
+[ 103]    0169: C6 06 52 04 00                        mov isEndOfString,00h      ; Конца строки нет
+[ 104]        :                                       
+[ 105]        :                                       ; Поиск символа NULL в считанном буфере
+[ 106]    016E: 8B 0E 54 04                           mov cx,charsRead          ; Количество считанных символов
+[ 107]    0172: B0 00                                 mov al,0h                 ; Символ NULL
+[ 108]    0174: BF EB 03                              lea di,buffer             ; Смещение буфера
+[ 109]    0177: F2 AE                                 repne scasb               ; Сравниваем, пока не равны
+[ 110]    0179: 75 2E                                 jnz writeCharsInTempFile  ; ZF <> 0?
+[ 111]        :                                       
+[ 112]        :                                       ; Действие, если есть символ NULL
+[ 113]    017B: FF 0E 56 04                           dec charsOfStringInDose  ; charsOfStringInDose--
+[ 114]    017F: C6 06 52 04 01                        mov isEndOfString,01h    ; Конец строки
+[ 115]    0184: C6 06 51 04 01                        mov isEndOfFile,01h      ; Конец файла
+[ 116]    0189: EB 1E                                 jmp writeCharsInTempFile
+[ 117]        :                                       
+[ 118]        :                                       ; Действие, если есть символ 0Dh
+[ 119]    018B:                                       Exists0Dh:
+[ 120]        :                                       
+[ 121]        :                                       ; Определения числа символов строки в порции
+[ 122]        :                                       ; charsOfStringInDose = charsRead - CX + 1
+[ 123]    018B: 8B 16 54 04                           mov dx,charsRead
+[ 124]    018F: 89 16 56 04                           mov charsOfStringInDose,dx
+[ 125]    0193: 29 0E 56 04                           sub charsOfStringInDose,cx
+[ 126]    0197: FF 06 56 04                           inc charsOfStringInDose
+[ 127]    019B: C6 06 52 04 01                        mov isEndOfString,01h
+[ 128]        :                                       
+[ 129]        :                                       ; Кейс когда .. .. .. .. 0Dh, порция закончилась
+[ 130]        :                                       ; то есть в порцию не влезло 0Ah
+[ 131]    01A0: 8B 1E 56 04                           mov bx,charsOfStringInDose
+[ 132]    01A4: C6 87 EA 03 0A                        mov buffer[bx-1],0Ah
+[ 133]        :                                       
+[ 134]        :                                       
+[ 135]        :                                       ; Запись символов во временный файл
+[ 136]    01A9:                                       writeCharsInTempFile:
+[ 137]    01A9: B4 40 8B 1E E9 03 8B 0E 56 04 BA EB   writeChars temp_file_ID,charsOfStringInDose,buffer
+                03 CD 21                            
+[ 138]    01B8: 8B 16 56 04                           mov dx,charsOfStringInDose  ; charactersInString +=
+[ 139]    01BC: 01 16 58 04                           add charsInString,dx        ; += charOfStringInDose
+[ 140]        :                                       
+[ 141]        :                                       ; Есть конец строки или нет
+[ 142]    01C0: 80 3E 52 04 00                        cmp isEndOfString,0h
+[ 143]    01C5: 75 03 E9 B4 00                        je notEndOfString
+[ 144]        :                                       
+[ 145]        :                                       ; Действие, если в порции есть конец строки
+[ 146]    01CA:                                       endOfString:
+[ 147]        :                                       
+[ 148]        :                                       ; Установка курсора в source_file
+[ 149]        :                                       ; cursorOffset = -(charsRead - charsOfStringInDose)
+[ 150]    01CA: 8B 1E 54 04                           mov bx,charsRead
+[ 151]    01CE: 89 1E 5A 04                           mov cursorOffset,bx
+[ 152]    01D2: 8B 1E 56 04                           mov bx,charsOfStringInDose
+[ 153]    01D6: 29 1E 5A 04                           sub cursorOffset,bx
+[ 154]    01DA: F7 1E 5A 04                           neg cursorOffset
+[ 155]    01DE: B4 42 8B 1E CB 03 B9 00 00 8B 16 5A   setCursor source_file_ID,cursorOffset,01h
+                04 B0 01 CD 21                      
+[ 156]        :                                       
+[ 157]        :                                       
+[ 158]        :                                       
+[ 159]        :                                       ; Проверка, подходит ли строка из файла под условие
+[ 160]        :                                       ; "не содержать ни одного символа из заданных"
+[ 161]    01EF: B4 42 8B 1E E9 03 B9 00 00 BA 00 00   setCursor temp_file_ID,00h,00h ; Курсор на начало файла
+                B0 00 CD 21                         
+[ 162]    01FF: 8B 16 58 04                           mov dx,charsInString
+[ 163]    0203: 89 16 7B 04                           mov charsInStringCopy,dx
+[ 164]    0207: 8B 16 4F 04                           mov dx,buffer_dose
+[ 165]    020B: 39 16 7B 04                           cmp charsInStringCopy,dx
+[ 166]    020F: 76 36                                 jbe skipCheckCycle
+[ 167]        :                                       
+[ 168]        :                                       ; Цикл сравнения порциями
+[ 169]    0211:                                       checkCycle:
+[ 170]    0211: B4 3F 8B 1E E9 03 8B 0E 4F 04 BA EB   readChars temp_file_ID buffer_dose, buffer ; Считать символы
+                03 CD 21                            
+[ 171]    0220: 8B 16 4F 04 89 16 79 04 E8 9E 00      checkBufferMacro buffer_dose               ; Проверить
+[ 172]    022B: 80 3E 7D 04 01                        cmp contains,01h
+[ 173]    0230: 75 03 E9 89 00                        je Inc_Result
+[ 174]        :                                       
+[ 175]    0235: 8B 16 4F 04                           mov dx,buffer_dose       ;
+[ 176]    0239: 29 16 7B 04                           sub charsInStringCopy,dx ; charsInStringCopy -= buffer_dose
+[ 177]        :                                       
+[ 178]    023D: 8B 16 4F 04                           mov dx,buffer_dose       ; Сравнение charsInStringCopy
+[ 179]    0241: 39 16 7B 04                           cmp charsInStringCopy,dx ; и buffer_dose
+[ 180]    0245: 77 CA                                 ja checkCycle                ; charsInStringCopy > buffer_dose?
+[ 181]        :                                       
+[ 182]        :                                       ; charsInStringCopy <= buffer_dose
+[ 183]    0247:                                       skipCheckCycle:
+[ 184]    0247: B4 3F 8B 1E E9 03 8B 0E 7B 04 BA EB   readChars temp_file_ID charsInStringCopy, buffer ; Считать символы
+                03 CD 21                            
+[ 185]    0256: 8B 16 7B 04 89 16 79 04 E8 68 00      checkBufferMacro charsInStringCopy               ; Проверить
+[ 186]    0261: 80 3E 7D 04 01                        cmp contains,01h
+[ 187]        :                                       ;je resetTempfile
+[ 188]    0266: 74 56                                 je Inc_Result
+[ 189]        :                                       
+[ 190]        :                                       ;  inc Result
+[ 191]        :                                       
+[ 192]        :                                       ; Сбросить временный файл
+[ 193]    0268:                                       resetTempfile:
+[ 194]    0268: C7 06 58 04 00 00                     mov charsInString,0h           ; charsInString = 0
+[ 195]    026E: B4 42 8B 1E E9 03 B9 00 00 BA 00 00   setCursor temp_file_ID,00h,00h ; Курсор на начало файла
+                B0 00 CD 21                         
+[ 196]        :                                       
+[ 197]        :                                       ; Действие, если в порции нет конца строки
+[ 198]    027E:                                       notEndOfString:
+[ 199]    027E: C6 06 52 04 00                        mov isEndOfString,0h ; Не конец строки
+[ 200]    0283: 80 3E 51 04 01                        cmp isEndOfFile,01h  ; Сравнение
+[ 201]        :                                       
+[ 202]    0288: 74 03 E9 B5 FE                        jne mainWhile ; Конец файла?
+[ 203]        :                                       
+[ 204]        :                                       ; Завершение программы
+[ 205]    028D:                                       exit:
+[ 206]    028D: 8B 1E E9 03 B4 3E CD 21               closeFile temp_file_ID    ; Закрыть временный файл
+[ 207]    0295: B4 41 BA DD 03 CD 21                  deleteFile temp_file_name ; Удалить временный файл
+[ 208]        :                                       
+[ 209]        :                                       ; dec Result
+[ 210]        :                                       ;dec Result
+[ 211]        :                                       
+[ 212]    029C: 50 52 B4 09 BA BA 03 CD 21 5A 58      Print New_Line
+[ 213]    02A7: 50 52 B4 09 BA B1 03 CD 21 5A 58      Print Result_Info_String
+[ 214]    02B2: 50 A1 68 04 A3 BD 03 E8 B1 00 58      Print_Number Result
+[ 215]        :                                       
+[ 216]    02BD: C3                                    ret ; Завершение COM-программы
+[ 217]        :                                       
+[ 218]        :                                       
+[ 219]    02BE:                                       Inc_Result:
+[ 220]    02BE: FF 06 68 04                           inc Result
+[ 221]    02C2: C6 06 7D 04 00                        mov contains, 0d
+[ 222]    02C7: EB 9F                                 jmp resetTempfile
+[ 223]        :                                       
+[ 224]        :                                       ; [Процедура] – результат в contains
+[ 225]        :                                       ; Есть ли символы в порции строки
+[ 226]    02C9:                                       checkBuffer PROC near
+[ 227]        :                                       ; mov contains,0h
+[ 228]        :                                       
+[ 229]    02C9: BE 00 00                              mov si,0h ; SI = 0 [счетчик]
+[ 230]    02CC: 4E                                    dec si
+[ 231]    02CD:                                       for1:
+[ 232]    02CD: 46                                    inc si
+[ 233]        :                                       
+[ 234]    02CE: C6 06 53 04 01                        mov isFor1_Or_2, 1
+[ 235]        :                                       
+[ 236]    02D3: 80 3E 7D 04 01                        cmp contains, 1d
+[ 237]    02D8: 75 03 E9 8F 00                        je Exit_Loop
+[ 238]        :                                       
+[ 239]    02DD: 3B 36 79 04                           cmp si,bufferNumberCheck
+[ 240]    02E1: 75 03 E9 86 00                        je Exit_Loop
+[ 241]        :                                       
+[ 242]    02E6: BA 00 00                              mov dx,0h         ; DX = 0
+[ 243]    02E9: 8A 94 EB 03                           mov dl,buffer[si] ; DX = текущий символ из порции
+[ 244]        :                                       ;  push si           ; Сохранение SI
+[ 245]        :                                       
+[ 246]        :                                       ; mov si,0h         ; SI = 0 [счетчик]
+[ 247]        :                                       
+[ 248]    02ED: C7 06 60 04 00 00                     mov Count_For_FindString, 0d
+[ 249]    02F3: 89 36 62 04                           mov Count_MainString_Copy, si
+[ 250]        :                                       
+[ 251]    02F7: 52                                    push dx
+[ 252]    02F8: 8B 16 64 04                           mov dx,Size_FindString
+[ 253]    02FC: 89 16 66 04                           mov Size_FindString_Copy, dx
+[ 254]    0300: 5A                                    pop dx
+[ 255]        :                                       
+[ 256]    0301:                                       for2:
+[ 257]    0301: 88 16 6A 04                           mov Checking_Symbol, dl
+[ 258]        :                                       
+[ 259]    0305:                                       Start_For2:
+[ 260]    0305: 56                                    push si
+[ 261]    0306: 8B 36 60 04                           mov si,Count_For_FindString
+[ 262]        :                                       ;  cmp dl,Find_String[Count_For_FindString]; Сравнение символа из порции с
+[ 263]        :                                       
+[ 264]    030A: 52                                    push dx
+[ 265]    030B: 8A 16 6A 04                           mov dl,Checking_Symbol
+[ 266]    030F: 3A 94 5C 04                           cmp dl,Find_String[si];
+[ 267]    0313: 5A                                    pop dx
+[ 268]        :                                       
+[ 269]    0314: 75 30                                 jne not_equals ; символом из набора символов
+[ 270]        :                                       
+[ 271]        :                                       ;-----Если символы равны----------------------------
+[ 272]        :                                       
+[ 273]    0316: C6 06 53 04 02                        mov isFor1_Or_2, 2
+[ 274]        :                                       
+[ 275]    031B: 5E                                    pop si
+[ 276]    031C: C6 06 7D 04 01                        mov contains,01h   ; contains = 1
+[ 277]    0321: FF 06 62 04                           inc Count_MainString_Copy
+[ 278]    0325: FF 06 60 04                           inc Count_For_FindString
+[ 279]        :                                       
+[ 280]    0329: 56                                    push si
+[ 281]    032A: 8B 36 62 04                           mov si,Count_MainString_Copy
+[ 282]        :                                       ; mov dl, Find_String[Count_MainString_Copy]
+[ 283]        :                                       
+[ 284]    032E: 52                                    push dx
+[ 285]        :                                       ; mov dl,Checking_Symbol
+[ 286]    032F: 8A 94 EB 03                           mov dl, buffer[si]
+[ 287]        :                                       ; mov dl, Find_String[si]
+[ 288]    0333: 88 16 6A 04                           mov Checking_Symbol,dl
+[ 289]    0337: 5A                                    pop dx
+[ 290]        :                                       
+[ 291]    0338: 5E                                    pop si
+[ 292]        :                                       
+[ 293]    0339: FF 0E 66 04                           dec Size_FindString_Copy  ; Size-- искомого слова
+[ 294]    033D: 83 3E 66 04 00                        cmp Size_FindString_Copy,0 ; Сравнение
+[ 295]        :                                       ;jz for1
+[ 296]    0342: 74 89                                 je for1 ;
+[ 297]        :                                       
+[ 298]    0344: EB BF                                 jmp Start_For2
+[ 299]        :                                       ;--------------------------------------------------
+[ 300]        :                                       
+[ 301]        :                                       
+[ 302]        :                                       
+[ 303]        :                                       ; Не равен
+[ 304]    0346:                                       not_equals:
+[ 305]        :                                       
+[ 306]    0346: 80 3E 53 04 01                        cmp isFor1_Or_2, 1
+[ 307]    034B: 74 16                                 je  not_eq_For1
+[ 308]        :                                       
+[ 309]    034D: C6 06 7D 04 00                        mov contains, 0d
+[ 310]    0352: 5E                                    pop si
+[ 311]        :                                       
+[ 312]    0353: FF 0E 66 04                           dec Size_FindString_Copy  ; Size-- искомого слова
+[ 313]    0357: 83 3E 66 04 00                        cmp Size_FindString_Copy,0 ; Сравнение
+[ 314]        :                                       ;jz for1
+[ 315]    035C: 75 03 E9 6C FF                        je for1 ;
+[ 316]        :                                       
+[ 317]        :                                       ;jmp for1
+[ 318]    0361: EB A2                                 jmp Start_For2
+[ 319]        :                                       
+[ 320]    0363:                                       not_eq_For1:
+[ 321]    0363: C6 06 7D 04 00                        mov contains, 0d
+[ 322]    0368: 5E                                    pop si
+[ 323]    0369: E9 61 FF                              jmp for1
+[ 324]        :                                       
+[ 325]    036C:                                       Exit_Loop:
+[ 326]    036C: C3                                    ret
+[ 327]        :                                       
+[ 328]        :                                       checkBuffer endp
+[ 329]        :                                       
+[ 330]        :                                       ; [Макрос] – есть ли символы в порции строки
+[ 331]        :                                       checkBufferMacro MACRO number
+[ 332]        :                                       mov dx,number
+[ 333]        :                                       mov bufferNumberCheck,dx
+[ 334]        :                                       call checkBuffer
+[ 335]        :                                       endm
+[ 336]        :                                       
+[ 337]        :                                       ;====================Процедура вывода числа====================
+[ 338]        :                                       
+[ 339]    036D:                                       Print_Number_Proc PROC near
+[ 340]        :                                       
+[ 341]    036D: B9 00 00                              mov cx,0h ; Количество цифр у числа
+[ 342]        :                                       
+[ 343]        :                                       ; Добавление цифр в тек
+[ 344]    0370:                                       pushDigitsWhile:
+[ 345]    0370: BA 00 00                              mov dx,0h
+[ 346]    0373: A1 BD 03                              mov ax,Number_General ; AX = число
+[ 347]    0376: F7 36 6B 04                           div ten              ; DX:AX / ten = DX:AX
+[ 348]        :                                       
+[ 349]    037A: A3 BD 03                              mov Number_General,ax ; numberGeneral уже /= 10
+[ 350]        :                                       
+[ 351]    037D: 83 C2 30                              add dx,48d ; DX += 48 (перевод в ASCII)
+[ 352]    0380: 52                                    push dx ; DX = текущая цифра числа
+[ 353]        :                                       
+[ 354]    0381: 41                                    inc cx ; CX ++
+[ 355]        :                                       
+[ 356]        :                                       ; Условие выхода из цикла
+[ 357]    0382: 83 3E BD 03 00                        cmp Number_General,0h
+[ 358]    0387: 75 E7                                 jne pushDigitsWhile
+[ 359]        :                                       
+[ 360]        :                                       ; Доставание из стека и печать цифр
+[ 361]    0389:                                       printDigitsWhile:
+[ 362]    0389: BA 00 00                              mov dx,0h
+[ 363]    038C: A1 BD 03                              mov ax,Number_General ; AX = число
+[ 364]    038F: F7 36 6B 04                           div ten              ; DX:AX / ten = DX:AX
+[ 365]        :                                       
+[ 366]    0393: A3 BD 03                              mov Number_General,ax ; numberGeneral уже /= 10
+[ 367]        :                                       
+[ 368]        :                                       ; Цифра числа DX
+[ 369]        :                                       ; прерывание берет ASCII символа из DL
+[ 370]    0396: 5A                                    pop dx
+[ 371]    0397: B4 06                                 mov ah,06h
+[ 372]    0399: CD 21                                 int 21h
+[ 373]        :                                       
+[ 374]        :                                       
+[ 375]        :                                       ; Условие выхода из цикла
+[ 376]    039B: 49                                    dec cx
+[ 377]    039C: 83 F9 00                              cmp cx,0h
+[ 378]    039F: 75 E8                                 jne printDigitsWhile
+[ 379]        :                                       
+[ 380]    03A1: C3                                    ret
+[ 381]        :                                       
+[ 382]        :                                       Print_Number_Proc endp
+[ 383]        :                                       
+[ 384]        :                                       ; Макрос - передает число в процедуру [Number_General]
+[ 385]        :                                       Print_Number macro digit
+[ 386]        :                                       
+[ 387]        :                                       push ax
+[ 388]        :                                       
+[ 389]        :                                       mov ax,digit
+[ 390]        :                                       mov Number_General,ax
+[ 391]        :                                       call Print_Number_Proc
+[ 392]        :                                       
+[ 393]        :                                       pop ax
+[ 394]        :                                       endm
+[ 395]        :                                       ;=================================================================
+[ 396]        :                                       
+[ 397]        :                                       ; Данные программы
+[ 398]        :                                       
+[ 399]        :                                       ;Info_Strings
+[ 400]    03A2: 53 74 61 72 74 20 50 72 6F 67 72 61   Start_Info_String db 'Start Programm$'
+                6D 6D 24                            
+[ 401]    03B1: 52 65 73 75 6C 74 3A 20 24            Result_Info_String  db 'Result: $'
+[ 402]        :                                       ; Символы перехода на новую строку (v,<)
+[ 403]    03BA: 0A 0D 24                              New_Line db 0Ah, 0Dh, '$'
+[ 404]        :                                       
+[ 405]        :                                       ; Число для передачи в процедуру
+[ 406]    03BD: 00 00                                 Number_General dw 0
+[ 407]        :                                       
+[ 408]    03BF: 64 3A 5C 64 61 74 61 2E 74 78 74 00   source_file_name db 'd:\data.txt',0 ; Исходный файл
+                                                    
+[ 409]    03CB: 00 00                                 source_file_ID   dw 0               ; Дескриптор
+[ 410]        :                                       
+[ 411]    03CD: 64 3A 5C 72 65 73 75 6C 74 2E 74 78   destination_file_name db 'd:\result.txt',0 ; Файл с результатом
+                74 00                               
+[ 412]    03DB: 00 00                                 destination_file_ID dw 0                   ; Дескриптор
+[ 413]        :                                       
+[ 414]    03DD: 64 3A 5C 74 65 6D 70 2E 74 78 74 00   temp_file_name db 'd:\temp.txt',0 ; Временный файл
+                                                    
+[ 415]    03E9: 00 00                                 temp_file_ID   dw 0               ; Дескриптор
+[ 416]        :                                       
+[ 417]    03EB: 00 00 00 00 00 00 00 00 00 00 00 00   buffer      db 100 DUP(0) ; Буфер данных
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00                         
+[ 418]    044F: 32 00                                 buffer_dose dw 50d        ; Размер порции
+[ 419]        :                                       
+[ 420]    0451: 00                                    isEndOfFile   db 0 ; [bool] – конец ли файла
+[ 421]    0452: 00                                    isEndOfString db 0 ; [bool] – конец ли строки
+[ 422]        :                                       
+[ 423]    0453: 00                                    isFor1_Or_2 db 0 ; bool - нахождение в цикле 1 - первый цикл, 2 - второй
+[ 424]        :                                       
+[ 425]    0454: 00 00                                 charsRead           dw 0 ; Считано символов
+[ 426]    0456: 00 00                                 charsOfStringInDose dw 0 ; Символов строки в порции
+[ 427]    0458: 00 00                                 charsInString       dw 0 ; Символов в строке
+[ 428]        :                                       
+[ 429]    045A: 00 00                                 cursorOffset        dw 0 ; Смещение курсора
+[ 430]        :                                       
+[ 431]    045C: 6A 65 6B 61                           Find_String db 'jeka' ; Искомое слово
+[ 432]    0460: 00 00                                 Count_For_FindString dw 0  ; Счетчик для цикла идущего по проверяемому слову
+[ 433]    0462: 00 00                                 Count_MainString_Copy dw 0 ; Счетчик для доп цикла пробега по строке
+[ 434]    0464: 04 00                                 Size_FindString dw 4 ; Размер искомого слова
+[ 435]    0466: 00 00                                 Size_FindString_Copy dw 0
+[ 436]    0468: 00 00                                 Result dw 0 ; Кол-во строк с заданным словом
+[ 437]        :                                       
+[ 438]    046A: 00                                    Checking_Symbol db 0 ; проверяемый символ
+[ 439]        :                                       ; Для алгоритма перевода числа
+[ 440]    046B: 0A 00                                 TEN dw 10d
+[ 441]        :                                       
+[ 442]    046D: 30 31 32 33 34 35 36 37 38 39         symbols           db '0123456789' ; Символы, которых быть не дложно
+[ 443]    0477: 0A 00                                 symbolsNumber     dw 10           ; Их число
+[ 444]        :                                       
+[ 445]    0479: 00 00                                 bufferNumberCheck dw 0 ; Количество символов из буфера для проверки
+[ 446]    047B: 00 00                                 charsInStringCopy dw 0 ; Символов в строке (копия)
+[ 447]    047D: 00                                    contains          db 0 ; [bool] – есть ли в первых charsOfStringInDose
+[ 448]        :                                       ; символах из buffer 1 из символов symbols
+[ 449]        :                                       
+[ 450]        :                                       end START
+[ 451]        :                                       
+[ 452]        :                                       
+[ 453]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================

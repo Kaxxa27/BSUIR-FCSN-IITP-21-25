@@ -1,0 +1,37 @@
+{% extends "base_generic.html"%}
+{% load static %}
+
+{% block style %}
+  <link rel="stylesheet" href="{% static 'myparking/css/news.css' %}">
+{% endblock %}
+
+{% block title%}
+<title>News</title>
+{% endblock %}
+
+{% block content%}
+
+<div class="news-container">
+    {% for item in news %}
+        <div class="news-div news-bg-gradient-orange text-bold text-20">
+            <div>{{ item.publish_date }}</div>
+            <br>
+            <div class="block-news ">
+                <div style="width: 60%; text-align: justify; padding-right: 3%;">
+                    <a href="{% url 'news_details' item.pk %}">{{ item.title }}</a>
+                    <br><br>
+                    <p class="news-summary">{{ item.summary}}</p>
+                </div>
+                <div style=" width: 40%;">
+                    {% if item.image %}
+                        <img width="100%" src="{{ item.image.url }}" alt="News Image">
+                    {% else %}
+                        <img src="https://via.placeholder.com/500x500?text=No+Image" alt="No Image">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

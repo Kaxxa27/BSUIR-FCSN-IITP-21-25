@@ -1,0 +1,64 @@
+{% extends "base_generic.html"%}
+{% load zip_filter %}
+
+{% block title%}
+<title>My Payments</title>
+{% endblock %}
+
+{% block content%}
+
+<div class="row">
+    <div class="col-sm-12">
+        <p>Всего платежей: {{ payments_count }}</p>
+        {% if payments %}
+        <h1>Напоминание!</h1>
+        <h2>Оплата парковочного места должна производиться вовремя!</h2>
+        <h2>Максимальный срок задержки оплаты 7 дней!</h2>
+        <h3>По истечению срока, платеж будет считаться долгом!</h3>
+        <label style="font-size: 32px; font-weight: bold;">Список платежей:</label>
+        <a href="{% url 'update_payments' %}" class="btn btn-success">Обновить список</a>
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Номер парковочного места</th>
+                        <th>Счет</th>
+                        <th>Дата выдачи</th>
+                        <th>Дата оплаты</th>
+                        <th>Срок до истечения оплаты</th>
+                        <th>Оплата</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment, date_to_repay in payments|zip_lists:datetimes_for_repay_the_payment %}
+                         <tr {% if not payment.is_paid and date_to_repay == 0 %}
+                             style="background-color: red;"{% endif %}>
+                             <td>{{ payment.park.number }}</td>
+                             <td>{{ payment.amount }}$</td>
+                             <td>
+                                 <p>{{ payment.receipt_date }}</p>
+                                 <p>{{ payment.receipt_time }}</p>
+                             </td>
+                              <td>
+                                  {% if payment.repayment_date %}
+                                    <p>{{ payment.repayment_date }}</p>
+                                    <p>{{ payment.repayment_time }}</p>
+                                  {% else %}
+                                    <p>Не оплачено!</p>
+                                  {% endif %}
+                             </td>
+                             <td><p>{{ date_to_repay }}</p></td>
+                             {% if not payment.is_paid %}
+                                <td><a href="{% url 'payment_paid' payment.id %}" class="btn btn-success">Оплатить</a></td>
+                             {% else %}
+                                 <td><a href="" class="btn btn-info" disabled>Оплачено</a></td>
+                             {% endif %}
+                         </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+         {% else %}
+                <h2> You don't have any payments.</h2>
+         {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+.navbar {
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+  display: flex;
+  justify-content: space-between;
+  position: sticky;
+  top: 0px;
+  z-index:2;
+}
+
+.navbar a, label{
+    padding: 14px 16px;
+}
+
+.navbar-item {
+  color: white;
+  text-align: center;
+  text-decoration: none;
+}
+
+.navbar-label {
+  color: yellow;
+  text-align: center;
+  text-decoration: none;
+}
+
+.navbar-item:hover {
+  background-color: #111;
+}

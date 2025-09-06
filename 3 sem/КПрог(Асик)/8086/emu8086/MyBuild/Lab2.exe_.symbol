@@ -1,0 +1,46 @@
+< THE SYMBOL TABLE >  Lab2.exe_  --  emu8086 assembler version: 4.05 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+STACK                    	00000     	-5        	SEGMENT   	(ITSELF)  
+CODE                     	00010     	-5        	SEGMENT   	(ITSELF)  
+START                    	00000     	-1        	LABEL     	code      
+MAINSTRINGSTART          	00007     	-1        	LABEL     	code      
+DELETEWORDSTART          	00054     	-1        	LABEL     	code      
+EMPTYMAINSTRING          	000A1     	-1        	LABEL     	code      
+EMPTYDELETEWORD          	000AB     	-1        	LABEL     	code      
+CONTINUEPROGRAMM         	000B5     	-1        	LABEL     	code      
+MAINLOOP                 	000BA     	-1        	LABEL     	code      
+STARTPROVERKIDELETEWORD  	000CF     	-1        	LABEL     	code      
+DELETEWORDPROBELLOOP     	000D2     	-1        	LABEL     	code      
+THE_MAIN_PROGRAMM        	000E2     	-1        	LABEL     	code      
+SECLOOP                  	000E7     	-1        	LABEL     	code      
+NEW_WORD                 	000F6     	-1        	LABEL     	code      
+NEXT_WORD                	00130     	-1        	LABEL     	code      
+RESULT                   	00137     	-1        	LABEL     	code      
+PROBELSTR                	00150     	-1        	LABEL     	code      
+PROBELSTRDELETEWORD      	00158     	-1        	LABEL     	code      
+ERROR_MAINSTRING         	00160     	-1        	LABEL     	code      
+ERROR_DELETEWORD         	00195     	-1        	LABEL     	code      
+END_PROGRAMM             	001CA     	-1        	LABEL     	code      
+DATA                     	0002D     	-5        	SEGMENT   	(ITSELF)  
+MAINSTRING               	00000     	1         	VAR       	data      
+MAINSTRING_MAXSIZE       	000C8     	1         	VAR       	data      
+MAINSTRING_SIZE          	000C9     	1         	VAR       	data      
+NEWMAINSTRING_SIZE       	000CA     	1         	VAR       	data      
+MAINSTRINGINFO           	000CB     	1         	VAR       	data      
+DELETEWORD               	000D9     	1         	VAR       	data      
+DELETEWORD_MAXSIZE       	001A1     	1         	VAR       	data      
+DELETEWORD_SIZE          	001A2     	1         	VAR       	data      
+DELETEWORDINFO           	001A3     	1         	VAR       	data      
+DELIMITER                	001BA     	1         	VAR       	data      
+PROBEL                   	001BB     	1         	VAR       	data      
+EMPTY_MAINSTRING         	001BC     	1         	VAR       	data      
+EMPTY_DELETEWORD         	001E5     	1         	VAR       	data      
+STRINGRESULTINFO         	0020E     	1         	VAR       	data      
+ENDSTRING                	00217     	1         	VAR       	data      
+ENTERTONEXTLINE          	00218     	1         	VAR       	data      
+===================================================================================================
+[ 21.12.2022  --  16:30:49 ] 
+< END >
+ 

@@ -1,0 +1,106 @@
+
+EMU8086 LICENSE
+===============
+
+This software is intended for academic, commercial and personal purposes. 
+It is not limited to any number of workstations.
+
+The Site License allows all students to use the software on university
+owned computers and allows them to install it on their personal computers.
+
+The software is limited up to 30 days of free evaluation period, if you
+continue to use this software after the evaluation period you must
+purchase digital licence key from RegNow/Digital River company.
+
+Customers may phone RegNow Customer Service Center at +1-952-646-5331 or
+toll free from the US and Canada at 1-877-353-7297 to place an order by phone.
+
+
+PRICES AND PRODUCT ID NUMBERS
+=============================
+
+Permanent Single Customer License
+  Product ID number:    2189-7  
+  Price:                $50 USD
+  Secure URL: https://www.regnow.com/softsell/nph-softsell.cgi?item=2189-7 
+
+1 Year Site Licence 
+  Product ID number:    2189-10  
+  Price:                $295 USD
+  Secure URL: https://www.regnow.com/softsell/nph-softsell.cgi?item=2189-10 
+
+Permanent Site Licence
+  Product ID number:    2189-9  
+  Price:                $1250 USD
+  Secure URL: https://www.regnow.com/softsell/nph-softsell.cgi?item=2189-9  
+
+Please note: 
+When applicable, VAT tax will be added to the order at the end of the order process.
+Phone orders are subject to an additional $3.00 USD order processing fee.
+
+To enter the registration key click the About button.
+
+
+DISCLAIMER
+==========
+
+The software is designed to be as fault tolerant as possible, however
+if you run an executable outside of the emulator environment a specially
+crafted and compiled code can seriously damage your operating system,
+data and files. The warning is shown before any permanent damage may occur,
+unless the warning is manually turned off in emu8086.ini.
+
+Under no circumstances, the authors of the software may be subject to
+any form of legal liability for any problems, lack of suitability,
+damage or financial loss that arises from use of this software or
+software written with this software.
+
+emu8086 is a legal mainstream software and cannot be used to create any
+form of illegal software whatsoever. The illegal software includes 
+while not being limited to software for hacking purposes, transmission
+of either virus or trojan content, infections, cyber, biological, chemical
+and other unconventional weapons, or any other software that performs actions
+prohibited by the Digital Millennium Copyright Act (DMCA). Any such software
+is deemed to be illegal software for the purposes of the content of this licence.
+
+
+FASM - FLAT ASSEMBLER LICENSE
+=============================            
+Flat Assembler	version 1.64
+Copyright (c) 1999-2005, Tomasz Grysztar.
+All rights reserved.
+
+This program is free for commercial and non-commercial use as long as
+the following conditions are adhered to.
+
+Copyright remains Tomasz Grysztar, and as such any Copyright notices
+in the code are not to be removed.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+1. Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+The licence and distribution terms for any publically available
+version or derivative of this code cannot be changed. i.e. this code
+cannot simply be copied and put under another distribution licence
+(including the GNU Public Licence).
+
+

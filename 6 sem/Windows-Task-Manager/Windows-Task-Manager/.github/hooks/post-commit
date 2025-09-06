@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ -e .bump ]; then
+  echo "Updating AssemblyInfo with git commit version..."
+  rm .bump
+  BuildMark=$(date +%s);
+  GitTag=$(git describe --tags --match v3.* --candidates 1 | sed 's/v3/3/' | sed 's/-/./');
+  GitVersion=${GitTag%%-*};
+  GitCommit=${GitTag##*-};
+
+  file="src/Properties/AssemblyInfo.cs"
+  contents=$(cat ${file});
+  contents=$(echo "${contents}" | sed "s/\(^\[assembly: AssemblyFileVersion(\).*)]/\1\"${GitVersion}\")]/")
+  contents=$(echo "${contents}" | sed "s/\(^\[assembly: AssemblyInformationalVersion(\).*)]/\1\"${GitVersion}\")]/")
+  contents=$(echo "${contents}" | sed "s/\(^\[assembly: AssemblyVersion(\).*)]/\1\"${GitVersion}.*\")]/")
+  contents=$(echo "${contents}" | sed "s/\(^\[assembly: GitCommit(\).*)]/\1\"${GitCommit}\")]/")
+  contents=$(echo "${contents}" | sed "s/\(^\[assembly: BuildMark(\).*)]/\1\"${BuildMark}\")]/")
+
+  echo "${contents}" > $file;
+  git add $file
+  git commit --amend -C HEAD --no-verify
+fi

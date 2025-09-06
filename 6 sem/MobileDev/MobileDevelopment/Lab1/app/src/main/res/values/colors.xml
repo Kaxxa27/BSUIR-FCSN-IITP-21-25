@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Цвета для кнопок -->
+    <color name="dark_blue">#1976D2</color> <!-- Темно-синий -->
+    <color name="sandy_brown">#F4A460</color> <!-- Темно-синий -->
+    <color name="dark_green">#388E3C</color> <!-- Темно-зеленый -->
+    <color name="dark_red">#D32F2F</color> <!-- Темно-красный -->
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="green">#00FA9A</color>
+
+    <color name="harvest_gold">#df8b08</color>
+    <color name="maize">#fcc450</color>
+    <color name="sepia">#6b4111</color>
+    <color name="milk_coffee">#a4795c</color>
+    <color name="shadows">#c1bcb0</color>
+    <color name="dark_lava">#483d2c</color>
+
+</resources>

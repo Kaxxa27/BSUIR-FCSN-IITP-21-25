@@ -1,0 +1,40 @@
+< THE SYMBOL TABLE >  Lab5.exe_  --  emu8086 assembler version: 4.05 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+STACK                    	00000     	-5        	SEGMENT   	(ITSELF)  
+DATA                     	00010     	-5        	SEGMENT   	(ITSELF)  
+CRLF                     	00000     	1         	VAR       	data      
+WORD                     	00003     	1         	VAR       	data      
+BUF                      	00015     	1         	VAR       	data      
+MSG_PROMPT_TO_INPUT      	0001A     	1         	VAR       	data      
+MSG_RESULT               	00035     	1         	VAR       	data      
+MSG_BAD                  	0004A     	1         	VAR       	data      
+MSG_ERROR                	00055     	1         	VAR       	data      
+WORD_BUFFER              	0005F     	1         	VAR       	data      
+CMD_LENGTH               	00093     	1         	VAR       	data      
+CMD_TEXT                 	00094     	1         	VAR       	data      
+FILE_PATH                	00113     	1         	VAR       	data      
+CODE                     	00022     	-5        	SEGMENT   	(ITSELF)  
+COUNT_RAWS               	00000     	-1        	LABEL     	code      
+SEARCH                   	00002     	-1        	LABEL     	code      
+CONTINUE_LOC1TMP         	00021     	-1        	LABEL     	code      
+CHECK_WORD               	00031     	-1        	LABEL     	code      
+WHILE                    	00038     	-1        	LABEL     	code      
+CONTINUE_LOC2TMP         	00064     	-1        	LABEL     	code      
+SUCCESS                  	00071     	-1        	LABEL     	code      
+SKIP                     	00072     	-1        	LABEL     	code      
+CONTINUE_LOC3TMP         	00091     	-1        	LABEL     	code      
+CONTINUE_LOC4TMP         	000B9     	-1        	LABEL     	code      
+START                    	000C1     	-1        	LABEL     	code      
+AGAIN                    	000E9     	-1        	LABEL     	code      
+COUNT_RAWS_END           	0011B     	-1        	LABEL     	code      
+EXIT                     	0011B     	-1        	LABEL     	code      
+GOOD_EXIT                	0012E     	-1        	LABEL     	code      
+PUT1_LOC5TMP             	00145     	-1        	LABEL     	code      
+PUT2_LOC6TMP             	00154     	-1        	LABEL     	code      
+EX_LOC7TMP               	00161     	-1        	LABEL     	code      
+===================================================================================================
+[ 01.12.2022  --  9:08:27 ] 
+< END >
+ 

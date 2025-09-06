@@ -1,0 +1,121 @@
+﻿@using System.Security.Claims;
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="icon" href="~/images/taxi.ico" type="image/x-icon">
+	<meta charset="utf-8" />
+	<title>@ViewData["Title"] - TaxiApp</title>
+
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/registration.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/_layout.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/map_index.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/create_order.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/profile_edit.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/home_index.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/TaxiApplication.WEB.styles.css" asp-append-version="true" />
+
+	@*Folder tabels*@
+	<link rel="stylesheet" href="~/css/tables/table_outgoing_fields.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/tables/table_cross_selection.css" asp-append-version="true" />
+
+	@*Folder buttons*@
+	<link rel="stylesheet" href="~/css/buttons/standart_button.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/buttons/cancel_button.css" asp-append-version="true" />
+
+	@*Folder text*@
+	<link rel="stylesheet" href="~/css/text/rocher.css" asp-append-version="true" />
+
+</head>
+<body>
+
+	<div>
+		@*Main NavBar*@
+		<nav class="navbar navbar-expand-xl navbar-light main-nav-color-bg-gradient main-nav-style-bold-20px">
+			<div class="container-fluid">
+				<div class="collapse navbar-collapse " id="navbarBasic">
+
+					<ul class="navbar-nav  mb-2 mb-xl-0 d-flex justify-content-center">
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" asp-controller="Home" asp-action="Index" asp-area="">Главная</a>
+						</li>
+						@if (User.Identity.IsAuthenticated is not true)
+						{
+							<li class="nav-item">
+								<a class="nav-link active" aria-current="page" asp-controller="Account" asp-action="Login" asp-area="">Войти</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link active" aria-current="page" asp-controller="Account" asp-action="Registration" asp-area="">Зарегистрироваться</a>
+							</li>
+						}
+					</ul>
+
+					@*Right side NavBar*@
+					@if (User.Identity.IsAuthenticated is true)
+					{
+						<div class="navbar-nav ms-auto">
+							@if (User.IsInRole(TaxiApplication.Domain.Enum.Role.Admin.ToString()))
+							{
+								<a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="Index" asp-area="Admin">Список клиентов</a>
+								<a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="AdminPanel" asp-area="Admin">Админ панель</a>
+								<a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="AddClient" asp-area="Admin">Добавить пользователя</a>
+							}
+							else if (User.IsInRole(TaxiApplication.Domain.Enum.Role.Client.ToString()))
+							{
+								<a class="nav-link active" aria-current="page" asp-controller="Client" asp-action="CreateTaxiOrder" asp-area="Client">Сделать заказ</a>
+								<a class="nav-link active" aria-current="page" asp-controller="Client" asp-action="GetTaxiOrders" asp-area="Client">История заказов</a>
+								<a class="nav-link active me-2" aria-current="page" asp-controller="Client" asp-action="ProfileEdit" asp-route-area="Client">Профиль</a>
+					
+							}
+
+							<a class="nav-link active me-2" aria-current="page" asp-controller="Account" asp-action="Logout" asp-route-area="">Выйти</a>
+						</div>
+					}
+				</div>
+			</div>
+		</nav>
+	</div>
+
+	<div class="container">
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
+
+	<footer class="footer text-white">
+		<div class="container" style="text-align:center;">	
+			<div class="row">	
+				<div class="contact-icons">
+					<label class="standart-label">Contacts: </label>
+					<div>
+
+						<a href="https://github.com/Kaxxa27" target="_blank" rel="noopener noreferrer">
+							<img src="~/images/github.png" alt="GitHub Profile" style="border-radius: 50%;" width="50" height="50">
+						</a>
+
+						<a href="https://github.com/Kaxxa27" target="_blank" rel="noopener noreferrer">
+							<img src="~/images/vk.png" alt="Vk Profile" style="border-radius: 50%;" width="50" height="50">
+						</a>
+
+						<a href="https://t.me/Kaxxa_27" target="_blank" rel="noopener noreferrer">
+							<img src="~/images/telegram.png" alt="Telegram" style="border-radius: 50%;" width="50" height="50">
+						</a>
+					</div>
+				
+				</div>	
+			</div>
+		</div>
+		<p class="text-center">© 2023 Taxi ByKaxxa. All rights reserved.</p>	
+	</footer>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                    org $8000
+  8000 CE 00 64     ldx #100 ;
+  8003 18 CE 00 C8  ldy #200  ;    y
+  8007 18 FF 80 10  sty $8010 ;
+  800B 8F           xgdx ;   X  D
+  800C B3 80 10     subd $8010 ;  M  D
+  800F 8F           xgdx ;   X  D
+
+

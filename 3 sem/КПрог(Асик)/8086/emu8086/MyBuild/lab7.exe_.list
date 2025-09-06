@@ -1,0 +1,634 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+lab7.exe_ -- emu8086 assembler version: 4.05  
+ 
+[ 06.12.2022  --  17:59:11 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ; Распечатать строку [Макрос]
+[   2]        :                                       printStr macro str
+[   3]        :                                       push ax
+[   4]        :                                       push dx
+[   5]        :                                       
+[   6]        :                                       mov ah,09h ; Номер функции DOS
+[   7]        :                                       lea dx,str ; Смещение str в DX
+[   8]        :                                       int 21h    ; 21 прерывание
+[   9]        :                                       
+[  10]        :                                       pop dx
+[  11]        :                                       pop ax
+[  12]        :                                       endm
+[  13]        :                                       
+[  14]        :                                       ; Распечатать символ [Макрос]
+[  15]        :                                       printSymb macro ascii
+[  16]        :                                       mov ah,06h
+[  17]        :                                       mov dl,ascii
+[  18]        :                                       int 21h
+[  19]        :                                       endm
+[  20]        :                                       
+[  21]        :                                       ; Модель памяти (код в 1 сегменте, данные и стек в DGROUP)
+[  22]        :                                       .model small
+[  23]        :                                       
+[  24]        :                                       ; Сегмент кода
+[  25]        :                                       .code
+[  26]        :                                       
+[  27]        :                                       ; Начало прогарммы
+[  28]    0000:                                       START:
+[  29]        :                                       
+[  30]    0000: B8 3C 00                              mov ax,@data  ; @data - идентификатор сегмента данных
+[  31]    0003: 8E D8                                 mov ds,ax     ; Адрес сегмента данных — в DS
+[  32]    0005: 8E C0                                 mov es,ax     ; Адрес сегмента данных — в ES
+[  33]        :                                       
+[  34]        :                                       
+[  35]    0007:                                       ;===================СТРОКА С $$$===================
+[  36]    0007: BE 00 00 89 36 25 02 8A 16 2E 00 88   printStrBySymbol testString,testrString_size
+                16 27 02 E8 48 03                   
+[  37]    0019: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[  38]    0024: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[  39]        :                                       ;==================================================
+[  40]        :                                       
+[  41]        :                                       
+[  42]        :                                       ;====Задание максимальной длины для вводимого числа======
+[  43]    002F: BF 2F 00                              lea di,strNumber ; Смещение строки в DI
+[  44]    0032: B0 06                                 mov al,06d       ; Максимальное число символов для ввода
+[  45]    0034: AA                                    stosb            ; AL в ES:DI
+[  46]        :                                       ;========================================================
+[  47]        :                                       
+[  48]        :                                       
+[  49]        :                                       ;==============Вывод "какой формат числел"===============
+[  50]    0035: 50 52 B4 09 BA 3B 00 CD 21 5A 58      printStr strFormat
+[  51]    0040: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[  52]    004B: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[  53]        :                                       ;========================================================
+[  54]        :                                       
+[  55]        :                                       
+[  56]        :                                       ;====================Ввод диапазона======================
+[  57]    0056: 50 52 B4 09 BA AB 01 CD 21 5A 58      printStr strRange
+[  58]        :                                       
+[  59]        :                                       
+[  60]    0061:                                       RANGE_INPUT:
+[  61]        :                                       
+[  62]        :                                       
+[  63]    0061: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[  64]    006C: 50 52 B4 09 BA D5 01 CD 21 5A 58      printStr strRangeFormat
+[  65]        :                                       
+[  66]        :                                       ; Диапазон ОТ
+[  67]    0077: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[  68]    0082: C6 06 20 02 01                        mov needPrintFrom, 1h
+[  69]    0087: C6 06 21 02 00                        mov needPrintTo, 0h
+[  70]        :                                       
+[  71]    008C: E8 C8 01                              call enterNumber
+[  72]    008F: 8B 16 39 00                           mov dx,number
+[  73]    0093: 89 16 A7 01                           mov numberFrom,dx
+[  74]        :                                       
+[  75]        :                                       ; Диапазон ДО
+[  76]    0097: C6 06 20 02 00                        mov needPrintFrom, 0h
+[  77]    009C: C6 06 21 02 01                        mov needPrintTo, 1h
+[  78]        :                                       
+[  79]    00A1: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[  80]    00AC: E8 A8 01                              call enterNumber
+[  81]    00AF: 8B 16 39 00                           mov dx,number
+[  82]    00B3: 89 16 A9 01                           mov numberTo,dx
+[  83]        :                                       
+[  84]        :                                       
+[  85]        :                                       
+[  86]    00B7: A1 A7 01                              mov ax,numberFrom
+[  87]    00BA: 8B 1E A9 01                           mov bx,numberTo
+[  88]    00BE: 3B C3                                 cmp ax,bx
+[  89]    00C0: 77 9F                                 ja RANGE_INPUT
+[  90]        :                                       ;===========================================================
+[  91]        :                                       
+[  92]        :                                       
+[  93]        :                                       ;===============Сколько чисел в массив ввести?==============
+[  94]    00C2:                                       ask:
+[  95]    00C2: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[  96]    00CD: C6 06 20 02 00                        mov needPrintFrom, 0h
+[  97]    00D2: C6 06 21 02 00                        mov needPrintTo, 0h
+[  98]    00D7: 50 52 B4 09 BA 64 01 CD 21 5A 58      printStr strAskSymbolsAmount
+[  99]    00E2: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[ 100]    00ED: E8 67 01                              call enterNumber
+[ 101]    00F0: 8B 16 39 00                           mov dx,number
+[ 102]    00F4: 89 16 F7 00                           mov array_size,dx
+[ 103]        :                                       
+[ 104]    00F8: 83 3E F7 00 1E                        cmp array_size,30d
+[ 105]    00FD: 77 C3                                 ja ask
+[ 106]        :                                       
+[ 107]    00FF: 83 3E F7 00 00                        cmp array_size,0h
+[ 108]    0104: 74 BC                                 jz ask
+[ 109]        :                                       ;===============Сколько чисел в массив ввести?==============
+[ 110]        :                                       
+[ 111]        :                                       
+[ 112]        :                                       ;===================Заполнение массива===================
+[ 113]    0106: C6 06 20 02 00                        mov needPrintFrom, 0h
+[ 114]    010B: C6 06 21 02 00                        mov needPrintTo, 0h
+[ 115]        :                                       
+[ 116]    0110: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[ 117]    011B: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[ 118]    0126: 50 52 B4 09 BA 4C 01 CD 21 5A 58      printStr strEnterArray
+[ 119]    0131: 50 A1 F7 00 A3 28 02 E8 44 02 58      printNumber array_size
+[ 120]    013C: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[ 121]        :                                       
+[ 122]        :                                       
+[ 123]    0147: 8B 0E F7 00                           mov cx,array_size ; CX = array_size
+[ 124]    014B: BE F9 00                              lea si,array      ; SI на начало массива
+[ 125]        :                                       
+[ 126]    014E: C7 06 F4 00 01 00                     mov numberOfNumber,1d
+[ 127]    0154: C6 06 F6 00 01                        mov needNumberOfNumber,1d
+[ 128]        :                                       
+[ 129]    0159:                                       inputWhile:
+[ 130]        :                                       
+[ 131]    0159: 51                                    push cx ; Сохранить CX
+[ 132]    015A: 56                                    push si ; Сохранить SI
+[ 133]        :                                       
+[ 134]    015B: E8 F9 00                              call enterNumber
+[ 135]    015E: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[ 136]        :                                       
+[ 137]    0169: 5E                                    pop si ; Восстановить SI
+[ 138]    016A: 59                                    pop cx ; Восстановить CX
+[ 139]        :                                       
+[ 140]        :                                       ; Поиск максимального элемента
+[ 141]        :                                       
+[ 142]        :                                       ; Если 0 текущий, то его в максимальный
+[ 143]    016B: 83 3E 39 00 00                        cmp number,0h
+[ 144]    0170: 74 1C                                 je new_max
+[ 145]        :                                       
+[ 146]    0172: 8B 16 49 01                           mov dx,max_item
+[ 147]    0176: 39 16 39 00                           cmp number,dx
+[ 148]    017A: 76 1F                                 jbe not_new_max ; if number <= max_item
+[ 149]        :                                       
+[ 150]        :                                       ; Текущий элемент новый максимальный (возможно)
+[ 151]    017C: A1 39 00                              mov ax,number
+[ 152]    017F: 3B 06 A7 01                           cmp ax,numberFrom
+[ 153]    0183: 72 16                                 jb not_new_max
+[ 154]        :                                       
+[ 155]    0185: A1 39 00                              mov ax,number
+[ 156]    0188: 3B 06 A9 01                           cmp ax,numberTo
+[ 157]    018C: 77 0D                                 ja not_new_max
+[ 158]        :                                       
+[ 159]        :                                       ; Новый максимальный
+[ 160]    018E:                                       new_max:
+[ 161]    018E: 8B 16 39 00                           mov dx,number
+[ 162]    0192: 89 16 49 01                           mov max_item,dx
+[ 163]    0196: C6 06 4B 01 01                        mov existsMaxItemFromRange,01h
+[ 164]        :                                       
+[ 165]        :                                       ; Текущий элемент не новый максимальный
+[ 166]    019B:                                       not_new_max:
+[ 167]        :                                       
+[ 168]    019B: 8B 16 39 00                           mov dx,number
+[ 169]    019F: 89 14                                 mov [si],dx  ; Записать число в массив
+[ 170]    01A1: 83 C6 02                              add si,2d
+[ 171]        :                                       
+[ 172]    01A4: FF 06 F4 00                           inc numberOfNumber
+[ 173]        :                                       
+[ 174]        :                                       ; Условие выхода из цикла
+[ 175]    01A8: 49                                    dec cx
+[ 176]    01A9: 83 F9 00                              cmp cx,0d
+[ 177]        :                                       
+[ 178]    01AC: 75 AB                                 jnz inputWhile
+[ 179]        :                                       ;========================================================
+[ 180]        :                                       
+[ 181]        :                                       
+[ 182]        :                                       ;======Было ли введено хотя бы 1 число из диапазона======
+[ 183]    01AE: 80 3E 4B 01 00                        cmp existsMaxItemFromRange,0h
+[ 184]    01B3: 75 03 E9 84 00                        je noNumbersFromRange
+[ 185]        :                                       ;========================================================
+[ 186]        :                                       
+[ 187]        :                                       
+[ 188]        :                                       ;=================Рисование гистограммы==================
+[ 189]    01B8: B9 00 00                              mov cx,0h    ; CX = 0, счетчик for и symbolsOutput
+[ 190]    01BB: BE F9 00                              lea si,array ; SI на начало массива
+[ 191]    01BE: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[ 192]    01C9:                                       for:
+[ 193]    01C9: 8B 04                                 mov ax,[si] ; AX = текущий элемент массива
+[ 194]        :                                       
+[ 195]        :                                       
+[ 196]        :                                       ;=========Проверка, из диапазона ли он=========
+[ 197]    01CB: 3B 06 A7 01                           cmp ax,numberFrom
+[ 198]    01CF: 72 5F                                 jb notFromRange
+[ 199]        :                                       
+[ 200]    01D1: 3B 06 A9 01                           cmp ax,numberTo
+[ 201]    01D5: 77 59                                 ja notFromRange
+[ 202]        :                                       ;==============================================
+[ 203]        :                                       
+[ 204]        :                                       
+[ 205]        :                                       ;=========Проверка, 0 ли текущее число=========
+[ 206]    01D7: 3D 00 00                              cmp ax,0h
+[ 207]    01DA: 74 0B                                 je startPrintSymbols ; Только начать столбец
+[ 208]        :                                       ;==============================================
+[ 209]        :                                       
+[ 210]        :                                       
+[ 211]        :                                       ;======Подсчет числа символов для столбца======
+[ 212]    01DC: BA 00 00                              mov dx,0h
+[ 213]    01DF: F7 26 A0 01                           mul max_symb
+[ 214]    01E3: F7 36 49 01                           div max_item ; AX = число символов для столбца
+[ 215]        :                                       ;==============================================
+[ 216]        :                                       
+[ 217]        :                                       
+[ 218]        :                                       ;================Вывод символов================
+[ 219]    01E7:                                       startPrintSymbols:
+[ 220]        :                                       
+[ 221]    01E7: 50 52 B4 09 BA A4 01 CD 21 5A 58      printStr symbStart ; Символы начала столбика
+[ 222]        :                                       
+[ 223]    01F2: 51                                    push cx
+[ 224]    01F3: 8B C8                                 mov cx,ax
+[ 225]    01F5: E3 11                                 jcxz noSymbols
+[ 226]        :                                       
+[ 227]    01F7:                                       symbolsOutput:
+[ 228]    01F7: 50 52 B4 09 BA A2 01 CD 21 5A 58      printStr symb
+[ 229]        :                                       
+[ 230]        :                                       ; Условие завершения цикла
+[ 231]    0202: 49                                    dec cx
+[ 232]    0203: 83 F9 00                              cmp cx,0h
+[ 233]    0206: 75 EF                                 jnz symbolsOutput
+[ 234]        :                                       
+[ 235]    0208:                                       noSymbols:
+[ 236]        :                                       
+[ 237]    0208: B4 06 B2 20 CD 21                     printSymb ' '
+[ 238]    020E: B4 06 B2 5B CD 21                     printSymb '['
+[ 239]    0214: 50 8B 04 A3 28 02 E8 62 01 58         printNumber [si]
+[ 240]    021E: B4 06 B2 5D CD 21                     printSymb ']'
+[ 241]        :                                       ;===============================================
+[ 242]        :                                       
+[ 243]    0224: 59                                    pop cx
+[ 244]    0225: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[ 245]        :                                       
+[ 246]    0230:                                       notFromRange:
+[ 247]        :                                       
+[ 248]    0230: 83 C6 02                              add si,2d
+[ 249]        :                                       
+[ 250]        :                                       ; Условие завершения цикла
+[ 251]        :                                       
+[ 252]    0233: 41                                    inc cx
+[ 253]    0234: 3B 0E F7 00                           cmp cx,array_size
+[ 254]    0238: 75 8F                                 jnz for
+[ 255]        :                                       ;=================Рисование гистограммы==================
+[ 256]        :                                       
+[ 257]        :                                       
+[ 258]    023A: EB 16                                 jmp end
+[ 259]        :                                       
+[ 260]        :                                       
+[ 261]        :                                       ;=================Нет чисел из диапазона==================
+[ 262]    023C:                                       noNumbersFromRange:
+[ 263]        :                                       
+[ 264]    023C: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[ 265]    0247: 50 52 B4 09 BA EC 01 CD 21 5A 58      printStr strNoNumbersFromRange
+[ 266]        :                                       ;=========================================================
+[ 267]        :                                       
+[ 268]        :                                       
+[ 269]        :                                       ;====================Конец программы====================
+[ 270]    0252:                                       end:
+[ 271]    0252: B8 00 4C                              mov ax,4C00h   ; 4C (выход из программы) в AH
+[ 272]        :                                       ; 00 (успешное звершение) в AL
+[ 273]    0255: CD 21                                 int 21h        ; Функция DOS "Завершить программу"
+[ 274]        :                                       ;=======================================================
+[ 275]        :                                       
+[ 276]        :                                       ; Процедура – ввод числа
+[ 277]        :                                       ; [Результат занесется в number]
+[ 278]    0257:                                       enterNumber proc near
+[ 279]        :                                       
+[ 280]    0257:                                       enterNumberProcStart:
+[ 281]        :                                       
+[ 282]        :                                       ; Надо ли печатать "from"
+[ 283]    0257:                                       fromCheck:
+[ 284]    0257: 80 3E 20 02 00                        cmp needPrintFrom,0h
+[ 285]    025C: 74 0B                                 je toCheck
+[ 286]    025E: 50 52 B4 09 BA C7 01 CD 21 5A 58      printStr strFrom
+[ 287]        :                                       
+[ 288]        :                                       ; Надо ли печатать "to"
+[ 289]    0269:                                       toCheck:
+[ 290]    0269: 80 3E 21 02 00                        cmp needPrintTo,0h
+[ 291]    026E: 74 0B                                 je numberOfNumberCheck
+[ 292]    0270: 50 52 B4 09 BA CE 01 CD 21 5A 58      printStr strTo
+[ 293]        :                                       
+[ 294]        :                                       ; Надо ли печатать номер числа в массиве
+[ 295]    027B:                                       numberOfNumberCheck:
+[ 296]    027B: 80 3E F6 00 00                        cmp needNumberOfNumber,0h
+[ 297]    0280: 74 17                                 je dontPrint
+[ 298]        :                                       
+[ 299]    0282: 50 A1 F4 00 A3 28 02 E8 F3 00 58      printNumber numberOfNumber
+[ 300]    028D: B4 06 B2 29 CD 21                     printSymb ')'
+[ 301]    0293: B4 06 B2 20 CD 21                     printSymb ' '
+[ 302]        :                                       
+[ 303]    0299:                                       dontPrint:
+[ 304]        :                                       
+[ 305]        :                                       ; Ввод числа в строку
+[ 306]    0299: B4 0A                                 mov ah,0Ah        ; Функция DOS (считать строку символов из STDIN в буфер)
+[ 307]    029B: BA 2F 00                              lea dx,strNumber  ; Смещение строки в DX
+[ 308]    029E: CD 21                                 int 21h
+[ 309]        :                                       
+[ 310]        :                                       ; Вычисление длины введенного числа
+[ 311]    02A0: BE 2F 00                              lea si,strNumber      ; Смещение strNumber в SI
+[ 312]    02A3: 83 C6 01                              add si,01d            ; SI++
+[ 313]    02A6: B8 00 00                              mov ax,0h             ; Занулить AX
+[ 314]    02A9: AC                                    lodsb                 ; DS:SI в AL
+[ 315]    02AA: 8B C8                                 mov cx,ax             ; CX = длина введенного числа
+[ 316]        :                                       
+[ 317]        :                                       ; Длина введенного слова 0
+[ 318]    02AC: 83 F9 00                              cmp cx,0h
+[ 319]    02AF: 74 75                                 jz strInvalid
+[ 320]        :                                       
+[ 321]    02B1: C7 06 39 00 00 00                     mov number,0h  ; Число будет формироваться в number
+[ 322]    02B7: B8 01 00                              mov ax,01d ; AX – степень десятки
+[ 323]        :                                       
+[ 324]    02BA:                                       while:
+[ 325]    02BA: BB 00 00                              mov bx,0h
+[ 326]    02BD: 8B F1                                 mov si,cx
+[ 327]    02BF: 83 C6 01                              add si,01d ; SI – смещение на текущий символ числа
+[ 328]    02C2: 8A 5C 2F                              mov bl,strNumber[si] ; BX – ASCII код текущего символа
+[ 329]        :                                       
+[ 330]        :                                       ; Проверка на то, является ли символ цифрой 0..9
+[ 331]    02C5: 80 FB 30                              cmp bl,48d
+[ 332]    02C8: 7C 5C                                 jl strInvalid; < 48
+[ 333]    02CA: 80 FB 39                              cmp bl,57d
+[ 334]    02CD: 7F 57                                 jg strInvalid; > 57
+[ 335]        :                                       
+[ 336]    02CF: 80 EB 30                              sub bl,48d ; BX = текущая цифра
+[ 337]        :                                       
+[ 338]    02D2: 50                                    push ax  ; Сохранение AX
+[ 339]        :                                       
+[ 340]    02D3: F8                                    clc           ; Очистить флаг переноса
+[ 341]    02D4: F7 E3                                 mul bx        ; AX = текущая цифра * 10 в степени
+[ 342]    02D6: 72 12                                 jc overflow   ; Если есть флаг переноса от mul
+[ 343]    02D8: 01 06 39 00                           add number,ax ; Добавляем это в формируемое число
+[ 344]    02DC: 72 0C                                 jc overflow   ; Если есть флаг переноса от add
+[ 345]        :                                       
+[ 346]    02DE: 58                                    pop ax        ; Восстановление AX
+[ 347]        :                                       
+[ 348]    02DF: F7 26 F2 00                           mul ten ; AX *= 10
+[ 349]        :                                       
+[ 350]        :                                       ; Условие выхода из цикла
+[ 351]    02E3: 49                                    dec cx
+[ 352]    02E4: 83 F9 00                              cmp cx,0
+[ 353]    02E7: 75 D1                                 jne while
+[ 354]        :                                       
+[ 355]    02E9: C3                                    ret
+[ 356]        :                                       
+[ 357]        :                                       ; Переполнение
+[ 358]    02EA:                                       overflow:
+[ 359]    02EA: 58                                    pop ax ; Чтобы вернуть SP на IP
+[ 360]        :                                       
+[ 361]    02EB: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[ 362]    02F6: 50 52 B4 09 BA 91 00 CD 21 5A 58      printStr strOverflow
+[ 363]    0301: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[ 364]    030C: 50 52 B4 09 BA CD 00 CD 21 5A 58      printStr strRepeat
+[ 365]    0317: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[ 366]    0322: E9 32 FF                              jmp enterNumberProcStart
+[ 367]    0325: C3                                    ret
+[ 368]        :                                       
+[ 369]        :                                       ; Невалидная строка
+[ 370]    0326:                                       strInvalid:
+[ 371]        :                                       
+[ 372]    0326: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[ 373]    0331: 50 52 B4 09 BA B3 00 CD 21 5A 58      printStr strInvalidFormat
+[ 374]    033C: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[ 375]    0347: 50 52 B4 09 BA CD 00 CD 21 5A 58      printStr strRepeat
+[ 376]    0352: 50 52 B4 09 BA 22 02 CD 21 5A 58      printStr toNewLine
+[ 377]    035D: E9 F7 FE                              jmp enterNumberProcStart
+[ 378]    0360: C3                                    ret
+[ 379]        :                                       
+[ 380]        :                                       
+[ 381]        :                                       enterNumber endp
+[ 382]        :                                       
+[ 383]        :                                       ; Распечатать строку посимвольно [Процедура]
+[ 384]    0361:                                       printStrBySymbolProc PROC near
+[ 385]        :                                       
+[ 386]    0361: B4 06                                 mov ah,06h               ; Записать символ в STDOUT
+[ 387]        :                                       
+[ 388]    0363: 8B 3E 25 02                           mov di,strGeneral_offset ; Смещение строки
+[ 389]    0367: BB 00 00                              mov bx,0h                ; Индекс в выводимой строке
+[ 390]        :                                       
+[ 391]    036A: BA 00 00                              mov dx,0h
+[ 392]    036D: 8A 16 27 02                           mov dl,strGeneral_size
+[ 393]    0371: 8B CA                                 mov cx,dx                ; Длина строки
+[ 394]    0373: E3 09                                 jcxz strIsEmpty          ; Если строка пустая
+[ 395]        :                                       
+[ 396]    0375:                                       while1:
+[ 397]    0375: 8A 11                                 mov dl,[di+bx]
+[ 398]    0377: CD 21                                 int 21h ; Вывод текущего символа
+[ 399]        :                                       
+[ 400]        :                                       ; Условие выхода из цикла
+[ 401]    0379: 43                                    inc bx
+[ 402]    037A: 3B D9                                 cmp bx,cx
+[ 403]    037C: 7C F7                                 jl while1
+[ 404]        :                                       
+[ 405]        :                                       ; Строка пустая
+[ 406]    037E:                                       strIsEmpty:
+[ 407]        :                                       
+[ 408]    037E: C3                                    ret
+[ 409]        :                                       
+[ 410]        :                                       printStrBySymbolProc endp
+[ 411]        :                                       
+[ 412]        :                                       ; Распечатать строку посимвольно [Макрос]
+[ 413]        :                                       printStrBySymbol macro str,str_size
+[ 414]        :                                       lea si,str
+[ 415]        :                                       mov strGeneral_offset,si
+[ 416]        :                                       
+[ 417]        :                                       mov dl,str_size
+[ 418]        :                                       mov strGeneral_size,dl
+[ 419]        :                                       
+[ 420]        :                                       call printStrBySymbolProc
+[ 421]        :                                       endm
+[ 422]        :                                       
+[ 423]        :                                       
+[ 424]        :                                       ; Распечатать число [Процедура]
+[ 425]    037F:                                       printNumberProc PROC near
+[ 426]        :                                       
+[ 427]    037F: B9 00 00                              mov cx,0h ; Количество цифр у числа
+[ 428]        :                                       
+[ 429]        :                                       ; Добавление цифр в тек
+[ 430]    0382:                                       pushDigitsWhile:
+[ 431]    0382: BA 00 00                              mov dx,0h
+[ 432]    0385: A1 28 02                              mov ax,numberGeneral ; AX = число
+[ 433]    0388: F7 36 F2 00                           div ten              ; DX:AX / ten = DX:AX
+[ 434]        :                                       
+[ 435]    038C: A3 28 02                              mov numberGeneral,ax ; numberGeneral уже /= 10
+[ 436]        :                                       
+[ 437]    038F: 83 C2 30                              add dx,48d ; DX += 48 (перевод в ASCII)
+[ 438]    0392: 52                                    push dx ; DX = текущая цифра числа
+[ 439]        :                                       
+[ 440]    0393: 41                                    inc cx ; CX ++
+[ 441]        :                                       
+[ 442]        :                                       ; Условие выхода из цикла
+[ 443]    0394: 83 3E 28 02 00                        cmp numberGeneral,0h
+[ 444]    0399: 75 E7                                 jne pushDigitsWhile
+[ 445]        :                                       
+[ 446]        :                                       ; Доставание из стека и печать цифр
+[ 447]    039B:                                       printDigitsWhile:
+[ 448]    039B: BA 00 00                              mov dx,0h
+[ 449]    039E: A1 28 02                              mov ax,numberGeneral ; AX = число
+[ 450]    03A1: F7 36 F2 00                           div ten              ; DX:AX / ten = DX:AX
+[ 451]        :                                       
+[ 452]    03A5: A3 28 02                              mov numberGeneral,ax ; numberGeneral уже /= 10
+[ 453]        :                                       
+[ 454]        :                                       ; Цифра числа DX
+[ 455]        :                                       ; прерывание берет ASCII символа из DL
+[ 456]    03A8: 5A                                    pop dx
+[ 457]    03A9: B4 06                                 mov ah,06h
+[ 458]    03AB: CD 21                                 int 21h
+[ 459]        :                                       
+[ 460]        :                                       
+[ 461]        :                                       ; Условие выхода из цикла
+[ 462]    03AD: 49                                    dec cx
+[ 463]    03AE: 83 F9 00                              cmp cx,0h
+[ 464]    03B1: 75 E8                                 jne printDigitsWhile
+[ 465]        :                                       
+[ 466]    03B3: C3                                    ret
+[ 467]        :                                       printNumberProc endp
+[ 468]        :                                       
+[ 469]        :                                       ; Распечатать число [Макрос]
+[ 470]        :                                       printNumber macro digit
+[ 471]        :                                       push ax
+[ 472]        :                                       
+[ 473]        :                                       mov ax,digit
+[ 474]        :                                       mov numberGeneral,ax
+[ 475]        :                                       call printNumberProc
+[ 476]        :                                       
+[ 477]        :                                       pop ax
+[ 478]        :                                       endm
+[ 479]        :                                       
+[ 480]        :                                       
+[ 481]        :                                       ; Сегмент данных
+[ 482]        :                                       .data
+[ 483]    03C0: 24 24 24 20 49 20 61 6D 20 61 20 24   testString db '$$$ I am a $wizard$, I can $print$ dollars $$$'
+                77 69 7A 61 72 64 24 2C 20 49 20 63 
+                61 6E 20 24 70 72 69 6E 74 24 20 64 
+                6F 6C 6C 61 72 73 20 24 24 24       
+[ 484]    03EE: 2E                                    testrString_size db 46d
+[ 485]        :                                       
+[ 486]        :                                       ; ВВОД ЧИСЕЛ
+[ 487]    03EF: 00 00 00 00 00 00 00 00 00 00         strNumber db 10 DUP(?) ; Строка, в которую вводим число
+[ 488]    03F9: 00 00                                 number dw 0d           ; Введенное число (высчитывается)
+[ 489]    03FB: 45 6E 74 65 72 20 6E 6F 6E 2D 6E 65   strFormat db 'Enter non-negative hexadecimal numbers in',0Dh,0Ah,'the decimal notation separated by an enter$'
+                67 61 74 69 76 65 20 68 65 78 61 64 
+                65 63 69 6D 61 6C 20 6E 75 6D 62 65 
+                72 73 20 69 6E 0D 0A 74 68 65 20 64 
+                65 63 69 6D 61 6C 20 6E 6F 74 61 74 
+                69 6F 6E 20 73 65 70 61 72 61 74 65 
+                64 20 62 79 20 61 6E 20 65 6E 74 65 
+                72 24                               
+[ 490]    0451: 45 6E 74 65 72 65 64 20 6E 75 6D 62   strOverflow db 'Entered number is more than 65535$'
+                65 72 20 69 73 20 6D 6F 72 65 20 74 
+                68 61 6E 20 36 35 35 33 35 24       
+[ 491]    0473: 45 6E 74 65 72 65 64 20 6E 75 6D 62   strInvalidFormat db 'Entered number is invalid$'
+                65 72 20 69 73 20 69 6E 76 61 6C 69 
+                64 24                               
+[ 492]    048D: 45 6E 74 65 72 20 6E 75 6D 62 65 72   strRepeat db 'Enter number in correct format again$'
+                20 69 6E 20 63 6F 72 72 65 63 74 20 
+                66 6F 72 6D 61 74 20 61 67 61 69 6E 
+                24                                  
+[ 493]        :                                       ;isValidNumber db 01d
+[ 494]    04B2: 0A 00                                 ten dw 10d
+[ 495]    04B4: 00 00                                 numberOfNumber dw 0d; Номер числа в массиве
+[ 496]    04B6: 00                                    needNumberOfNumber db 0h ; bool, печатать ли номер числа
+[ 497]        :                                       
+[ 498]        :                                       
+[ 499]        :                                       ; МАССИВ
+[ 500]    04B7: 0A 00                                 array_size dw 10   ; Заполняемое число элементов массива
+[ 501]    04B9: 00 00 00 00 00 00 00 00 00 00 00 00   array dw 40 DUP(?) ; Массив чисел
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00             
+[ 502]    0509: 00 00                                 max_item dw 0      ; Максимальный элемент массива
+[ 503]    050B: 00                                    existsMaxItemFromRange db 0
+[ 504]    050C: 45 6E 74 65 72 20 61 72 72 61 79 20   strEnterArray db 'Enter array of values: $'
+                6F 66 20 76 61 6C 75 65 73 3A 20 24 
+                                                    
+[ 505]        :                                       
+[ 506]    0524: 48 6F 77 20 6D 61 6E 79 20 6E 75 6D   strAskSymbolsAmount db 'How many numbers would you like to enter [min: 1, max: 30]?$'
+                62 65 72 73 20 77 6F 75 6C 64 20 79 
+                6F 75 20 6C 69 6B 65 20 74 6F 20 65 
+                6E 74 65 72 20 5B 6D 69 6E 3A 20 31 
+                2C 20 6D 61 78 3A 20 33 30 5D 3F 24 
+                                                    
+[ 507]        :                                       
+[ 508]        :                                       ; ГИСТОГРАММА
+[ 509]    0560: 32 00                                 max_symb dw 50d       ; Максимальное количество символов для гистограммы
+[ 510]    0562: 23 24                                 symb db '#$'          ; Символ для заполнения столбика
+[ 511]    0564: 3E 20 24                              symbStart db '> $' ; Символ для начала столбика
+[ 512]        :                                       
+[ 513]        :                                       ; ДИАПАЗОН
+[ 514]    0567: 00 00                                 numberFrom dw 0
+[ 515]    0569: 00 00                                 numberTo dw 0
+[ 516]    056B: 42 75 69 6C 64 20 68 69 73 74 6F 67   strRange db 'Build histogram for numbers$'
+                72 61 6D 20 66 6F 72 20 6E 75 6D 62 
+                65 72 73 24                         
+[ 517]    0587: 66 72 6F 6D 3A 20 24                  strFrom db 'from: $'
+[ 518]    058E: 74 6F 3A 20 20 20 24                  strTo db 'to:   $'
+[ 519]    0595: 22 66 72 6F 6D 22 20 6D 75 73 74 20   strRangeFormat db '"from" must be <= "to"$'
+                62 65 20 3C 3D 20 22 74 6F 22 24    
+[ 520]    05AC: 4E 6F 74 20 61 20 73 69 6E 67 6C 65   strNoNumbersFromRange db 'Not a single number from the range has been entered$'
+                20 6E 75 6D 62 65 72 20 66 72 6F 6D 
+                20 74 68 65 20 72 61 6E 67 65 20 68 
+                61 73 20 62 65 65 6E 20 65 6E 74 65 
+                72 65 64 24                         
+[ 521]    05E0: 00                                    needPrintFrom db 0h
+[ 522]    05E1: 00                                    needPrintTo db 0h
+[ 523]        :                                       
+[ 524]        :                                       ; Символы перехода на новую строку (v,<)
+[ 525]    05E2: 0A 0D 24                              toNewLine db 0Ah, 0Dh, '$'
+[ 526]        :                                       
+[ 527]        :                                       ; Строка для передачи в процедуру
+[ 528]    05E5: 00 00                                 strGeneral_offset dw 0
+[ 529]    05E7: 00                                    strGeneral_size db 0
+[ 530]        :                                       
+[ 531]        :                                       ; Число для передачи в процедуру
+[ 532]    05E8: 00 00                                 numberGeneral dw 0
+[ 533]        :                                       
+[ 534]        :                                       ; Сегмент стека (256 байт)
+[ 535]        :                                       .stack 100h
+[ 536]        :                                       
+[ 537]        :                                       ; Конец программы
+[ 538]        :                                       end START
+[ 539]        :                                       
+[ 540]        :                                       
+[ 541]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: F0      -   bytes on last page (l.byte)
+0003: 00      -   bytes on last page (h.byte)
+0004: 05      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 5F      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 00      -   SP - stack pointer (l.byte)
+0011: 01      -   SP - stack pointer (h.byte)
+0012: 83      -   check sum (l.byte)
+0013: 8B      -   check sum (h.byte)
+0014: 00      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 00      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: 01      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 00      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================

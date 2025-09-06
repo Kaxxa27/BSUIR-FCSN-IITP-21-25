@@ -1,0 +1,82 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position:  relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+  background-color: dimgray; 
+}
+
+/* Max-Width */
+.max-width-100 {
+    max-width: 100px;
+}
+.max-width-200 {
+    max-width: 200px;
+}
+.max-width-300 {
+    max-width: 300px;
+}
+.max-width-400 {
+    max-width: 400px;
+}
+.max-width-500 {
+    max-width: 500px;
+}
+.max-width-600 {
+    max-width: 600px;
+}
+.max-width-700 {
+    max-width: 700px;
+}
+.max-width-800 {
+    max-width: 800px;
+}
+
+/* Width */
+.width-100 {
+    width: 100px;
+}
+
+.width-200 {
+    width: 200px;
+}
+
+.width-300 {
+    width: 300px;
+}
+
+.width-400 {
+    width: 400px;
+}
+
+.width-500 {
+    width: 500px;
+}
+
+.width-600 {
+    width: 600px;
+}
+
+.width-700 {
+    width: 700px;
+}
+
+.width-800 {
+    width: 800px;
+}

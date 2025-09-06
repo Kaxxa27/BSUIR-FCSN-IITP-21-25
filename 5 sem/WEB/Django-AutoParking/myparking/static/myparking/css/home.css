@@ -1,0 +1,83 @@
+.company-name{
+    font-family: Arial;
+    font-kerning: normal;
+    font-size: 30px;
+}
+
+.time-counter
+{
+    font-family: 'Dancing Script', cursive;
+    font-size: 40px;
+    font-weight: bold;
+    color: black;
+    margin: 0 0 10px 0;
+}
+.banner-container
+{
+  
+}
+
+.banner-image{
+    width: 50%;
+    animation: spin 2s ease infinite; /* Применяем анимацию "bounce" */
+}
+
+@keyframes spin {
+  0%, 100% {
+    transform: translate(0px, 0px);
+    transform: rotate(0deg);
+  }
+  25%{
+    transform: translate(400px, 0px);
+  }
+  50% {
+    transform: translate(30px, 30px);
+    transform: rotate(2deg);
+  }
+  75%{
+    transform: translate(0px, 30px);
+    transform: rotate(-2deg);
+  }
+}
+
+.parking-article{
+    font-size: 30px;
+}
+
+.our-partners{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.our-partners-logo{
+    width: 95%;
+    border-radius: 50%;
+}
+
+.partner-block {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: gray;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+q:lang(de) { quotes: "\201E" "\201C"; }
+q:lang(en) { quotes: "\201C" "\201D"; }
+q:lang(fr), q:lang(ru) { quotes: "\00AB" "\00BB"; }
+
+.block-news-with-position {
+    width: 60%;
+    margin-bottom: 50px;
+    border-radius: 30px;
+    padding: 30px 40px 30px 40px;
+    position: relative;
+    left: 100px;
+    top: 35px;
+}

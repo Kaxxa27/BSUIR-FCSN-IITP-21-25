@@ -1,0 +1,544 @@
+; Распечатать строку [Макрос]
+printStr macro str
+push ax
+push dx
+
+mov ah,09h ; Номер функции DOS
+lea dx,str ; Смещение str в DX
+int 21h    ; 21 прерывание
+
+pop dx
+pop ax
+endm
+
+; Распечатать символ [Макрос]
+printSymb macro ascii
+mov ah,06h
+mov dl,ascii
+int 21h
+endm
+
+; Модель памяти (код в 1 сегменте, данные и стек в DGROUP)
+.model small
+
+; Сегмент кода
+.code
+
+; Начало прогарммы
+START:
+
+mov ax,@data  ; @data - идентификатор сегмента данных
+mov ds,ax     ; Адрес сегмента данных — в DS
+mov es,ax     ; Адрес сегмента данных — в ES
+
+
+;===================СТРОКА С $$$===================
+printStrBySymbol testString,testrString_size
+printStr toNewLine
+printStr toNewLine
+;==================================================
+
+
+;====Задание максимальной длины для вводимого числа======
+lea di,strNumber ; Смещение строки в DI
+mov al,06d       ; Максимальное число символов для ввода
+stosb            ; AL в ES:DI
+;========================================================
+
+
+;==============Вывод "какой формат числел"===============
+printStr strFormat
+printStr toNewLine
+printStr toNewLine
+;========================================================
+
+
+;====================Ввод диапазона======================
+printStr strRange
+
+
+RANGE_INPUT:
+
+
+printStr toNewLine
+printStr strRangeFormat
+
+; Диапазон ОТ
+printStr toNewLine
+mov needPrintFrom, 1h
+mov needPrintTo, 0h
+
+call enterNumber
+mov dx,number
+mov numberFrom,dx
+
+; Диапазон ДО
+mov needPrintFrom, 0h
+mov needPrintTo, 1h
+
+printStr toNewLine
+call enterNumber
+mov dx,number
+mov numberTo,dx
+
+
+
+mov ax,numberFrom
+mov bx,numberTo
+cmp ax,bx
+ja RANGE_INPUT
+;===========================================================
+
+
+;===============Сколько чисел в массив ввести?==============
+ask:
+printStr toNewLine
+mov needPrintFrom, 0h
+mov needPrintTo, 0h
+printStr strAskSymbolsAmount
+printStr toNewLine
+call enterNumber
+mov dx,number
+mov array_size,dx
+
+cmp array_size,30d
+ja ask
+
+cmp array_size,0h
+jz ask
+;===============Сколько чисел в массив ввести?==============
+
+
+;===================Заполнение массива===================
+mov needPrintFrom, 0h
+mov needPrintTo, 0h
+
+printStr toNewLine
+printStr toNewLine
+printStr strEnterArray
+printNumber array_size
+printStr toNewLine
+
+
+mov cx,array_size ; CX = array_size
+lea si,array      ; SI на начало массива
+
+mov numberOfNumber,1d
+mov needNumberOfNumber,1d
+
+inputWhile:
+
+push cx ; Сохранить CX
+push si ; Сохранить SI
+
+call enterNumber
+printStr toNewLine
+
+pop si ; Восстановить SI
+pop cx ; Восстановить CX
+
+; Поиск максимального элемента
+
+; Если 0 текущий, то его в максимальный
+cmp number,0h
+je new_max
+
+mov dx,max_item
+cmp number,dx
+jbe not_new_max ; if number <= max_item
+
+; Текущий элемент новый максимальный (возможно)
+mov ax,number
+cmp ax,numberFrom
+jb not_new_max
+
+mov ax,number
+cmp ax,numberTo
+ja not_new_max
+
+; Новый максимальный
+new_max:
+mov dx,number
+mov max_item,dx
+mov existsMaxItemFromRange,01h
+
+; Текущий элемент не новый максимальный
+not_new_max:
+
+mov dx,number
+mov [si],dx  ; Записать число в массив
+add si,2d
+
+inc numberOfNumber
+
+; Условие выхода из цикла
+dec cx
+cmp cx,0d
+
+jnz inputWhile
+;========================================================
+
+
+;======Было ли введено хотя бы 1 число из диапазона======
+cmp existsMaxItemFromRange,0h
+je noNumbersFromRange
+;========================================================
+
+
+;=================Рисование гистограммы==================
+mov cx,0h    ; CX = 0, счетчик for и symbolsOutput
+lea si,array ; SI на начало массива
+printStr toNewLine
+for:
+mov ax,[si] ; AX = текущий элемент массива
+
+
+;=========Проверка, из диапазона ли он=========
+cmp ax,numberFrom
+jb notFromRange
+
+cmp ax,numberTo
+ja notFromRange
+;==============================================
+
+
+;=========Проверка, 0 ли текущее число=========
+cmp ax,0h
+je startPrintSymbols ; Только начать столбец
+;==============================================
+
+
+;======Подсчет числа символов для столбца======
+mov dx,0h
+mul max_symb
+div max_item ; AX = число символов для столбца
+;==============================================
+
+
+;================Вывод символов================
+startPrintSymbols:
+
+printStr symbStart ; Символы начала столбика
+
+push cx
+mov cx,ax
+jcxz noSymbols
+
+symbolsOutput:
+printStr symb
+
+; Условие завершения цикла
+dec cx
+cmp cx,0h
+jnz symbolsOutput
+
+noSymbols:
+
+printSymb ' '
+printSymb '['
+printNumber [si]
+printSymb ']'
+;===============================================
+
+pop cx
+printStr toNewLine
+
+notFromRange:
+
+add si,2d
+
+; Условие завершения цикла
+
+inc cx
+cmp cx,array_size
+jnz for
+;=================Рисование гистограммы==================
+
+
+jmp end
+
+
+;=================Нет чисел из диапазона==================
+noNumbersFromRange:
+
+printStr toNewLine
+printStr strNoNumbersFromRange
+;=========================================================
+
+
+;====================Конец программы====================
+end:
+mov ax,4C00h   ; 4C (выход из программы) в AH
+; 00 (успешное звершение) в AL
+int 21h        ; Функция DOS "Завершить программу"
+;=======================================================
+
+; Процедура – ввод числа
+; [Результат занесется в number]
+enterNumber proc near
+
+enterNumberProcStart:
+
+; Надо ли печатать "from"
+fromCheck:
+cmp needPrintFrom,0h
+je toCheck
+printStr strFrom
+
+; Надо ли печатать "to"
+toCheck:
+cmp needPrintTo,0h
+je numberOfNumberCheck
+printStr strTo
+
+; Надо ли печатать номер числа в массиве
+numberOfNumberCheck:
+cmp needNumberOfNumber,0h
+je dontPrint
+
+printNumber numberOfNumber
+printSymb ')'
+printSymb ' '
+
+dontPrint:
+
+; Ввод числа в строку
+mov ah,0Ah        ; Функция DOS (считать строку символов из STDIN в буфер)
+lea dx,strNumber  ; Смещение строки в DX
+int 21h
+
+; Вычисление длины введенного числа
+lea si,strNumber      ; Смещение strNumber в SI
+add si,01d            ; SI++
+mov ax,0h             ; Занулить AX
+lodsb                 ; DS:SI в AL
+mov cx,ax             ; CX = длина введенного числа
+
+; Длина введенного слова 0
+cmp cx,0h
+jz strInvalid
+
+mov number,0h  ; Число будет формироваться в number
+mov ax,01d ; AX – степень десятки
+
+while:
+mov bx,0h
+mov si,cx
+add si,01d ; SI – смещение на текущий символ числа
+mov bl,strNumber[si] ; BX – ASCII код текущего символа
+
+; Проверка на то, является ли символ цифрой 0..9
+cmp bl,48d
+jl strInvalid; < 48
+cmp bl,57d
+jg strInvalid; > 57
+
+sub bl,48d ; BX = текущая цифра
+
+push ax  ; Сохранение AX
+
+clc           ; Очистить флаг переноса
+mul bx        ; AX = текущая цифра * 10 в степени
+jc overflow   ; Если есть флаг переноса от mul
+add number,ax ; Добавляем это в формируемое число
+jc overflow   ; Если есть флаг переноса от add
+
+pop ax        ; Восстановление AX
+
+mul ten ; AX *= 10
+
+; Условие выхода из цикла
+dec cx
+cmp cx,0
+jne while
+
+ret
+
+; Переполнение
+overflow:
+pop ax ; Чтобы вернуть SP на IP
+
+printStr toNewLine
+printStr strOverflow
+printStr toNewLine
+printStr strRepeat
+printStr toNewLine
+jmp enterNumberProcStart
+ret
+
+; Невалидная строка
+strInvalid:
+
+printStr toNewLine
+printStr strInvalidFormat
+printStr toNewLine
+printStr strRepeat
+printStr toNewLine
+jmp enterNumberProcStart
+ret
+
+
+enterNumber endp
+
+; Распечатать строку посимвольно [Процедура]
+printStrBySymbolProc PROC near
+
+mov ah,06h               ; Записать символ в STDOUT
+
+mov di,strGeneral_offset ; Смещение строки
+mov bx,0h                ; Индекс в выводимой строке
+
+mov dx,0h
+mov dl,strGeneral_size
+mov cx,dx                ; Длина строки
+jcxz strIsEmpty          ; Если строка пустая
+
+while1:
+mov dl,[di+bx]
+int 21h ; Вывод текущего символа
+
+; Условие выхода из цикла
+inc bx
+cmp bx,cx
+jl while1
+
+; Строка пустая
+strIsEmpty:
+
+ret
+
+printStrBySymbolProc endp
+
+; Распечатать строку посимвольно [Макрос]
+printStrBySymbol macro str,str_size
+lea si,str
+mov strGeneral_offset,si
+
+mov dl,str_size
+mov strGeneral_size,dl
+
+call printStrBySymbolProc
+endm
+
+
+; Распечатать число [Процедура]
+printNumberProc PROC near
+
+mov cx,0h ; Количество цифр у числа
+
+; Добавление цифр в тек
+pushDigitsWhile:
+mov dx,0h
+mov ax,numberGeneral ; AX = число
+div ten              ; DX:AX / ten = DX:AX
+
+mov numberGeneral,ax ; numberGeneral уже /= 10
+
+add dx,48d ; DX += 48 (перевод в ASCII)
+push dx ; DX = текущая цифра числа
+
+inc cx ; CX ++
+
+; Условие выхода из цикла
+cmp numberGeneral,0h
+jne pushDigitsWhile
+
+; Доставание из стека и печать цифр
+printDigitsWhile:
+mov dx,0h
+mov ax,numberGeneral ; AX = число
+div ten              ; DX:AX / ten = DX:AX
+
+mov numberGeneral,ax ; numberGeneral уже /= 10
+
+; Цифра числа DX
+; прерывание берет ASCII символа из DL
+pop dx
+mov ah,06h
+int 21h
+
+
+; Условие выхода из цикла
+dec cx
+cmp cx,0h
+jne printDigitsWhile
+
+ret
+printNumberProc endp
+
+; Распечатать число [Макрос]
+printNumber macro digit
+push ax
+
+mov ax,digit
+mov numberGeneral,ax
+call printNumberProc
+
+pop ax
+endm
+
+
+; Сегмент данных
+.data
+testString db '$$$ I am a $wizard$, I can $print$ dollars $$$'
+testrString_size db 46d
+
+; ВВОД ЧИСЕЛ
+strNumber db 10 DUP(?) ; Строка, в которую вводим число
+number dw 0d           ; Введенное число (высчитывается)
+strFormat db 'Enter non-negative hexadecimal numbers in',0Dh,0Ah,'the decimal notation separated by an enter$'
+strOverflow db 'Entered number is more than 65535$'
+strInvalidFormat db 'Entered number is invalid$'
+strRepeat db 'Enter number in correct format again$'
+;isValidNumber db 01d
+ten dw 10d
+numberOfNumber dw 0d; Номер числа в массиве
+needNumberOfNumber db 0h ; bool, печатать ли номер числа
+
+
+; МАССИВ
+array_size dw 10   ; Заполняемое число элементов массива
+array dw 40 DUP(?) ; Массив чисел
+max_item dw 0      ; Максимальный элемент массива
+existsMaxItemFromRange db 0
+strEnterArray db 'Enter array of values: $'
+
+strAskSymbolsAmount db 'How many numbers would you like to enter [min: 1, max: 30]?$'
+
+; ГИСТОГРАММА
+max_symb dw 50d       ; Максимальное количество символов для гистограммы
+symb db '#$'          ; Символ для заполнения столбика
+symbStart db '> $' ; Символ для начала столбика
+
+; ДИАПАЗОН
+numberFrom dw 0
+numberTo dw 0
+strRange db 'Build histogram for numbers$'
+strFrom db 'from: $'
+strTo db 'to:   $'
+strRangeFormat db '"from" must be <= "to"$'
+strNoNumbersFromRange db 'Not a single number from the range has been entered$'
+needPrintFrom db 0h
+needPrintTo db 0h
+
+; Символы перехода на новую строку (v,<)
+toNewLine db 0Ah, 0Dh, '$'
+
+; Строка для передачи в процедуру
+strGeneral_offset dw 0
+strGeneral_size db 0
+
+; Число для передачи в процедуру
+numberGeneral dw 0
+
+; Сегмент стека (256 байт)
+.stack 100h
+
+; Конец программы
+end START
+
+
+
+
+
+; [SOURCE]: C:\Users\Lenovo\Desktop\sem_3-main\sem_3-main\КПрог\Лабораторные\lab7\lab7.asm

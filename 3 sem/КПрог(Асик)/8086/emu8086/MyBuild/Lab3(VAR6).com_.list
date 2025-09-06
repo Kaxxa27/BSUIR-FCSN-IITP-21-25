@@ -1,0 +1,490 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+Lab3(VAR6).com_ -- emu8086 assembler version: 4.05  
+ 
+[ 01.12.2022  --  9:05:30 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       .model small
+[   2]        :                                       
+[   3]        :                                       .code
+[   4]        :                                       org 100h
+[   5]        :                                       
+[   6]    0100:                                       start:
+[   7]    0100: 8C C8                                 mov ax, @data
+[   8]    0102: 8E D8                                 mov ds, ax
+[   9]    0104: BE 4D 04                              lea si, array
+[  10]    0107: B9 1E 00                              mov cx, 30
+[  11]    010A: B0 00                                 mov al,0
+[  12]        :                                       
+[  13]    010C: BA 9C 03                              lea dx,hello                                                                                                                            /
+[  14]    010F: B4 09                                 mov ah,9
+[  15]    0111: CD 21                                 int 21h
+[  16]        :                                       
+[  17]    0113:                                       for:
+[  18]    0113: E8 57 00                              call showMessage
+[  19]    0116: E8 75 00                              call enterString
+[  20]    0119: E8 83 00                              call addZeroCharacter
+[  21]    011C: E8 8E 00                              call shift
+[  22]    011F: E8 C5 00                              call isValid
+[  23]        :                                       
+[  24]    0122: 80 3E 73 04 00                        cmp valid,0
+[  25]    0127: 74 33                                 je invalid
+[  26]        :                                       
+[  27]    0129: 80 3E 73 04 02                        cmp valid,2
+[  28]    012E: 74 05                                 je getResult
+[  29]        :                                       
+[  30]    0130: E8 F1 01                              call toDigit
+[  31]    0133: E2 DE                                 loop for
+[  32]        :                                       
+[  33]    0135:                                       getResult:
+[  34]    0135: E8 58 01                              call findSum
+[  35]    0138: E8 9E 01                              call divide
+[  36]        :                                       
+[  37]    013B:                                       show:
+[  38]    013B: B4 09                                 mov ah,9
+[  39]    013D: BA 3B 04                              lea dx, result
+[  40]    0140: CD 21                                 int 21h
+[  41]        :                                       
+[  42]    0142: E8 1A 02                              call showMinus
+[  43]    0145: 33 C0                                 xor ax,ax
+[  44]    0147: A0 6E 04                              mov al,integer
+[  45]    014A: E8 26 02                              call showDigit
+[  46]        :                                       
+[  47]    014D: B4 02                                 mov ah,2
+[  48]    014F: B2 2E                                 mov dl,'.'
+[  49]    0151: CD 21                                 int 21h
+[  50]        :                                       
+[  51]    0153: A1 6F 04                              mov ax,float
+[  52]    0156: E8 1A 02                              call showDigit
+[  53]    0159: E9 38 02                              jmp exit
+[  54]        :                                       
+[  55]    015C:                                       invalid:
+[  56]    015C: C6 04 00                              mov [si],0
+[  57]    015F: BA 10 04                              mov dx, offset error
+[  58]    0162: B4 09                                 mov ah,9
+[  59]    0164: CD 21                                 int 21h
+[  60]    0166: C6 06 73 04 01                        mov valid,1
+[  61]    016B: EB A6                                 jmp for
+[  62]        :                                       
+[  63]    016D:                                       proc showMessage
+[  64]        :                                       
+[  65]    016D: BA 34 04                              lea dx,message
+[  66]    0170: B4 09                                 mov ah,9
+[  67]        :                                       
+[  68]    0172: 50                                    push ax
+[  69]    0173: CD 21                                 int 21h
+[  70]    0175: 58                                    pop ax
+[  71]        :                                       
+[  72]    0176: 33 C0                                 xor ax,ax
+[  73]    0178: B0 1E                                 mov al,30
+[  74]    017A: 2A C1                                 sub al,cl
+[  75]    017C: E8 F4 01                              call showDigit
+[  76]        :                                       
+[  77]    017F: B4 02                                 mov ah,2
+[  78]    0181: BA 5D 00                              mov dx,']'
+[  79]    0184: CD 21                                 int 21h
+[  80]    0186: B4 02                                 mov ah,2
+[  81]    0188: BA 3D 00                              mov dx,'='
+[  82]    018B: CD 21                                 int 21h
+[  83]        :                                       
+[  84]    018D: C3                                    ret
+[  85]        :                                       endp showMessage
+[  86]        :                                       
+[  87]    018E:                                       proc enterString
+[  88]    018E: B4 0A                                 mov ah, 0Ah
+[  89]    0190: BA 46 04                              lea dx, buffer
+[  90]    0193: CD 21                                 int 21h
+[  91]    0195: 8A 26 47 04                           mov ah, buffer+1
+[  92]    0199: 80 FC 00                              cmp ah, 0
+[  93]    019C: 74 F0                                 je enterString
+[  94]    019E: C3                                    ret
+[  95]        :                                       endp enterString
+[  96]        :                                       
+[  97]    019F:                                       proc addZeroCharacter
+[  98]    019F: BF 48 04                              lea di, buffer+2
+[  99]    01A2: A0 47 04                              mov al, buffer+1
+[ 100]    01A5: 32 E4                                 xor ah,ah
+[ 101]    01A7: 03 F8                                 add di, ax
+[ 102]    01A9: C6 05 24                              mov [di], '$'
+[ 103]    01AC: C3                                    ret
+[ 104]        :                                       addZeroCharacter endp
+[ 105]        :                                       
+[ 106]    01AD:                                       proc shift
+[ 107]    01AD: E8 21 00                              call replaceTabsOnSpaces
+[ 108]        :                                       
+[ 109]    01B0: BB 48 04                              lea bx, buffer+2
+[ 110]        :                                       
+[ 111]    01B3:                                       whileNotEnd:
+[ 112]    01B3: 80 3F 20                              cmp [bx],' '
+[ 113]    01B6: 75 03                                 jne prepareToShift
+[ 114]    01B8: 43                                    inc bx
+[ 115]    01B9: EB F8                                 jmp whileNotEnd
+[ 116]        :                                       
+[ 117]    01BB:                                       prepareToShift:
+[ 118]    01BB: BF 48 04                              lea di, buffer+2
+[ 119]    01BE: 2B DF                                 sub bx, di
+[ 120]    01C0: 28 1E 47 04                           sub buffer+1,bl
+[ 121]        :                                       
+[ 122]    01C4:                                       shiftStr:
+[ 123]    01C4: FF 31                                 push [di+bx]
+[ 124]    01C6: 8F 05                                 pop [di]
+[ 125]    01C8: 80 3D 24                              cmp [di],'$'
+[ 126]    01CB: 74 03                                 je endShift
+[ 127]    01CD: 47                                    inc di
+[ 128]    01CE: 75 F4                                 jne shiftStr
+[ 129]        :                                       
+[ 130]    01D0:                                       endShift:
+[ 131]    01D0: C3                                    ret
+[ 132]        :                                       endp shift
+[ 133]        :                                       
+[ 134]    01D1:                                       proc replaceTabsOnSpaces
+[ 135]    01D1: BF 48 04                              lea di, buffer+2
+[ 136]        :                                       
+[ 137]    01D4:                                       while:
+[ 138]    01D4: 80 3D 09                              cmp [di],9
+[ 139]    01D7: 74 08                                 je replaceOnSpace
+[ 140]    01D9:                                       continueFind:
+[ 141]    01D9: 47                                    inc di
+[ 142]    01DA: 80 3D 24                              cmp [di],'$'
+[ 143]    01DD: 75 F5                                 jne while
+[ 144]    01DF: 74 05                                 je endReplace
+[ 145]        :                                       
+[ 146]    01E1:                                       replaceOnSpace:
+[ 147]    01E1: C6 05 20                              mov [di],' '
+[ 148]    01E4: EB F3                                 jmp continueFind
+[ 149]        :                                       
+[ 150]    01E6:                                       endReplace:
+[ 151]    01E6: C3                                    ret
+[ 152]        :                                       endp raplaceTabsOnSpaces
+[ 153]        :                                       
+[ 154]    01E7:                                       proc isValid
+[ 155]    01E7: BF 48 04                              lea di, buffer+2
+[ 156]    01EA: 80 3D 24                              cmp [di],'$'
+[ 157]    01ED: 75 03 E9 91 00                        je notValid
+[ 158]        :                                       
+[ 159]    01F2: 80 3D 65                              cmp [di],'e'
+[ 160]    01F5: 75 03 E9 90 00                        je isExit
+[ 161]        :                                       
+[ 162]    01FA: 80 3D 2D                              cmp [di],'-'
+[ 163]    01FD: 75 11                                 jne for0
+[ 164]        :                                       
+[ 165]    01FF: 47                                    inc di
+[ 166]    0200: 80 3D 30                              cmp [di],'0'
+[ 167]    0203: 7D 03 E9 54 FF                        jl invalid
+[ 168]    0208: 80 3D 39                              cmp [di],'9'
+[ 169]    020B: 7E 03 E9 4C FF                        jg invalid
+[ 170]        :                                       
+[ 171]    0210:                                       for0:
+[ 172]    0210: 80 3D 24                              cmp [di],'$'
+[ 173]    0213: 74 2F                                 je checkOnOverflow
+[ 174]        :                                       
+[ 175]    0215: 80 3D 20                              cmp [di],' '
+[ 176]    0218: 74 0D                                 je justSpacesInEnd
+[ 177]        :                                       
+[ 178]    021A: 80 3D 30                              cmp [di],'0'
+[ 179]    021D: 7C 64                                 jl  notValid
+[ 180]        :                                       
+[ 181]    021F: 80 3D 39                              cmp [di],'9'
+[ 182]    0222: 7F 5F                                 jg  notValid
+[ 183]        :                                       
+[ 184]    0224: 47                                    inc di
+[ 185]    0225: EB E9                                 jmp for0
+[ 186]        :                                       
+[ 187]    0227:                                       justSpacesInEnd:
+[ 188]    0227: 8B DF                                 mov bx,di
+[ 189]    0229:                                       justSpacesCycle:
+[ 190]    0229: 47                                    inc di
+[ 191]    022A: 80 3D 24                              cmp [di],'$'
+[ 192]    022D: 74 0A                                 je setZeroCharacter
+[ 193]    022F: 80 3D 20                              cmp [di],' '
+[ 194]    0232: 74 03 E9 25 FF                        jne invalid
+[ 195]    0237: 74 F0                                 je justSpacesCycle
+[ 196]        :                                       
+[ 197]    0239:                                       setZeroCharacter:
+[ 198]    0239: C6 07 24                              mov [bx],'$'
+[ 199]    023C: 87 FB                                 xchg di,bx
+[ 200]    023E: 2B DF                                 sub bx,di
+[ 201]    0240: 28 1E 47 04                           sub buffer+1,bl
+[ 202]        :                                       
+[ 203]    0244:                                       checkOnOverflow:
+[ 204]    0244: BF 48 04                              lea di, buffer+2
+[ 205]    0247: A0 47 04                              mov al, buffer+1
+[ 206]    024A: 32 E4                                 xor ah,ah
+[ 207]    024C: 80 3D 2D                              cmp [di], '-'
+[ 208]    024F: 74 27                                 je threeDigitWithSign
+[ 209]    0251: 75 00                                 jne threeDigit
+[ 210]        :                                       
+[ 211]    0253:                                       threeDigit:
+[ 212]    0253: 3D 04 00                              cmp ax,4
+[ 213]    0256: 74 18                                 je firstIsZero
+[ 214]        :                                       
+[ 215]    0258:                                       continueCheck:
+[ 216]    0258: 3D 03 00                              cmp ax,3
+[ 217]    025B: 7C 1F                                 jl allRight
+[ 218]    025D: 80 3D 31                              cmp [di],'1'
+[ 219]    0260: 7F 21                                 jg notValid
+[ 220]    0262: 80 7D 01 32                           cmp [di+1],'2'
+[ 221]    0266: 7F 1B                                 jg notValid
+[ 222]    0268: 80 7D 02 37                           cmp [di+2],'7'
+[ 223]    026C: 7F 15                                 jg notValid
+[ 224]    026E: EB 1F                                 jmp exitV
+[ 225]        :                                       
+[ 226]    0270:                                       firstIsZero:
+[ 227]    0270: 80 3D 30                              cmp [di],'0'
+[ 228]    0273: 75 0E                                 jne notValid
+[ 229]    0275: 47                                    inc di
+[ 230]    0276: 74 E0                                 je continueCheck
+[ 231]        :                                       
+[ 232]    0278:                                       threeDigitWithSign:
+[ 233]    0278: 47                                    inc di
+[ 234]    0279: 48                                    dec ax
+[ 235]    027A: EB DC                                 jmp continueCheck
+[ 236]        :                                       
+[ 237]    027C:                                       allRight:
+[ 238]    027C: C6 06 73 04 01                        mov valid,1
+[ 239]    0281: EB 0C                                 jmp exitV
+[ 240]        :                                       
+[ 241]    0283:                                       notValid:
+[ 242]    0283: C6 06 73 04 00                        mov valid,0
+[ 243]    0288: EB 05                                 jmp exitV
+[ 244]        :                                       
+[ 245]    028A:                                       isExit:
+[ 246]    028A: C6 06 73 04 02                        mov valid,2
+[ 247]        :                                       
+[ 248]    028F:                                       exitV:
+[ 249]        :                                       
+[ 250]    028F: C3                                    ret
+[ 251]        :                                       isValid endp
+[ 252]        :                                       
+[ 253]    0290:                                       proc findSum
+[ 254]    0290: 80 3E 6D 04 00                        cmp size,0
+[ 255]    0295: 74 2A                                 je endFindSum
+[ 256]        :                                       
+[ 257]    0297: 32 ED                                 xor ch, ch
+[ 258]    0299: 8A 0E 6D 04                           mov cl, size
+[ 259]    029D: BF 4D 04                              lea di, array
+[ 260]    02A0: BE 6B 04                              lea si, sum
+[ 261]        :                                       
+[ 262]    02A3:                                       sumCycle:
+[ 263]    02A3: 80 3D 00                              cmp [di], 0
+[ 264]    02A6: 7C 07                                 jl minus
+[ 265]    02A8: 7D 0F                                 jge plus
+[ 266]    02AA:                                       continueCycle:
+[ 267]    02AA: 47                                    inc di
+[ 268]    02AB: E2 F6                                 loop sumCycle
+[ 269]        :                                       
+[ 270]    02AD: EB 12                                 jmp endFindSum
+[ 271]        :                                       
+[ 272]    02AF:                                       minus:
+[ 273]    02AF: F6 1D                                 neg [di]
+[ 274]    02B1: 8B 05                                 mov ax,[di]
+[ 275]    02B3: 32 E4                                 xor ah,ah
+[ 276]    02B5: 29 04                                 sub [si],ax
+[ 277]    02B7: EB F1                                 jmp continueCycle
+[ 278]        :                                       
+[ 279]    02B9:                                       plus:
+[ 280]    02B9: 8B 05                                 mov ax,[di]
+[ 281]    02BB: 32 E4                                 xor ah,ah
+[ 282]    02BD: 01 04                                 add [si],ax
+[ 283]    02BF: EB E9                                 jmp continueCycle
+[ 284]        :                                       
+[ 285]    02C1:                                       endFindSum:
+[ 286]        :                                       
+[ 287]    02C1: C3                                    ret
+[ 288]        :                                       findSum endp
+[ 289]        :                                       
+[ 290]    02C2:                                       makePositive:
+[ 291]    02C2: F7 1E 6B 04                           neg sum
+[ 292]    02C6: C6 06 72 04 00                        mov positive, 0
+[ 293]    02CB: EB 13                                 jmp continueDivide
+[ 294]        :                                       
+[ 295]    02CD:                                       proc returnNegative
+[ 296]    02CD: 80 3E 72 04 01                        cmp positive,1
+[ 297]    02D2: 74 04                                 je endOperation:
+[ 298]    02D4: F6 1E 6E 04                           neg integer
+[ 299]        :                                       
+[ 300]    02D8:                                       endOperation:
+[ 301]    02D8: C3                                    ret
+[ 302]        :                                       returnNegative endp
+[ 303]        :                                       
+[ 304]    02D9:                                       proc divide
+[ 305]    02D9: 83 3E 6B 04 00                        cmp [sum],0
+[ 306]    02DE: 7C E2                                 jl makePositive
+[ 307]    02E0:                                       continueDivide:
+[ 308]        :                                       
+[ 309]    02E0: A1 6B 04                              mov ax, sum
+[ 310]    02E3: B7 0A                                 mov bh, 10
+[ 311]    02E5: 8A 1E 6D 04                           mov bl, size
+[ 312]        :                                       
+[ 313]    02E9: F6 F3                                 div bl
+[ 314]    02EB: A2 6E 04                              mov integer, al
+[ 315]        :                                       
+[ 316]    02EE: 8A C4                                 mov al,ah
+[ 317]    02F0: B4 00                                 mov ah,0
+[ 318]    02F2: F6 E7                                 mul bh
+[ 319]        :                                       
+[ 320]    02F4: BA 01 00                              mov dx,1          ; Enter 100,10 and 1 in stack
+[ 321]    02F7: 52                                    push dx
+[ 322]    02F8: BA 0A 00                              mov dx,10
+[ 323]    02FB: 52                                    push dx
+[ 324]    02FC: BA 64 00                              mov dx,100
+[ 325]    02FF: 52                                    push dx
+[ 326]        :                                       
+[ 327]    0300: B9 03 00                              mov cx,3
+[ 328]    0303:                                       floatCycle:
+[ 329]    0303: F6 F3                                 div bl           ; Divide on size of array
+[ 330]    0305: 88 26 71 04                           mov temp, ah      ; Enter left part int temp
+[ 331]    0309: B4 00                                 mov ah,0
+[ 332]    030B: 5A                                    pop dx            ; Get 100, 10 or 1
+[ 333]    030C: F7 E2                                 mul dx            ; Mul al on 100, 10 or 1
+[ 334]        :                                       
+[ 335]    030E: 01 06 6F 04                           add float, ax     ; Add to our float part
+[ 336]        :                                       
+[ 337]    0312: A0 71 04                              mov al,temp       ; Get left part to al
+[ 338]    0315: B4 00                                 mov ah,0
+[ 339]    0317: F6 E7                                 mul bh            ; Mul al on 10
+[ 340]        :                                       
+[ 341]    0319: E2 E8                                 loop floatCycle   ; Repeat
+[ 342]        :                                       
+[ 343]    031B: 80 3E 72 04 00                        cmp positive, 0
+[ 344]    0320: E8 AA FF                              call returnNegative
+[ 345]        :                                       
+[ 346]    0323: C3                                    ret
+[ 347]        :                                       divide endp
+[ 348]        :                                       
+[ 349]    0324:                                       proc toDigit
+[ 350]        :                                       
+[ 351]    0324: BF 48 04                              lea di, buffer+2
+[ 352]    0327: 33 D2                                 xor dx, dx
+[ 353]    0329: 32 E4                                 xor ah, ah
+[ 354]    032B: B0 01                                 mov al, 1
+[ 355]    032D: B2 0A                                 mov dl, 10
+[ 356]        :                                       
+[ 357]    032F: 51                                    push cx
+[ 358]    0330: 8A 0E 47 04                           mov cl, buffer+1
+[ 359]    0334: 32 ED                                 xor ch, ch
+[ 360]        :                                       
+[ 361]    0336:                                       inStack:
+[ 362]    0336: FF 35                                 push [di]
+[ 363]    0338: 47                                    inc di
+[ 364]    0339: 80 3D 24                              cmp [di], '$'
+[ 365]    033C: 75 F8                                 jne inStack
+[ 366]        :                                       
+[ 367]    033E:                                       buildDigit:
+[ 368]    033E: 5B                                    pop bx
+[ 369]    033F: 80 FB 2D                              cmp bl,'-'
+[ 370]    0342: 74 0F                                 je makeNegative
+[ 371]        :                                       
+[ 372]    0344: 80 EB 30                              sub bl, 30h
+[ 373]        :                                       
+[ 374]    0347: 50                                    push ax
+[ 375]    0348: F6 E3                                 mul bl
+[ 376]    034A: 01 04                                 add [si], ax
+[ 377]        :                                       
+[ 378]    034C: 58                                    pop ax
+[ 379]    034D: F6 E2                                 mul dl
+[ 380]        :                                       
+[ 381]    034F: E2 ED                                 loop buildDigit
+[ 382]        :                                       
+[ 383]    0351: EB 02                                 jmp endToDigit
+[ 384]        :                                       
+[ 385]    0353:                                       makeNegative:
+[ 386]    0353: F6 1C                                 neg [si]
+[ 387]        :                                       
+[ 388]    0355:                                       endToDigit:
+[ 389]    0355: 59                                    pop cx
+[ 390]    0356: 46                                    inc si
+[ 391]    0357: C6 04 00                              mov [si],0
+[ 392]    035A: FE 06 6D 04                           inc size
+[ 393]    035E: C3                                    ret
+[ 394]        :                                       toDigit endp
+[ 395]        :                                       
+[ 396]    035F:                                       proc showMinus
+[ 397]    035F: 80 3E 72 04 00                        cmp positive,0
+[ 398]    0364: 75 0C                                 jne endOp
+[ 399]    0366: F6 1E 6E 04                           neg [integer]
+[ 400]    036A: 50                                    push ax
+[ 401]    036B: B4 02                                 mov ah,2
+[ 402]    036D: B2 2D                                 mov dl,'-'
+[ 403]    036F: CD 21                                 int 21h
+[ 404]    0371: 58                                    pop ax
+[ 405]        :                                       
+[ 406]    0372:                                       endOp:
+[ 407]    0372: C3                                    ret
+[ 408]        :                                       showMinus endp
+[ 409]        :                                       
+[ 410]    0373:                                       proc showDigit
+[ 411]    0373: 51                                    push cx
+[ 412]    0374: 6A 01                                 push 1
+[ 413]    0376: 6A 0A                                 push 10
+[ 414]    0378: 6A 64                                 push 100
+[ 415]    037A: 33 C9                                 xor cx,cx
+[ 416]    037C: B1 03                                 mov cl,3
+[ 417]        :                                       
+[ 418]    037E:                                       showDigitCycle:
+[ 419]    037E: 5B                                    pop bx
+[ 420]    037F: F6 F3                                 div bl
+[ 421]        :                                       
+[ 422]    0381: 8A D0                                 mov dl,al
+[ 423]    0383: 80 C2 30                              add dl,30h
+[ 424]    0386: 8A C4                                 mov al,ah
+[ 425]    0388: B4 02                                 mov ah,2
+[ 426]        :                                       
+[ 427]    038A: 50                                    push ax
+[ 428]    038B: CD 21                                 int 21h
+[ 429]    038D: 58                                    pop ax
+[ 430]    038E: 32 E4                                 xor ah,ah
+[ 431]    0390: E2 EC                                 loop showDigitCycle
+[ 432]    0392: 59                                    pop cx
+[ 433]    0393: C3                                    ret
+[ 434]        :                                       showDigit endp
+[ 435]        :                                       
+[ 436]    0394:                                       exit:
+[ 437]    0394: B8 00 4C                              mov ax,4c00h
+[ 438]    0397: CD 21                                 int 21h
+[ 439]        :                                       
+[ 440]    0399: E9 64 FC                              .data
+[ 441]    039C: 54 68 69 73 20 70 72 6F 67 72 61 6D   hello db "This program find arithmetical mean and work with digits [-127,127]",10,13,"Press e to get answer",10,13,"You can enter 30 digits$"
+                20 66 69 6E 64 20 61 72 69 74 68 6D 
+                65 74 69 63 61 6C 20 6D 65 61 6E 20 
+                61 6E 64 20 77 6F 72 6B 20 77 69 74 
+                68 20 64 69 67 69 74 73 20 5B 2D 31 
+                32 37 2C 31 32 37 5D 0A 0D 50 72 65 
+                73 73 20 65 20 74 6F 20 67 65 74 20 
+                61 6E 73 77 65 72 0A 0D 59 6F 75 20 
+                63 61 6E 20 65 6E 74 65 72 20 33 30 
+                20 64 69 67 69 74 73 24             
+[ 442]    0410: 0A 0D 45 72 72 6F 72 2C 20 65 6E 74   error db 10,13,"Error, enter digit in [-127, 127]$"
+                65 72 20 64 69 67 69 74 20 69 6E 20 
+                5B 2D 31 32 37 2C 20 31 32 37 5D 24 
+                                                    
+[ 443]    0434: 0A 0D 61 72 72 5B 24                  message db 10,13,"arr[$"
+[ 444]    043B: 0A 0D 52 65 73 75 6C 74 3A 20 24      result db 10,13,"Result: $"
+[ 445]        :                                       
+[ 446]    0446: 05 24 24 24 24 24 24                  buffer db 5, 6 dup('$')
+[ 447]    044D: 00 00 00 00 00 00 00 00 00 00 00 00   array db 30 dup(0)
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00                   
+[ 448]        :                                       
+[ 449]    046B: 00 00                                 sum dw dup(0)
+[ 450]    046D: 00                                    size db dup(0)
+[ 451]    046E: 00                                    integer db dup(0)
+[ 452]    046F: 00 00                                 float dw dup(0)
+[ 453]    0471: 00                                    temp db dup(0)
+[ 454]    0472: 01                                    positive db dup(1)
+[ 455]    0473: 01                                    valid db dup(1)
+[ 456]        :                                       
+[ 457]        :                                       end start
+[ 458]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================

@@ -1,0 +1,47 @@
+﻿@model Dictionary<int, CartItem>
+
+@{
+    ViewData["Title"] = "Корзина";
+
+    var request = ViewContext.HttpContext.Request;
+    var returnUrl = request.Path + request.QueryString.ToUriComponent();
+
+}
+
+<h1 class="mt-2 mb-3">Ваша корзина</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Изображение</th>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Итого</th>
+            <th>Действие</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pair in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@pair.Value.Car.Image" style="height: 150px;">
+                </td>
+
+                <td>@pair.Value.Car.Name</td>
+                <td>@pair.Value.Car.Description</td>
+                <td>$@pair.Value.Car.Price</td>
+                <td>@pair.Value.Quantity</td>
+                <td>$@(pair.Value.Car.Price * pair.Value.Quantity)</td>
+
+                <td>
+                    <a class="btn btn-danger" asp-controller="Cart" asp-action="Remove"
+                       asp-route-id="@pair.Key" asp-route-returnUrl="@returnUrl">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

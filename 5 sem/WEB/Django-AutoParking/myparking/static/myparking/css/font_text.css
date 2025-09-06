@@ -1,0 +1,40 @@
+.text-bold35{
+    font-weight: bold;
+    font-size: 35px;
+}
+
+.text-bold20{
+    font-weight: bold;
+    font-size: 20px;
+}
+.text-italic{
+    font-style: italic;
+}
+
+.text-bold{
+     font-weight: bold;
+}
+
+.text-10{
+    font-size: 10px;
+}
+
+.text-15{
+    font-size: 15px;
+}
+
+.text-20{
+    font-size: 20px;
+}
+
+.text-30{
+    font-size: 30px;
+}
+
+.text-align-center{
+   text-align: center;
+}
+
+.text-align-justify{
+    text-align: justify;
+}

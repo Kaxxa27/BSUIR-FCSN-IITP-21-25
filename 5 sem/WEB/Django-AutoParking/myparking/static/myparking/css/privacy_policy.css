@@ -1,0 +1,145 @@
+.block-privacy-policy {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    margin: 10px;
+    padding: 2px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid black;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+
+/* Не посещенные ссылки */
+.content-link:link {
+  color: red;
+  text-decoration: none;
+}
+
+/* Посещенные ссылки */
+.content-link:visited {
+  color: yellow;
+  text-decoration: none;
+}
+
+/* Наведение курсора на ссылку */
+.content-link:hover {
+  color: blue;
+  text-decoration: underline;
+}
+
+/* Активные (нажатые) ссылки */
+.content-link:active {
+  color: green;
+}
+
+/* Ссылки в фокусе */
+.content-link:focus {
+ color: darkgreen;
+}
+
+.my-ul li:last-child{
+    background-color: green;
+    color: yellow;
+}
+
+.my-ul li:first-child{
+    background-color: teal;
+    color: deeppink;
+    font-size: 50px;
+}
+
+.my-ul li:nth-child(2){
+    background-color: pink;
+}
+
+.full-prop-for-text{
+    padding: 2px;
+    margin: 2px;
+    text-align: left;
+    text-indent: 20px;
+    line-height: 150%;
+    letter-spacing: 3px;
+    word-spacing: 10px;
+    word-wrap: break-word;
+    font-family: Times New Roman;
+    text-transform: capitalize;
+    font-variant: small-caps;
+}
+
+.pol-conf{
+    width: 100%;
+    padding: 25px;
+    border: 3px solid black;
+    border-radius: 20px;
+    background-image: radial-gradient(#00c3ff 40%, #ffff1c);
+}
+/* Стили для заголовков */
+h1 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+/* Стили для ссылок в содержании */
+ol.text-bold {
+    list-style-type: decimal;
+    margin-left: 20px;
+}
+
+ol.text-bold li {
+    margin: 10px 0;
+}
+
+a.content-link {
+    text-decoration: none;
+    color: #0066cc;
+    transition: color 0.3s;
+}
+
+a.content-link:hover {
+    color: #0033aa;
+}
+
+/* Стили для общего текста */
+p {
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+strong {
+    font-weight: bold;
+    color: #333;
+}

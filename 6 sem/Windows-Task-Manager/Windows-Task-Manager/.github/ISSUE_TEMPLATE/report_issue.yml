@@ -1,0 +1,11 @@
+name: '📩 Report a General Issue '
+description: Report issues or functional behaviours
+title: "[ISSUE] - Enter your description here"
+labels: ["issue"]
+body:
+  - type: textarea
+    attributes:
+      label: Describe your issue
+      placeholder: Explain the issue you are experiencing, providing as much details as possible about it
+    validations:
+      required: true

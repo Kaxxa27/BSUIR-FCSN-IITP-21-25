@@ -1,0 +1,46 @@
+{% extends "base_generic.html"%}
+
+{% block title%}
+<title>Car list for ParkingSlot</title>
+{% endblock %}
+
+{% block content%}
+<div class="row">
+    <div class="col-sm-12">
+        <p>Кол-во автомобилей: {{ cars_count }}</p>
+          {% if cars %}
+        <h1>Список автомобилей: </h1>
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Марка</th>
+                        <th>Модель</th>
+                        <th>Номер</th>
+                        <th>Опции</th>
+                    </tr>
+                    </thead>
+                <tbody>
+                    {% for car in cars %}
+                         <tr>
+                             <td>{{ car.mark }}</td>
+                             <td>{{ car.model }}</td>
+                             <td>{{ car.license_plate }}</td>
+                             <td>
+                                 {% if status == 'add' %}
+                                    <a href="{% url 'interaction_car_for_parking' car.id parking.id 'add' %}"
+                                       class="btn btn-warning">На Паркинг!</a>
+                                 {% elif status == 'del' %}
+                                    <a href="{% url 'interaction_car_for_parking' car.id parking.id 'del' %}"
+                                       class="btn btn-danger">C Паркинга!</a>
+                                 {% endif %}
+                             </td>
+                         </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+         {% else %}
+                <h2> Нет автомобилей!</h2>
+         {% endif %}
+    </div>
+</div>
+{% endblock %}

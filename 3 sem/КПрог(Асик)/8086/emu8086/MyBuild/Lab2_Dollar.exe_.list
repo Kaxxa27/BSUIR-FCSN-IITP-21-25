@@ -1,0 +1,483 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+Lab2_Dollar.exe_ -- emu8086 assembler version: 4.05  
+ 
+[ 05.12.2022  --  11:41:26 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       
+[   2]        :                                       .model small    ; Модель памяти (код в 1 сегменте, данные и стек в DGROUP)
+[   3]        :                                       .stack 100h     ; Сегмент стека (256 байт)
+[   4]        :                                       .code           ; Сегмент кода
+[   5]    0100:                                       START:
+[   6]        :                                       
+[   7]        :                                       Print_Dollar macro
+[   8]        :                                       mov ah, 02h
+[   9]        :                                       mov dl, '$'
+[  10]        :                                       int 21h
+[  11]        :                                       endm
+[  12]        :                                       
+[  13]        :                                       Print_Doll_X3 macro
+[  14]        :                                       Print_Dollar
+[  15]        :                                       Print_Dollar
+[  16]        :                                       Print_Dollar
+[  17]        :                                       endm
+[  18]        :                                       
+[  19]        :                                       
+[  20]        :                                       
+[  21]        :                                       Print macro str
+[  22]        :                                       mov ah,09h ; Номер функции DOS
+[  23]        :                                       ; mov ah,06h ; Номер функции DOS
+[  24]        :                                       lea dx,str ; Смещение str в DX
+[  25]        :                                       int 21h ; 21 прерывание
+[  26]        :                                       endm
+[  27]        :                                       
+[  28]        :                                       
+[  29]        :                                       PrintSymbols macro str, str_size
+[  30]        :                                       mov cx, str_size
+[  31]        :                                       mov si, 0
+[  32]        :                                       LoopSymbols:
+[  33]        :                                       mov dl, str[si]
+[  34]        :                                       mov ax, 06h
+[  35]        :                                       int 21h
+[  36]        :                                       inc si
+[  37]        :                                       Loop  LoopSymbols
+[  38]        :                                       
+[  39]        :                                       
+[  40]        :                                       endm
+[  41]        :                                       
+[  42]        :                                       ; $ERROR после пустой строки
+[  43]        :                                       
+[  44]        :                                       
+[  45]        :                                       Enter macro str
+[  46]        :                                       mov ah,0Ah  ; Функция DOS (считать строку символов из STDIN в буфер)
+[  47]        :                                       lea dx,str  ; Смещение строки в DX
+[  48]        :                                       int 21h
+[  49]        :                                       Print EnterToNextLine
+[  50]        :                                       endm
+[  51]        :                                       
+[  52]        :                                       ; Занести в первый байт максимальную длину строки
+[  53]        :                                       Set_Max_Lenght_of_theString macro str,number
+[  54]        :                                       lea di,str ; Смещение строки в DI
+[  55]        :                                       mov al,number ; Максимальное число символов для ввода
+[  56]        :                                       stosb  ; AL в ES:DI
+[  57]        :                                       endm
+[  58]        :                                       
+[  59]        :                                       ; Вычислить размер введенной строки
+[  60]        :                                       CalculateSizeOfTheEnterString macro str_size,str
+[  61]        :                                       lea si,str ; Смещение str в SI
+[  62]        :                                       add si,01d ; SI++
+[  63]        :                                       lodsb ; DS:SI в AL
+[  64]        :                                       mov str_size,al ; AL в str_size
+[  65]        :                                       endm
+[  66]        :                                       
+[  67]        :                                       ; Убрать первые два байта, добавить в конец '$'
+[  68]        :                                       FormatString macro str_size,str
+[  69]        :                                       
+[  70]        :                                       ; Сдвигаем строку на 2 влево
+[  71]        :                                       lea di,str ; Смещение str в DI
+[  72]        :                                       mov si,di
+[  73]        :                                       add si,02d ; SI = DI + 2
+[  74]        :                                       
+[  75]        :                                       mov CH,0h
+[  76]        :                                       mov CL,str_size ; CX = str_size
+[  77]        :                                       rep movsb ; Пересылка DS:SI в ES:DI пока CX <> 0
+[  78]        :                                       
+[  79]        :                                       ; Добавление '$' в конец
+[  80]        :                                       lea di,str ; Смещение строки в DI
+[  81]        :                                       mov dh,0d
+[  82]        :                                       mov dl,str_size ; DX = str_size
+[  83]        :                                       add di,dx ; DI += str_size
+[  84]        :                                       ;mov al,'$' ; Символ '$'
+[  85]        :                                       mov al,206d
+[  86]        :                                       stosb  ; AL в ES:DI
+[  87]        :                                       
+[  88]        :                                       
+[  89]        :                                       endm
+[  90]        :                                       
+[  91]    0100: B8 30 00                              mov ax,@data    ; @data - идентификатор сегмента данных
+[  92]    0103: 8E D8                                 mov ds,ax       ; Адрес сегмента данных — в DS
+[  93]    0105: 8E C0                                 mov es,ax; Адрес сегмента данных — в ES
+[  94]        :                                       
+[  95]        :                                       ; printStrBySymbol testString,testrString_size
+[  96]        :                                       
+[  97]    0107:                                       MainStringStart:
+[  98]        :                                       ;------------- MainString ----------------------------------
+[  99]    0107: BF 00 00 A0 C8 00 AA                  Set_Max_Lenght_of_theString MainString,MainString_MaxSize; установить в первый байт строки макс длину.
+[ 100]        :                                       
+[ 101]    010E: B4 09 BA CB 00 CD 21                  Print MainStringInfo
+[ 102]        :                                       
+[ 103]    0115: B4 0A BA 00 00 CD 21 B4 09 BA 18 02   Enter MainString  ; Ввод строки пользователем
+                CD 21                               
+[ 104]    0123: BE 00 00 83 C6 01 AC A2 C9 00         CalculateSizeOfTheEnterString MainString_Size,MainString; Вычисление размера введенной строки
+[ 105]    012D: 80 3E C9 00 00                        cmp MainString_Size, 0; Сравнить размер строки с нулем
+[ 106]        :                                       ; Если нуль, перепрыгнуть на подпрограмму EmptyMainString
+[ 107]    0132: 74 6D                                 je EmptyMainString
+[ 108]        :                                       ; Если не равно нулю, то продолжить выполнение программы, перескочив на ContinueProgramm
+[ 109]    0134: BF 00 00 8B F7 83 C6 02 B5 00 8A 0E   FormatString MainString_Size,MainString ; Отформатировать строку, сделав ее полноценной строкой, с $ и с 1-го байта
+                C9 00 F3 A4 BF 00 00 B6 00 8A 16 C9 
+                00 03 FA B0 CE AA                   
+[ 110]    0152: EB 61                                 jmp ContinueProgramm
+[ 111]        :                                       ;------------------------------------------------------------
+[ 112]        :                                       
+[ 113]    0154:                                       DeleteWordStart:
+[ 114]        :                                       ;------------- DeleteWord ----------------------------------
+[ 115]    0154: BF D9 00 A0 A1 01 AA                  Set_Max_Lenght_of_theString DeleteWord,DeleteWord_MaxSize; установить в первый байт строки макс длину.
+[ 116]    015B: B4 09 BA A3 01 CD 21                  Print DeleteWordInfo ; Main String:
+[ 117]    0162: B4 0A BA D9 00 CD 21 B4 09 BA 18 02   Enter DeleteWord  ; Ввод строки пользователем
+                CD 21                               
+[ 118]    0170: BE D9 00 83 C6 01 AC A2 A2 01         CalculateSizeOfTheEnterString DeleteWord_Size,DeleteWord; Вычисление размера введенной строки
+[ 119]    017A: 80 3E A2 01 00                        cmp DeleteWord_Size, 0; Сравнить размер строки с нулем
+[ 120]        :                                       ; Если нуль, перепрыгнуть на подпрограмму EmptyMainString
+[ 121]    017F: 74 2A                                 je EmptyDeleteWord
+[ 122]        :                                       ; Если не равно нулю, то продолжить выполнение программы, перескочив на ContinueProgramm
+[ 123]    0181: BF D9 00 8B F7 83 C6 02 B5 00 8A 0E   FormatString DeleteWord_Size,DeleteWord ; Отформатировать строку, сделав ее полноценной строкой, с $ и с 1-го байта
+                A2 01 F3 A4 BF D9 00 B6 00 8A 16 A2 
+                01 03 FA B0 CE AA                   
+[ 124]        :                                       ;------------------------------------------------------------
+[ 125]        :                                       
+[ 126]        :                                       ;jmp ContinueProgramm:
+[ 127]    019F: EB 2E                                 jmp StartProverkiDeleteWord
+[ 128]        :                                       
+[ 129]        :                                       ;------------- EmptyPodProgramm ----------------------------------
+[ 130]    01A1:                                       EmptyMainString:
+[ 131]    01A1: B4 09 BA BC 01 CD 21                  Print Empty_MainString
+[ 132]    01A8: E9 2B 01                              jmp End_Programm
+[ 133]        :                                       
+[ 134]    01AB:                                       EmptyDeleteWord:
+[ 135]    01AB: B4 09 BA E5 01 CD 21                  Print Empty_DeleteWord
+[ 136]    01B2: E9 21 01                              jmp End_Programm
+[ 137]        :                                       ;------------------------------------------------------------
+[ 138]        :                                       
+[ 139]    01B5:                                       ContinueProgramm:
+[ 140]    01B5: BE 00 00                              lea si, MainString; Индекс пробега с нуля (адрес первого символа строки)
+[ 141]    01B8: 8B FE                                 mov di, si ; Адрес начала слова в строке
+[ 142]    01BA:                                       MainLoop:
+[ 143]        :                                       ; Считывание пробелов в главной строке
+[ 144]    01BA: AC                                    lodsb ; чтение символа в al, si++
+[ 145]        :                                       
+[ 146]    01BB: 3A 06 BA 01                           cmp al, Delimiter
+[ 147]    01BF: 75 03 E9 98 00                        je ProbelStr
+[ 148]        :                                       
+[ 149]    01C4: 3A 06 17 02                           cmp al, EndString
+[ 150]    01C8: 75 03 E9 9F 00                        je ERROR_MainString
+[ 151]        :                                       
+[ 152]    01CD: EB 85                                 jmp DeleteWordStart:
+[ 153]        :                                       ;je Result
+[ 154]        :                                       
+[ 155]        :                                       ; Считывание , проверка, на пробелы в удаляемом слове
+[ 156]        :                                       
+[ 157]    01CF:                                       StartProverkiDeleteWord:
+[ 158]    01CF: BE D9 00                              lea si, DeleteWord
+[ 159]    01D2:                                       DeleteWordProbelLoop:
+[ 160]    01D2: AC                                    lodsb ; чтение символа в al, si++
+[ 161]    01D3: 3A 06 BA 01                           cmp al, Delimiter
+[ 162]    01D7: 75 03 E9 88 00                        je ProbelStrDeleteWord
+[ 163]        :                                       
+[ 164]    01DC: 3A 06 17 02                           cmp al, EndString
+[ 165]    01E0: 75 03 E9 BC 00                        je ERROR_DeleteWord
+[ 166]        :                                       
+[ 167]    01E5:                                       THE_MAIN_PROGRAMM: ; Начало полноценно работающей программы
+[ 168]    01E5: BE 00 00                              lea si, MainString;
+[ 169]    01E8: 8B FE                                 mov di, si ; Адрес начала слова в строке  ******WARNING********
+[ 170]    01EA:                                       SecLoop:
+[ 171]    01EA: 3A 06 17 02                           cmp al, EndString
+[ 172]    01EE: 74 4A                                 je Result
+[ 173]    01F0: 3A 06 BA 01                           cmp al, Delimiter
+[ 174]    01F4: 74 03                                 je New_Word
+[ 175]    01F6: AC                                    lodsb
+[ 176]        :                                       ;Loop MainLoop
+[ 177]    01F7: E2 F1                                 Loop SecLoop
+[ 178]        :                                       
+[ 179]        :                                       
+[ 180]        :                                       ;------------- New_Word----------------------------------
+[ 181]    01F9:                                       New_Word:
+[ 182]    01F9: C6 06 BB 01 4D                        mov Probel, 77
+[ 183]    01FE: 9C                                    pushf; сохранить регистр флагов в стеке
+[ 184]    01FF: FC                                    cld; очистить флаг направления
+[ 185]        :                                       ; сравнить длины слов
+[ 186]    0200: 8B C6                                 mov ax,si  ; Si - позиция символа, постоянно идущая, чтобы можно было понять длину слова
+[ 187]    0202: 2B C7                                 sub ax,di  ; Di- позиция символа, начала слова, по которому идет Si
+[ 188]    0204: 48                                    dec ax ; Убрать пробел с длины
+[ 189]        :                                       
+[ 190]    0205: BA 00 00                              mov dx, 0
+[ 191]    0208: 8A 16 A2 01                           mov dl, DeleteWord_Size
+[ 192]        :                                       
+[ 193]    020C: 3B C2                                 cmp ax, dx ; Если длина текущего слова и длина DeleteWord не равны, то сравнить символы
+[ 194]    020E: 75 23                                 jne Next_Word
+[ 195]        :                                       ; Сравнение символов
+[ 196]    0210: 56                                    push si; Сохранение значений в стек
+[ 197]    0211: 57                                    push di
+[ 198]    0212: 51                                    push cx
+[ 199]    0213: 06                                    push es
+[ 200]    0214: 1E                                    push ds
+[ 201]    0215: 07                                    pop es
+[ 202]        :                                       
+[ 203]    0216: 8B CA                                 mov cx, dx; Установка счетчика для cmpsb CX = длине удаляемого слова
+[ 204]    0218: BE D9 00                              lea  si, DeleteWord
+[ 205]    021B: F3 A6                                 repe cmpsb ; Сравнивать побайтого слова в Di и Si, если будет несовпадение, то ZF = 0
+[ 206]    021D: 07                                    pop es ; Восстановление данных из стека
+[ 207]    021E: 59                                    pop cx
+[ 208]    021F: 5F                                    pop di
+[ 209]    0220: 5E                                    pop si
+[ 210]    0221: 75 10                                 jne Next_Word; Если было несовпадение, ZF = 0, то перейти на другое слово,
+[ 211]        :                                       ;если мы нашли наше слово, то продолжить
+[ 212]        :                                       
+[ 213]        :                                       ; Удаление нужного слова
+[ 214]        :                                       ;jcxz SdvigMainStringOn_DeleteWordSize
+[ 215]    0223: 51                                    push cx ; Сохранение в стек
+[ 216]    0224: 56                                    push si
+[ 217]    0225: 57                                    push di
+[ 218]    0226: 06                                    push es
+[ 219]    0227: 1E                                    push ds
+[ 220]    0228: 07                                    pop es
+[ 221]    0229: B9 64 00                              mov cx, 100   ; Можно уменьшить, если текста немного, чтобы увеличить скорость работы программы
+[ 222]    022C: F3 A4                                 rep movsb ; Повторять перекопирование из SI в Di  побайтого
+[ 223]    022E: 07                                    pop es
+[ 224]    022F: 5F                                    pop di
+[ 225]    0230: 5E                                    pop si
+[ 226]        :                                       ;pop cx
+[ 227]    0231: 8B FE                                 mov di, si
+[ 228]        :                                       ;dec [MainString]
+[ 229]        :                                       ;-----------------------------------------------------------
+[ 230]        :                                       
+[ 231]        :                                       ;------------- SdvigMainStringOn_DeleteWordSize -------------
+[ 232]        :                                       ;SdvigMainStringOn_DeleteWordSize:
+[ 233]        :                                       ;sub [MainString],dl
+[ 234]        :                                       ;------------------------------------------------------------
+[ 235]        :                                       
+[ 236]        :                                       ;------------- Next_Word------------------------------------
+[ 237]    0233:                                       Next_Word:
+[ 238]    0233: 9D                                    popf; восстановить регистр алфгов
+[ 239]    0234: 8B FE                                 mov di,si; Обновить позицию слов
+[ 240]    0236: E3 02                                 jcxz Result; Если CX = 0, то перейти в конец
+[ 241]        :                                       ;!!!!!!!!!!!!!!!!!!
+[ 242]        :                                       ;Loop MainLoop
+[ 243]    0238: E2 B0                                 Loop SecLoop
+[ 244]        :                                       ;------------------------------------------------------------
+[ 245]        :                                       
+[ 246]        :                                       ;------------- Result -------------
+[ 247]    023A:                                       Result:
+[ 248]    023A: FE 0E BB 01                           dec Probel
+[ 249]    023E: 75 03 E9 C4 FE                        jz MainStringStart
+[ 250]    0243: B4 09 BA 0E 02 CD 21                  Print StringResultInfo
+[ 251]        :                                       
+[ 252]        :                                       ;PROC
+[ 253]        :                                       ;Print MainString
+[ 254]        :                                       ;printStrBySymbol MainString, MainString_Size
+[ 255]    024A: BE 00 00 89 36 1B 02 B2 09 88 16 1D   printStrBySymbol MainString,9d
+                02 E8 81 00                         
+[ 256]    025A: EB 7A                                 jmp End_Programm
+[ 257]        :                                       ;------------------------------------------------------------
+[ 258]        :                                       
+[ 259]        :                                       ;------------- ProbelStr ----------------------------------
+[ 260]    025C:                                       ProbelStr:
+[ 261]    025C: C6 06 BB 01 01                        mov Probel, 1
+[ 262]    0261: E9 56 FF                              jmp MainLoop
+[ 263]        :                                       ;-------------------------------------------------------------
+[ 264]        :                                       
+[ 265]        :                                       ;------------- ProbelStrDeleteWord ----------------------------------
+[ 266]    0264:                                       ProbelStrDeleteWord:
+[ 267]    0264: C6 06 BB 01 01                        mov Probel, 1
+[ 268]    0269: E9 66 FF                              jmp DeleteWordProbelLoop
+[ 269]        :                                       ;-------------------------------------------------------------
+[ 270]        :                                       
+[ 271]        :                                       ;------------- ERROR_MainString ----------------------------------
+[ 272]    026C:                                       ERROR_MainString:
+[ 273]        :                                       
+[ 274]    026C: B4 02 B2 24 CD 21 B4 02 B2 24 CD 21   Print_Doll_X3
+                B4 02 B2 24 CD 21                   
+[ 275]    027E: B4 09 BA BC 01 CD 21                  Print Empty_MainString
+[ 276]    0285: B4 02 B2 24 CD 21 B4 02 B2 24 CD 21   Print_Doll_X3
+                B4 02 B2 24 CD 21                   
+[ 277]        :                                       
+[ 278]    0297: B4 09 BA 18 02 CD 21                  Print EnterToNextLine
+[ 279]    029E: E9 66 FE                              jmp MainStringStart
+[ 280]        :                                       ;-------------------------------------------------------------
+[ 281]        :                                       
+[ 282]        :                                       ;------------- ERROR_DeleteWord ----------------------------------
+[ 283]    02A1:                                       ERROR_DeleteWord:
+[ 284]        :                                       
+[ 285]    02A1: B4 02 B2 24 CD 21 B4 02 B2 24 CD 21   Print_Doll_X3
+                B4 02 B2 24 CD 21                   
+[ 286]    02B3: B4 09 BA E5 01 CD 21                  Print Empty_DeleteWord
+[ 287]    02BA: B4 02 B2 24 CD 21 B4 02 B2 24 CD 21   Print_Doll_X3
+                B4 02 B2 24 CD 21                   
+[ 288]        :                                       
+[ 289]    02CC: B4 09 BA 18 02 CD 21                  Print EnterToNextLine
+[ 290]    02D3: E9 7E FE                              jmp DeleteWordStart
+[ 291]        :                                       ;-------------------------------------------------------------
+[ 292]        :                                       
+[ 293]        :                                       
+[ 294]        :                                       ;------------- End_Programm ----------------------------------
+[ 295]    02D6:                                       End_Programm:
+[ 296]    02D6: B8 00 4C                              mov ax,4C00h    ; 4C (выход из программы) в AH, 00 (успешное звершение) в AL
+[ 297]    02D9: CD 21                                 int 21h         ; Завершение программы
+[ 298]        :                                       ;-------------------------------------------------------------
+[ 299]        :                                       
+[ 300]        :                                       
+[ 301]        :                                       ; Распечатать строку посимвольно [Процедура]
+[ 302]    02DB:                                       printStrBySymbolProc PROC near
+[ 303]        :                                       
+[ 304]    02DB: B4 06                                 mov ah,06h               ; Записать символ в STDOUT
+[ 305]        :                                       
+[ 306]    02DD: 8B 3E 1B 02                           mov di,strGeneral_offset ; Смещение строки
+[ 307]    02E1: BB 00 00                              mov bx,0h                ; Индекс в выводимой строке
+[ 308]        :                                       
+[ 309]    02E4: BA 00 00                              mov dx,0h
+[ 310]    02E7: 8A 16 1D 02                           mov dl,strGeneral_size
+[ 311]    02EB: 8B CA                                 mov cx,dx                ; Длина строки
+[ 312]    02ED: E3 09                                 jcxz strIsEmpty          ; Если строка пустая
+[ 313]        :                                       
+[ 314]    02EF:                                       while1:
+[ 315]    02EF: 8A 11                                 mov dl,[di+bx]
+[ 316]    02F1: CD 21                                 int 21h ; Вывод текущего символа
+[ 317]        :                                       
+[ 318]        :                                       ; Условие выхода из цикла
+[ 319]    02F3: 43                                    inc bx
+[ 320]    02F4: 3B D9                                 cmp bx,cx
+[ 321]    02F6: 7C F7                                 jl while1
+[ 322]        :                                       
+[ 323]        :                                       ; Строка пустая
+[ 324]    02F8:                                       strIsEmpty:
+[ 325]        :                                       
+[ 326]    02F8: C3                                    ret
+[ 327]        :                                       
+[ 328]        :                                       printStrBySymbolProc endp
+[ 329]        :                                       
+[ 330]        :                                       ; Распечатать строку посимвольно [Макрос]
+[ 331]        :                                       printStrBySymbol macro str,str_size
+[ 332]        :                                       lea si,str
+[ 333]        :                                       mov strGeneral_offset,si
+[ 334]        :                                       
+[ 335]        :                                       mov dl,str_size
+[ 336]        :                                       mov strGeneral_size,dl
+[ 337]        :                                       
+[ 338]        :                                       call printStrBySymbolProc
+[ 339]        :                                       endm
+[ 340]        :                                       
+[ 341]        :                                       .data ; Сегмент данных
+[ 342]        :                                       
+[ 343]        :                                       ; Исходная строка
+[ 344]    0300: 00 00 00 00 00 00 00 00 00 00 00 00   MainString db 200 DUP(?)
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00             
+[ 345]    03C8: 64                                    MainString_MaxSize db equ 100
+[ 346]    03C9: 00                                    MainString_Size db 0
+[ 347]    03CA: 00                                    NewMainString_Size db 0
+[ 348]    03CB: 4D 61 69 6E 20 53 74 72 69 6E 67 3A   MainStringInfo db 'Main String: $'
+                20 24                               
+[ 349]        :                                       
+[ 350]        :                                       ; Слово, которое мы должны удалить
+[ 351]    03D9: 00 00 00 00 00 00 00 00 00 00 00 00   DeleteWord db 200 DUP(?)
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00             
+[ 352]    04A1: 14                                    DeleteWord_MaxSize db equ 20
+[ 353]    04A2: 00                                    DeleteWord_Size db 0
+[ 354]    04A3: 45 6E 74 65 72 20 61 20 64 65 6C 65   DeleteWordInfo db 'Enter a delete word:  $'
+                74 65 20 77 6F 72 64 3A 20 20 24    
+[ 355]    04BA: 20                                    Delimiter db ' '
+[ 356]    04BB: 00                                    Probel db 0
+[ 357]        :                                       ; Пустые строки
+[ 358]    04BC: 5F 5F 45 52 52 4F 52 5F 5F 20 4D 61   Empty_MainString db "__ERROR__ MainString is empty! __ERROR__$"
+                69 6E 53 74 72 69 6E 67 20 69 73 20 
+                65 6D 70 74 79 21 20 5F 5F 45 52 52 
+                4F 52 5F 5F 24                      
+[ 359]    04E5: 5F 5F 45 52 52 4F 52 5F 5F 20 44 65   Empty_DeleteWord db "__ERROR__ DeleteWord is empty! __ERROR__$"
+                6C 65 74 65 57 6F 72 64 20 69 73 20 
+                65 6D 70 74 79 21 20 5F 5F 45 52 52 
+                4F 52 5F 5F 24                      
+[ 360]        :                                       
+[ 361]    050E: 52 65 73 75 6C 74 3A 20 24            StringResultInfo db 'Result: $'      ; Результат
+[ 362]        :                                       ;EndString db '$'
+[ 363]    0517: CE                                    EndString db 206d
+[ 364]        :                                       
+[ 365]    0518: 0A 0D 24                              EnterToNextLine db 0Ah, 0Dh, '$'   ; Символы перехода на новую строку (v,<)
+[ 366]        :                                       
+[ 367]        :                                       ; Строка для передачи в процедуру
+[ 368]    051B: 00 00                                 strGeneral_offset dw 0
+[ 369]    051D: 00                                    strGeneral_size db 0
+[ 370]        :                                       
+[ 371]    051E: 24 24 24 20 49 20 61 6D 20 61 20 24   testString db '$$$ I am a $wizard$, I can $print$ dollars $$$'
+                77 69 7A 61 72 64 24 2C 20 49 20 63 
+                61 6E 20 24 70 72 69 6E 74 24 20 64 
+                6F 6C 6C 61 72 73 20 24 24 24       
+[ 372]    054C: 2E                                    testrString_size db 46d
+[ 373]        :                                       end START; Конец программы
+[ 374]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: 4D      -   bytes on last page (l.byte)
+0003: 01      -   bytes on last page (h.byte)
+0004: 04      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 00      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 00      -   SP - stack pointer (l.byte)
+0011: 01      -   SP - stack pointer (h.byte)
+0012: FF      -   check sum (l.byte)
+0013: 09      -   check sum (h.byte)
+0014: 00      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 10      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: 01      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 10      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================

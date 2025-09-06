@@ -1,0 +1,32 @@
+﻿<select class="form-select" @onchange="CategoryHasChanged">
+    <option value="">Все</option>
+    @if (DataService?.Categories is not null)
+    {
+        @foreach (var category in DataService.Categories!)
+        {
+            <option value="@category.NormalizedName">@category.Name</option>
+        }
+    }
+</select>
+
+@code {
+    [Inject]
+    public IDataService DataService { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Parameter]
+    public string? SelectedCategory { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await DataService.GetCategoryListAsync();
+    }
+
+    private void CategoryHasChanged(ChangeEventArgs e)
+    {
+        SelectedCategory = e.Value?.ToString();
+        NavigationManager.NavigateTo($"cars/{SelectedCategory}");
+    }
+}

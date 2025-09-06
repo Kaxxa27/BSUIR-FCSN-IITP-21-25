@@ -1,0 +1,56 @@
+[
+    {
+        "FFT/FFT_NEON": 17.323374340949034,
+        "durationFFT": 19714,
+        "durationFFT_NEON": 1138,
+        "n": 1024
+    },
+    {
+        "FFT/FFT_NEON": 16.29654157468727,
+        "durationFFT": 22147,
+        "durationFFT_NEON": 1359,
+        "n": 2048
+    },
+    {
+        "FFT/FFT_NEON": 6.216575922565033,
+        "durationFFT": 30828,
+        "durationFFT_NEON": 4959,
+        "n": 4096
+    },
+    {
+        "FFT/FFT_NEON": 11.101439101439102,
+        "durationFFT": 63256,
+        "durationFFT_NEON": 5698,
+        "n": 8192
+    },
+    {
+        "FFT/FFT_NEON": 10.021340951100655,
+        "durationFFT": 119274,
+        "durationFFT_NEON": 11902,
+        "n": 16384
+    },
+    {
+        "FFT/FFT_NEON": 10.183904632614967,
+        "durationFFT": 240055,
+        "durationFFT_NEON": 23572,
+        "n": 32768
+    },
+    {
+        "FFT/FFT_NEON": 10.069369699934768,
+        "durationFFT": 493963,
+        "durationFFT_NEON": 49056,
+        "n": 65536
+    },
+    {
+        "FFT/FFT_NEON": 10.12348217215884,
+        "durationFFT": 1048813,
+        "durationFFT_NEON": 103602,
+        "n": 131072
+    },
+    {
+        "FFT/FFT_NEON": 8.705363641335673,
+        "durationFFT": 2069204,
+        "durationFFT_NEON": 237693,
+        "n": 262144
+    }
+]

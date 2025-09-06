@@ -1,0 +1,26 @@
+nav {
+    background-color: rgba(128, 128, 128, 0.723);
+    padding: 10px 0;
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+li {
+    margin-right: 5px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  a:hover {
+    color: #ffcc00;
+  }

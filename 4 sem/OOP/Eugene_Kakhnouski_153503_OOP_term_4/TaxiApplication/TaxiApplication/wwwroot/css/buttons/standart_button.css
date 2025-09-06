@@ -1,0 +1,15 @@
+﻿button.standart-btn {
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    border-radius: 10px;
+    background-color: darkgrey;
+    color: black;
+    padding: 10px 20px;
+    transition: background-color 0.7s ease;
+}
+
+button.standart-btn:hover {
+    background-color: springgreen;
+    cursor: pointer;
+}

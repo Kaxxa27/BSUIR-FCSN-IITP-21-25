@@ -1,0 +1,69 @@
+< THE SYMBOL TABLE >  Lab3.exe_  --  emu8086 assembler version: 4.05 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+CODE                     	00000     	-5        	SEGMENT   	(ITSELF)  
+START                    	00000     	-1        	LABEL     	code      
+ENTER_ARRAY_SIZE         	00023     	-1        	LABEL     	code      
+ENTER_NUMBERS_IN_ARRAY_LOOP_START	0006C     	-1        	LABEL     	code      
+AFTER_ENTERING_ARRAY     	000B6     	-1        	LABEL     	code      
+WHILE                    	000CB     	-1        	LABEL     	code      
+INSIDE_WHILE             	000D9     	-1        	LABEL     	code      
+CONTINUE                 	000F2     	-1        	LABEL     	code      
+AFTER_INSIDE_WHILE       	000F7     	-1        	LABEL     	code      
+POSLE_PROVERKI           	00105     	-1        	LABEL     	code      
+OUT_OF_ALGORITM          	0011A     	-1        	LABEL     	code      
+OUTPUT                   	00184     	-1        	LABEL     	code      
+END_MACRO                	001CD     	-1        	LABEL     	code      
+COUNTER_IN_MAXCOUNTER    	001EA     	-1        	LABEL     	code      
+IF_SAME_ELEMENT          	001FD     	-1        	LABEL     	code      
+ENTER_NUMBER             	00204     	-1        	NEAR      	code      
+ENTER_NUMBER_LOOP_START  	00205     	-1        	LABEL     	code      
+NUMBERSTR_IN_NUMBER_LOOP 	00227     	-1        	LABEL     	code      
+PROVERKA_NA_SYMBOLASCII  	00231     	-1        	LABEL     	code      
+PRINT_NUMBER_PROC        	00263     	-1        	NEAR      	code      
+PUSHDIGITSWHILE          	00266     	-1        	LABEL     	code      
+PRINTDIGITSWHILE         	0027F     	-1        	LABEL     	code      
+EXEPTION_ARRAY_SIZE_MORE_THAN_30	00298     	-1        	LABEL     	code      
+EXEPTION_ARRAY_SIZE_LESS_THAN_1	002BC     	-1        	LABEL     	code      
+EXEPTION_NUMBERISZERO    	002E0     	-1        	LABEL     	code      
+EXEPTION_OVERFLOW        	00304     	-1        	LABEL     	code      
+EXEPTION_INVALID_NUMBER  	00329     	-1        	LABEL     	code      
+END                      	0034D     	-1        	LABEL     	code      
+DATA                     	00036     	-5        	SEGMENT   	(ITSELF)  
+EXEPTION_NUMBERISZERO_STR	00000     	1         	VAR       	data      
+EXEPTION_INVALID_NUMBER_STR	00034     	1         	VAR       	data      
+EXEPTION_OVERFLOW_STR    	00071     	1         	VAR       	data      
+EXEPTION_ARRAY_SIZE_MORE_THAN_30_STR	000AB     	1         	VAR       	data      
+EXEPTION_ARRAY_SIZE_LESS_THAN_1_STR	000E0     	1         	VAR       	data      
+NEW_LINE                 	0010A     	1         	VAR       	data      
+ENTER_ARRAYSIZE_STR      	0010D     	1         	VAR       	data      
+ENTER_NUMBERS_IN_ARRAY_STR	00132     	1         	VAR       	data      
+INDEX_ARRAY_START_STR    	0014A     	1         	VAR       	data      
+INDEX_ARRAY_END_STR      	0014C     	1         	VAR       	data      
+END_PROGRAMM_STR         	0014E     	1         	VAR       	data      
+TASK_STR                 	0015C     	1         	VAR       	data      
+ANSWER_STR               	0019A     	1         	VAR       	data      
+OUTPUT_ARRAY_STR         	001A3     	1         	VAR       	data      
+PROBEL_STR               	001AB     	1         	VAR       	data      
+COMMA_STR                	001AD     	1         	VAR       	data      
+STRING_NUMBER            	001AF     	1         	VAR       	data      
+MAIN_NUMBER              	001B9     	2         	VAR       	data      
+NUMBER_GENERAL           	001BB     	2         	VAR       	data      
+ARRAY_COUNTER            	001BD     	2         	VAR       	data      
+POD_ARRAY_COUNTER        	001BF     	2         	VAR       	data      
+TEN                      	001C1     	2         	VAR       	data      
+ARRAY_SIZE               	001C3     	2         	VAR       	data      
+ARRAY                    	001C5     	2         	VAR       	data      
+COUNTER                  	00215     	2         	VAR       	data      
+MAX_COUNTER              	00217     	2         	VAR       	data      
+CURR_ADDRESS             	00219     	2         	VAR       	data      
+NEXT_ADDRESS             	0021B     	2         	VAR       	data      
+TONEWLINE                	0021D     	1         	VAR       	data      
+STRGENERAL_OFFSET        	00220     	2         	VAR       	data      
+STRGENERAL_SIZE          	00222     	1         	VAR       	data      
+STACK                    	00059     	-5        	SEGMENT   	(ITSELF)  
+===================================================================================================
+[ 13.12.2022  --  20:00:15 ] 
+< END >
+ 

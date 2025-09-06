@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/sandy_brown">
+
+    <TextView
+        android:id="@+id/operationField"
+        android:hint="Operation"
+        style="@style/OperationDisplay" />
+
+    <TextView
+        android:id="@+id/resultField"
+        android:hint="Result"
+        style="@style/ResultDisplay" />
+
+    <GridLayout
+        android:id="@+id/buttonGrid"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:rowCount="5"
+        android:columnCount="6" >
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_sqrt"
+            android:text="sqrt"
+            style="@style/OptionalOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_log2"
+            android:text="log2"
+            style="@style/OptionalOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_ln"
+            android:text="ln"
+            style="@style/OptionalOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_pow"
+            android:text="x^y"
+            style="@style/OptionalOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_left_bracket"
+            android:text="("
+            style="@style/OptionalOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_right_bracket"
+            android:text=")"
+            style="@style/OptionalOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_sin"
+            android:text="sin"
+            style="@style/OptionalOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_cos"
+            android:text="cos"
+            style="@style/OptionalOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_percent"
+            android:text="%"
+            style="@style/MainOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_div"
+            android:text="/"
+            style="@style/MainOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_ac"
+            android:text="AC"
+            style="@style/MainOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_back"
+            android:text="back"
+            style="@style/MainOperation" />
+
+
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_pi"
+            android:text="pi"
+            style="@style/OptionalOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_e"
+            android:text="e"
+            style="@style/OptionalOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_7"
+            android:text="7"
+            style="@style/Number" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_6"
+            android:text="6"
+            style="@style/Number" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_8"
+            android:text="8"
+            style="@style/Number" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_9"
+            android:text="9"
+            style="@style/Number" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_add"
+            android:text="+"
+            style="@style/MainOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_mul"
+            android:text="*"
+            style="@style/MainOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_2"
+            android:text="2"
+            style="@style/Number" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_3"
+            android:text="3"
+            style="@style/Number" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_4"
+            android:text="4"
+            style="@style/Number" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_5"
+            android:text="5"
+            style="@style/Number" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_minus"
+            android:text="-"
+            style="@style/MainOperation" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_dot"
+            android:text="."
+            style="@style/Number" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_1"
+            android:text="1"
+            style="@style/Number" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_000"
+            android:text="000"
+            style="@style/Number" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_0"
+            android:text="0"
+            style="@style/Number" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_equals"
+            android:text="="
+            style="@style/MainOperation" />
+    </GridLayout>
+</LinearLayout>

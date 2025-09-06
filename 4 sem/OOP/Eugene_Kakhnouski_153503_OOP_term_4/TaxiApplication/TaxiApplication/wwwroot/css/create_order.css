@@ -1,0 +1,68 @@
+﻿.createorder-block {
+    width: 100%;
+    margin-top: 60px;
+    border-radius: 30px;
+    padding: 30px 40px 30px 40px;
+    background: linear-gradient(to bottom right, #ffe259, #ffa751);
+}
+
+.createorder-margin {
+    margin-top: 20px;
+}
+.createorder-style{
+    font-size: 40px;
+    font-weight: bolder;
+    margin: 0px 0px 40px 0px;
+}
+
+.createorder-label {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0px 15px 10px 0px;
+}
+
+.createorder-start-input {
+    width: 100%;
+    margin: 0px 0px 10px 0px;
+    border-radius: 30px;
+    background: linear-gradient(to bottom right, #a8ff78, #78ffd6);
+}
+
+.createorder-textarea {
+    width: 100%;
+    height: 135px;
+    overflow: hidden;
+    resize: none;
+    margin: 0px 0px 10px 0px;
+    border-radius: 30px;
+    background: linear-gradient(to bottom right, #a8ff78, #78ffd6);
+}
+
+.createorder-checkbox {
+    width: 30px;
+    height: 30px;
+    margin: 0px 10px 10px 0px;
+    background: linear-gradient(to bottom right, #a8ff78, #78ffd6);
+}
+
+.height-800 {
+    height: 685px;
+}
+
+button.create-order-btn {
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 30px;
+    border-radius: 10px;
+    background-color: violet;
+    color: black;
+    padding: 10px 20px;
+    transition: background-color 0.7s ease;
+}
+
+button.create-order-btn:hover {
+    background-color: springgreen /*#6FD566*/;
+    cursor: pointer;
+}
+

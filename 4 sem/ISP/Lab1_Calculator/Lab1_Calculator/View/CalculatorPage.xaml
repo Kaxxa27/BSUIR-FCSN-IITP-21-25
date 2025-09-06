@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lab1_Calculator.View.CalculatorPage"     
+             xmlns:viewmodel="clr-namespace:Lab1_Calculator.ViewModel"
+             x:DataType="viewmodel:CalculatorViewModel"
+             Shell.TitleColor="{StaticResource Black}"
+             Shell.BackgroundColor="{StaticResource LightGray_BackgroungColor}"
+             BackgroundColor="{StaticResource LightGray_BackgroungColor}">
+
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button" BasedOn="{StaticResource LightGrayButton}">
+               
+            </Style>
+            <Style x:Key="NumberButton" TargetType="Button" BasedOn="{StaticResource WhiteButton}">
+                <Setter Property="Command" Value="{Binding NumberButtonClickCommand}"/>
+                
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Shell.TitleView>
+        <Label x:Name="Title" 
+               IsVisible="true"
+               Text="{Binding Title}"
+               FontFamily="CalculateSymbolStyle"
+               FontAttributes="Bold"
+               Padding="20,5,0,0" 
+               FontSize="22"/>
+    </Shell.TitleView>
+
+    <Grid VerticalOptions="FillAndExpand"
+          HorizontalOptions="FillAndExpand"
+          Padding="5" RowSpacing="2" ColumnSpacing="2"
+          RowDefinitions="2*,*,*,*,*,*,*"
+          ColumnDefinitions="*,*,*,*">
+
+
+        <Label x:Name="CurrentCalculation"
+               FontSize="22"
+               LineBreakMode="NoWrap"
+               Grid.ColumnSpan="4"
+               Text="{Binding ProcessLabel}"
+               HorizontalTextAlignment="End"
+               VerticalTextAlignment="Start"
+               Grid.Row="0"/>
+
+        <Label x:Name="ResultText"
+               FontSize="50" FontFamily="CalculateSymbolStyle" 
+               Text="{Binding ResultLabel}"
+               FontAttributes="Bold"
+               HorizontalTextAlignment="End"
+               VerticalTextAlignment="End"
+               LineBreakMode="NoWrap" Grid.ColumnSpan="4"/>
+
+
+        <!-- Цифровые кнопки -->
+        
+        <Button x:Name="ZeroBtn" 
+                Text="0"   Style="{StaticResource WhiteButton}" Grid.Row="6" Grid.Column="1"
+                Command="{Binding NumberButtonClickCommand}"
+                CommandParameter="{Binding Source={x:Reference ZeroBtn}, Path=Text}"/>
+        
+        <Button x:Name="OneBtn" 
+                Text="1" Style="{StaticResource WhiteButton}" Grid.Row="5" Grid.Column="0"
+                Command="{Binding NumberButtonClickCommand}"
+                CommandParameter="{Binding Source={x:Reference OneBtn}, Path=Text}"/>
+
+        <Button x:Name="TwoBtn" 
+                Text="2" Style="{StaticResource WhiteButton}" Grid.Row="5" Grid.Column="1"   
+                Command="{Binding NumberButtonClickCommand}"
+                CommandParameter="{Binding Source={x:Reference TwoBtn}, Path=Text}"/>
+
+        <Button x:Name="ThreeBtn" 
+                Text="3" Style="{StaticResource WhiteButton}" Grid.Row="5" Grid.Column="2"  
+                Command="{Binding NumberButtonClickCommand}"
+                CommandParameter="{Binding Source={x:Reference ThreeBtn}, Path=Text}"/>
+
+        <Button x:Name="FourBtn" 
+                Text="4" Style="{StaticResource WhiteButton}" Grid.Row="4" Grid.Column="0"
+                Command="{Binding NumberButtonClickCommand}"
+                CommandParameter="{Binding Source={x:Reference FourBtn}, Path=Text}"/>
+
+        <Button x:Name="FiveBtn" 
+                Text="5" Style="{StaticResource WhiteButton}" Grid.Row="4" Grid.Column="1"
+                Command="{Binding NumberButtonClickCommand}"
+                CommandParameter="{Binding Source={x:Reference FiveBtn}, Path=Text}"/>
+
+        <Button x:Name="SixBtn" 
+                Text="6" Style="{StaticResource WhiteButton}" Grid.Row="4" Grid.Column="2"
+                Command="{Binding NumberButtonClickCommand}"
+                CommandParameter="{Binding Source={x:Reference SixBtn}, Path=Text}"/>
+
+        <Button x:Name="SevenBtn" 
+                Text="7" Style="{StaticResource WhiteButton}" Grid.Row="3" Grid.Column="0" 
+                Command="{Binding NumberButtonClickCommand}"
+                CommandParameter="{Binding Source={x:Reference SevenBtn}, Path=Text}"/>
+
+        <Button x:Name="EightBtn" 
+                Text="8" Style="{StaticResource WhiteButton}" Grid.Row="3" Grid.Column="1"
+                Command="{Binding NumberButtonClickCommand}"
+                CommandParameter="{Binding Source={x:Reference EightBtn}, Path=Text}"/>
+
+        <Button x:Name="NineBtn" 
+                Text="9" Style="{StaticResource WhiteButton}" Grid.Row="3" Grid.Column="2"
+                Command="{Binding NumberButtonClickCommand}"
+                CommandParameter="{Binding Source={x:Reference NineBtn}, Path=Text}"/>
+
+        <!-- Кнопки математических операций -->
+        <Button x:Name="Division" 
+                Text="÷" Grid.Row="2" Grid.Column="3"
+                Command="{Binding MathOperatorButtonClickCommand}"
+                CommandParameter="{Binding Source={x:Reference Division}, Path=Text}"/>
+
+        <Button x:Name="Multiplication" 
+                Text="×" Grid.Row="3" Grid.Column="3"
+                Command="{Binding MathOperatorButtonClickCommand}"
+                CommandParameter="{Binding Source={x:Reference Multiplication}, Path=Text}"/>
+
+        <Button x:Name="Subtraction"  
+                Text="-" Grid.Row="4" Grid.Column="3"
+                Command="{Binding MathOperatorButtonClickCommand}"
+                CommandParameter="{Binding Source={x:Reference Subtraction}, Path=Text}"/>
+
+        <Button x:Name="Summation" 
+                Text="+" Grid.Row="5" Grid.Column="3"
+                Command="{Binding MathOperatorButtonClickCommand}"
+                CommandParameter="{Binding Source={x:Reference Summation}, Path=Text}"/>
+
+
+        <!--<Button ImageSource="degree2.png" Grid.Row="2" Grid.Column="1"/>-->
+        <Button Text="x^2" Grid.Row="2" Grid.Column="1"
+                Command="{Binding SqDegreeCommand}"/>
+        
+        <Button ImageSource="square.png" Grid.Row="2" Grid.Column="2"
+                Command="{Binding SqrtCommand}"/>
+        
+        <Button Text="Sin" Grid.Row="1" Grid.Column="0"
+                Command="{Binding SineCommand}"/>
+        
+        <Button Text="1/x" Grid.Row="2" Grid.Column="0"
+                Command="{Binding DivisionByXCommand}"/>
+        
+        <Button Text="+/-" Style="{StaticResource WhiteButton}" Grid.Row="6" Grid.Column="0"
+                Command="{Binding NegativeCommand}"/>
+        
+        <Button x:Name="Comma"  
+                Text="," Style="{StaticResource WhiteButton}" Grid.Row="6" Grid.Column="2" 
+                Command="{Binding NumberButtonClickCommand}"
+                CommandParameter="{Binding Source={x:Reference Comma}, Path=Text}"/>
+        
+        <Button Text="="   Style="{StaticResource DarkGrayButton}" Grid.Row="6" Grid.Column="3" 
+                Command="{Binding CalculateClickCommand}"/>
+        
+        
+        <!-- Дополнительные кнопки -->
+        <Button Text="CE" Grid.Row="1" Grid.Column="1"
+                Command="{Binding OnClearNumberCommand}"/>
+        
+        <Button Text="C" Grid.Row="1" Grid.Column="2"
+                Command="{Binding OnClearCommand}"/>
+        
+        <Button  ImageSource="backspace.png" Grid.Row="1" Grid.Column="3"
+                 Command="{Binding BackSpaceCommand}"/>
+
+
+    </Grid>
+</ContentPage>

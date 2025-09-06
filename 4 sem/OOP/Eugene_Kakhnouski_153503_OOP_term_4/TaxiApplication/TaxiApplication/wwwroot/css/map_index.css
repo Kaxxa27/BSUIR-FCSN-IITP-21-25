@@ -1,0 +1,33 @@
+﻿
+button.confirm-btn {
+    font-size: 16px;
+    font-weight: bold;
+    width: 49%;
+    border-radius: 10px;
+    background-color: lawngreen;
+    color: black;
+    padding: 10px 20px;
+    transition: background-color 0.7s ease;
+}
+
+button.confirm-btn:hover {
+    background-color: springgreen;
+    cursor: pointer;
+}
+
+button.cancel-map-btn {
+    font-size: 16px;
+    font-weight: bold;
+    width: 49%;
+    border-radius: 10px;
+    background-color: darkred;
+    color: white;
+    padding: 10px 20px;
+    transition: background-color 0.7s ease;
+}
+
+button.cancel-map-btn:hover {
+    background-color: palevioletred;
+    cursor: pointer;
+}
+

@@ -1,0 +1,116 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+3_sample.com_ -- emu8086 assembler version: 4.05  
+ 
+[ 22.10.2023  --  16:49:33 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       org 100h ; directive make tiny com file.
+[   2]        :                                       
+[   3]        :                                       ; calculate the sum of elements in vector,
+[   4]        :                                       ; store result in m and print it in binary code.
+[   5]        :                                       
+[   6]        :                                       ; number of elements:
+[   7]    0100: B9 05 00                              mov cx, 5
+[   8]        :                                       
+[   9]        :                                       ; al will store the sum:
+[  10]    0103: B0 00                                 mov al, 0
+[  11]        :                                       
+[  12]        :                                       ; bx is an index:
+[  13]    0105: BB 00 00                              mov bx, 0
+[  14]        :                                       
+[  15]        :                                       ; sum elements:
+[  16]    0108: 02 87 41 01                           next: add al, vector[bx]
+[  17]        :                                       
+[  18]        :                                       ; next byte:
+[  19]    010C: 43                                    inc bx
+[  20]        :                                       
+[  21]        :                                       ; loop until cx=0:
+[  22]    010D: E2 F9                                 loop next
+[  23]        :                                       
+[  24]        :                                       
+[  25]        :                                       ; store result in m:
+[  26]    010F: A2 46 01                              mov m, al
+[  27]        :                                       
+[  28]        :                                       
+[  29]        :                                       ; print result in binary:
+[  30]    0112: 8A 1E 46 01                           mov bl, m
+[  31]    0116: B9 08 00                              mov cx, 8
+[  32]    0119: B4 02                                 print: mov ah, 2   ; print function.
+[  33]    011B: B2 30                                 mov dl, '0'
+[  34]    011D: F6 C3 80                              test bl, 10000000b  ; test first bit.
+[  35]    0120: 74 02                                 jz zero
+[  36]    0122: B2 31                                 mov dl, '1'
+[  37]    0124: CD 21                                 zero:  int 21h
+[  38]    0126: D0 E3                                 shl bl, 1
+[  39]    0128: E2 EF                                 loop print
+[  40]        :                                       ; print binary suffix:
+[  41]    012A: B2 62                                 mov dl, 'b'
+[  42]    012C: CD 21                                 int 21h
+[  43]        :                                       
+[  44]        :                                       
+[  45]        :                                       
+[  46]    012E: B2 0A                                 mov dl, 0ah ; new line.
+[  47]    0130: CD 21                                 int 21h
+[  48]    0132: B2 0D                                 mov dl, 0dh ; carrige return.
+[  49]    0134: CD 21                                 int 21h
+[  50]        :                                       
+[  51]        :                                       
+[  52]        :                                       ; print result in decimal:
+[  53]    0136: A0 46 01                              mov al, m
+[  54]    0139: E8 0B 00                              call print_al
+[  55]        :                                       
+[  56]        :                                       
+[  57]        :                                       
+[  58]        :                                       
+[  59]        :                                       ; wait for any key press:
+[  60]    013C: B4 00                                 mov ah, 0
+[  61]    013E: CD 16                                 int 16h
+[  62]        :                                       
+[  63]        :                                       
+[  64]        :                                       
+[  65]    0140: C3                                    ret
+[  66]        :                                       
+[  67]        :                                       ; variables:
+[  68]    0141: 05 04 05 02 01                        vector db 5, 4, 5, 2, 1
+[  69]    0146: 00                                    m db 0
+[  70]        :                                       
+[  71]        :                                       
+[  72]    0147:                                       print_al proc
+[  73]    0147: 3C 00                                 cmp al, 0
+[  74]    0149: 75 09                                 jne print_al_r
+[  75]    014B: 50                                    push ax
+[  76]    014C: B0 30                                 mov al, '0'
+[  77]    014E: B4 0E                                 mov ah, 0eh
+[  78]    0150: CD 10                                 int 10h
+[  79]    0152: 58                                    pop ax
+[  80]    0153: C3                                    ret
+[  81]    0154:                                       print_al_r:
+[  82]    0154: 60                                    pusha
+[  83]    0155: B4 00                                 mov ah, 0
+[  84]    0157: 3D 00 00                              cmp ax, 0
+[  85]    015A: 74 11                                 je pn_done
+[  86]    015C: B2 0A                                 mov dl, 10
+[  87]    015E: F6 F2                                 div dl
+[  88]    0160: E8 F1 FF                              call print_al_r
+[  89]    0163: 8A C4                                 mov al, ah
+[  90]    0165: 04 30                                 add al, 30h
+[  91]    0167: B4 0E                                 mov ah, 0eh
+[  92]    0169: CD 10                                 int 10h
+[  93]    016B: EB 00                                 jmp pn_done
+[  94]    016D:                                       pn_done:
+[  95]    016D: 61                                    popa
+[  96]    016E: C3                                    ret
+[  97]        :                                       endp
+[  98]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================

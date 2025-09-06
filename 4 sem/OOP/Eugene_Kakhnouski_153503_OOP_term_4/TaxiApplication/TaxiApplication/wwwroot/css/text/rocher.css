@@ -1,0 +1,17 @@
+﻿
+/*Example
+<div > Butter</div >*/
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2&family=Calligraffitti&display=swap');
+
+
+.buffer-font {
+    font-family: 'Calligraffitti', cursive;
+    font-size: 13rem;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    text-shadow: -15px 5px 20px #ced0d3;
+    letter-spacing: 0.02em;
+    color: #DC143C;
+    text-shadow: 5px 5px 0px #00FF7F, 10px 10px 0px #FFD662, 15px 15px 0px #FF80BF, 20px 20px 0px #EF5097, 25px 25px 0px #6868AC, 30px 30px 0px #90B1E0;
+}

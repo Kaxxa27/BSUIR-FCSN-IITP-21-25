@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/back">
+        <file>bckg.png</file>
+        <file>backgr.jpg</file>
+        <file>sky.jpg</file>
+        <file>sky800x800.jpg</file>
+        <file>900X900.jpg</file>
+    </qresource>
+</RCC>

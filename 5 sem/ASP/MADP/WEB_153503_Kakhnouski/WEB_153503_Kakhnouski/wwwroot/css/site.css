@@ -1,0 +1,13 @@
+header, footer {
+    background-color: rgba(var(--bs-dark-rgb));
+}
+
+footer {
+    position: absolute; /* Абсолютное позиционирование */
+    width: 100%; /* Ширина 100% экрана */
+    bottom: 0; /* Прижимаем к нижнему краю */
+}
+
+.nav-color {
+    color: rgba(255,255,255,0.5);
+}

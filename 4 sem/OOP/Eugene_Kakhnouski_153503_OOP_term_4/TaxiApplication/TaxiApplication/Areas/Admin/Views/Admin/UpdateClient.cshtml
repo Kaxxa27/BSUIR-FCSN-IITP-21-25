@@ -1,0 +1,134 @@
+﻿@model TaxiApplication.Domain.Entity.Client
+@{
+	ViewBag.Title = "UpdateClient";
+}
+
+<form asp-action="UpdateClient" asp-controller="Admin">
+
+    <div class="add-user-form">
+
+        <h1 class="login-style-size-50 ">Изменение пользователя</h1>
+
+        <p>
+            <div class="add-user-name-surname-div">
+                <div class="form-floating add-user-form-name-surname">
+                    <input asp-for="Profile.Name" class="form-control " id="NameInput" placeholder="Password" autocomplete="off">
+                    <label class="login-style-for-labels" asp-for="Profile.Name" for="NameInput">Name</label>
+                    <div asp-validation-summary="ModelOnly" class="login-style-for-errors"></div>
+                    <span asp-validation-for="Profile.Name" class="login-style-for-errors"></span>
+                </div>
+                <div class="form-floating add-user-form-name-surname">
+                    <input asp-for="Profile.Surname" class="form-control " id="SurnameInput" placeholder="Password" autocomplete="off">
+                    <label class="login-style-for-labels" asp-for="Profile.Surname" for="SurnameInput">Surname</label>
+                    <div asp-validation-summary="ModelOnly" class="login-style-for-errors"></div>
+                    <span asp-validation-for="Profile.Surname" class="login-style-for-errors"></span>
+                </div>
+            </div>
+
+        </p>
+
+        <p>
+            <div class="form-floating  ">
+                <input asp-for="Profile.Email" class="form-control " id="EmailInput" placeholder="Password" autocomplete="off">
+                <label class="login-style-for-labels" asp-for="Profile.Email" for="EmailInput">Email</label>
+                <div asp-validation-summary="ModelOnly" class="login-style-for-errors"></div>
+                <span asp-validation-for="Profile.Email" class="login-style-for-errors"></span>
+            </div>
+        </p>
+
+
+        <p>
+            <div class="form-floating ">
+                <input asp-for="Profile.PhoneNumber" class="form-control " id="PhoneNumberInput" placeholder="Password" autocomplete="off">
+                <label class="login-style-for-labels" asp-for="Profile.PhoneNumber" for="PhoneNumberInput">PhoneNumber</label>
+                <div asp-validation-summary="ModelOnly" class="login-style-for-errors"></div>
+                <span asp-validation-for="Profile.PhoneNumber" class="login-style-for-errors"></span>
+            </div>
+        </p>
+
+        <p>
+            <div class="form-floating ">
+                <input asp-for="Profile.Age" class="form-control " id="AgeInput" placeholder="Age" autocomplete="off"
+                       data-val="true" data-val-required="Пожалуйста, введите ваш возраст">
+                <label class="login-style-for-labels" asp-for="Profile.Age" for="AgeInput">Age</label>
+                <div asp-validation-summary="ModelOnly" class="login-style-for-errors"></div>
+                <span asp-validation-for="Profile.Age" class="login-style-for-errors"></span>
+            </div>
+        </p>
+
+        <p>
+            <div class="form-floating  ">
+                <input asp-for="Login" class="form-control" id="LoginInput" placeholder="test@gmail.com" autocomplete="off">
+                <label class="login-style-for-labels" asp-for="Login" for="LoginInput">Login</label>
+                <span asp-validation-for="Login" class="login-style-for-errors"></span>
+            </div>
+        </p>
+
+        <p>
+            <div class="form-floating ">
+                <input asp-for="Password"  class="form-control " id="PasswordInput" placeholder="Password" autocomplete="off">
+                <label class="login-style-for-labels" asp-for="Password" for="PasswordInput">Password</label>
+                <div asp-validation-summary="ModelOnly" class="login-style-for-errors"></div>
+                <span asp-validation-for="Password" class="login-style-for-errors"></span>
+            </div>
+        </p>
+
+        <p>
+            <div>
+                <label class="createorder-label" asp-for="Role">Роль</label>
+                <p><select style="font-weight:bold;" class="form-select" asp-for="Role" asp-items="Html.GetEnumSelectList<TaxiApplication.Domain.Enum.Role>()"></select></p>
+            </div>
+        </p>
+
+        <input hidden="hidden" name="Profile.Id" value="@Model.Profile.Id"/>
+        <input hidden="hidden" name="Profile.ClientId" value="@Model.Profile.ClientId"/>
+        <p>
+            <div>
+                <button class="btn-block standart-btn" type="submit">Обновить данные</button>
+            </div>
+        </p>
+    </div>
+</form>
+
+@*<form asp-action="UpdateClient" asp-controller="Admin">
+	<div>
+		<p>
+			<label asp-for="Login"></label>
+			<input asp-for="Login" value="@Model.Login" />
+		</p>
+		<p>
+			<label asp-for="Profile.Name"></label>
+			<input asp-for="Profile.Name" value="@Model.Profile.Name" />
+		</p>
+		<p>
+			<label asp-for="Profile.Surname"></label>
+			<input asp-for="Profile.Surname" value="@Model.Profile.Surname" />
+
+		</p>
+		<p>
+			<label asp-for="Profile.Age"></label>
+			<input asp-for="Profile.Age" value="@Model.Profile.Age" />
+
+		</p>
+		<p>
+			<label asp-for="Profile.PhoneNumber"></label>
+			<input asp-for="Profile.PhoneNumber" value="@Model.Profile.PhoneNumber" />
+		</p>
+		<p>
+			<label asp-for="Profile.Email"></label>
+			<input asp-for="Profile.Email" value="@Model.Profile.Email" />
+		</p>
+		<p>
+			<label asp-for="Password"></label>
+			<input asp-for="Password" value="@Model.Password" />
+		</p>
+		<p>
+			<input type="submit" value="Update Client" />
+		</p>
+		<input hidden="hidden" name="Role" value="@TaxiApplication.Domain.Enum.Role.Client" />
+		<input hidden="hidden" name="Profile.Id" value="@Model.Profile.Id" />
+		<input hidden="hidden" name="Profile.ClientId" value="@Model.Profile.ClientId"/>
+	</div>
+</form>
+
+<div asp-validation-summary="All"></div>*@

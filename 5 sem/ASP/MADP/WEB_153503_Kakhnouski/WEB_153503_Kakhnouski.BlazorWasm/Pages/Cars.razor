@@ -1,0 +1,43 @@
+﻿@page "/cars"
+@page "/cars/{category}"
+@attribute [Authorize]
+
+
+@using Domain.Entities;
+@using Microsoft.AspNetCore.Authorization;
+@using WEB_153503_Kakhnouski.BlazorWasm.Components;
+@using WEB_153503_Kakhnouski.BlazorWasm.Services;
+
+<PageTitle>Cars</PageTitle>
+
+<CategorySelector SelectedCategory="@SelectedName" />
+<CarList CarSelected="FindCar" />
+<Pager Category="@Category" TotalPages="@DataService.TotalPages" CurrentPage="@DataService.CurrentPage" />
+<CarDetails SelectedCar="@SelectedCar" />
+
+@code {
+	[Inject]
+	public IDataService DataService { get; set; }
+
+	[Parameter] 
+	public string Category { get; set; }
+
+	public string? SelectedName { get; set; }
+	public Car? SelectedCar { get; set; }
+
+	protected override async Task OnParametersSetAsync()
+	{
+		await DataService.GetCarListAsync(Category);
+
+		if (Category != null)
+			SelectedName = DataService?.Categories?.FirstOrDefault(c => c.NormalizedName.Equals(Category))?.Name;
+		else 
+			SelectedName = "Все";
+	}
+
+	public void FindCar(int id)
+	{
+		SelectedCar = DataService?.CarList?.FirstOrDefault(c => c.Id == id);
+		StateHasChanged();
+	}
+}

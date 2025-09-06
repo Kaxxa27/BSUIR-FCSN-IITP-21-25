@@ -1,0 +1,56 @@
+[
+    {
+        "FFT/FFT_SSE": 9.199170124481327,
+        "durationFFT": 8868,
+        "durationFFT_SSE": 964,
+        "n": 1024
+    },
+    {
+        "FFT/FFT_SSE": 8.894029850746268,
+        "durationFFT": 17877,
+        "durationFFT_SSE": 2010,
+        "n": 2048
+    },
+    {
+        "FFT/FFT_SSE": 8.613783533765032,
+        "durationFFT": 37246,
+        "durationFFT_SSE": 4324,
+        "n": 4096
+    },
+    {
+        "FFT/FFT_SSE": 8.473661670235545,
+        "durationFFT": 79144,
+        "durationFFT_SSE": 9340,
+        "n": 8192
+    },
+    {
+        "FFT/FFT_SSE": 7.450792770304627,
+        "durationFFT": 161183,
+        "durationFFT_SSE": 21633,
+        "n": 16384
+    },
+    {
+        "FFT/FFT_SSE": 7.736646472448167,
+        "durationFFT": 320537,
+        "durationFFT_SSE": 41431,
+        "n": 32768
+    },
+    {
+        "FFT/FFT_SSE": 7.904304077857505,
+        "durationFFT": 670862,
+        "durationFFT_SSE": 84873,
+        "n": 65536
+    },
+    {
+        "FFT/FFT_SSE": 7.697764759766807,
+        "durationFFT": 1361342,
+        "durationFFT_SSE": 176849,
+        "n": 131072
+    },
+    {
+        "FFT/FFT_SSE": 7.377073628296199,
+        "durationFFT": 2799806,
+        "durationFFT_SSE": 379528,
+        "n": 262144
+    }
+]

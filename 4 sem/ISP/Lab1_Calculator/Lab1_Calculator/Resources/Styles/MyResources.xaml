@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lab1_Calculator.Resources.Styles.MyResources">
+
+
+    <!-- Цвета для калькулятора-->
+    <Color x:Key="LightGray_BackgroungColor">#F3F3F3</Color>
+    <Color x:Key="DarkGray">#333332</Color>
+    <Color x:Key="LightGrayForButton">#F9F9F9</Color>
+    <Color x:Key="Black">Black</Color>
+    <Color x:Key="White">White</Color>
+
+    <!-- Цвета для IntegralCalculate-->
+    <Color x:Key="Blue_IntegralBackgroungColor">#1F306E</Color>
+    <Color x:Key="Purple_IntegralColor">#553772</Color>
+    <Color x:Key="Pink1000_IntegralCalculate">#8f3b76</Color>
+    <Color x:Key="Pink500_IntegralCalculate">#c7417b</Color>
+    <Color x:Key="Pink0_IntegralCalculate">#f5487f</Color>
+    <Color x:Key="Orange_IntegralCalculate">#f7a400</Color>
+    <Color x:Key="LightGreen">#36DA82</Color>
+    
+    <!--Для визуальных элементов--> 
+    <Color x:Key="Gray100">#E1E1E1</Color>
+    <Color x:Key="Gray200">#C8C8C8</Color>
+    <Color x:Key="Gray300">#ACACAC</Color>
+    <Color x:Key="Gray400">#919191</Color>
+    <Color x:Key="Gray500">#6E6E6E</Color>
+    <Color x:Key="Gray600">#404040</Color>
+    <Color x:Key="Gray900">#212121</Color>
+    <Color x:Key="Gray950">#141414</Color>
+    
+    <Style x:Key="BaseButton" TargetType="Button">
+        
+        <Setter Property="FontFamily" Value="OpenSansRegular"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="14,10"/>
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style x:Key="LightGrayButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+        <Setter Property="BackgroundColor" Value="{StaticResource LightGrayForButton}"/>
+        <Setter Property="TextColor" Value="{StaticResource Black}"/>
+    </Style>
+
+    <Style x:Key="DarkGrayButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+        <Setter Property="BackgroundColor" Value="{StaticResource DarkGray}"/>
+        <Setter Property="TextColor" Value="{StaticResource White}"/>
+    </Style>
+
+    <Style x:Key="WhiteButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+        <Setter Property="BackgroundColor" Value="{StaticResource White}"/>
+        <Setter Property="TextColor" Value="{StaticResource Black}"/>
+    </Style>
+
+    <Style x:Key="IntegralButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="WidthRequest" Value="100"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource DarkGray}"/>
+        <Setter Property="TextColor" Value="{StaticResource Orange_IntegralCalculate}"/>
+    </Style>
+
+
+
+
+</ResourceDictionary>

@@ -1,0 +1,61 @@
+﻿@model IEnumerable<TaxiApplication.Domain.Entity.Client>
+@{
+	ViewBag.Title = "GetAllClient";
+    
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <div class="container-for-table-cross-sel">
+        <div class="table-cross-sel-div">
+            <table class="table-cross-sel">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Login</th>
+                        <th>Password</th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Age</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Заказы</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.ToList())
+                    {
+                        if(user.Role is not TaxiApplication.Domain.Enum.Role.Admin)
+                        {
+                            <tr>
+                                <td>@user.Id</td>
+                                <td>@user.Login</td>
+                                <td>@user.Password</td>
+                                <td>@user.Profile.Name</td>
+                                <td>@user.Profile.Surname</td>
+                                <td>@user.Profile.Age</td>
+                                <td>@user.Profile.Email</td>
+                                <td>@user.Profile.PhoneNumber</td>
+                                <td>
+                                    <form asp-controller="Admin" asp-action="GetTaxiOrdersForAdmin" asp-area="Admin" method="get">
+                                        <input type="hidden" name="userId" value="@user.Id" />
+                                        <button class="btn-block standart-btn" type="submit">Заказы</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }             
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+</body>
+</html>
+
+

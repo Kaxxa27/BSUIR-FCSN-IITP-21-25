@@ -1,0 +1,50 @@
+{% extends "base_generic.html"%}
+
+{% block title%}
+<title>My Parkings</title>
+{% endblock %}
+
+{% block content%}
+<div class="row">
+    <div class="col-sm-12">
+        <p>Всего парковочных мест: {{ parkings_count }}</p>
+        {% if parkings %}
+        <h1>Список ваших парковочных мест: </h1>
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Номер места</th>
+                        <th>Цена/Месяц</th>
+                        <th>Машины на парковке</th>
+                        <th>Опции</th>
+                    </tr>
+                    </thead>
+                <tbody>
+                    {% for parking in parkings %}
+                         <tr>
+                             <td>{{ parking.number }}</td>
+                             <td>{{ parking.price }}$</td>
+
+                                 <td>
+                                     {% for car in parking.cars.all %}
+                                     <p><label>{{car}}</label></p>
+                                     {% endfor %}
+                                     <td>
+                                         <p><a href="{% url 'car_in_park' parking.id 'add' %}"
+                                               class="btn btn-success" style="width:130px;">Добавить авто</a></p>
+                                         <p><a href="{% url 'car_in_park' parking.id 'del' %}"
+                                               class="btn btn-danger" style="width:130px;">Удалить авто</a></p>
+                                         <p><a href="{% url 'delete_park' parking.id %}"
+                                               class="btn btn-danger" style="width:130px;">Снять с аренды</a></p>
+                                     </td>
+                                </td>
+                         </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <h2> You don't have any parking spaces available.</h2>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

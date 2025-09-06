@@ -1,0 +1,85 @@
+{% extends "base_generic.html"%}
+{% load static %}
+
+{% block style %}
+  <link rel="stylesheet" href="{% static 'myparking/css/contacts.css' %}">
+{% endblock %}
+
+
+{% block title%}
+<title>Contacts</title>
+{% endblock %}
+
+{% block content%}
+
+<div class="main-container">
+    
+    <div class="block-contacts">
+        <div class="card-wrapper">
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img class="contact-image" src="{% static 'myparking/images/contacts/tech-support.jpg' %}" alt="Contact Photo">
+                    </div>
+                    <div class="card-back">
+                        <h2>Back</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="contact-summary text-20">
+            <p class=" text-bold">По вопросам технического характера обращаться в тех. поддрежку по следующим контактам:</p>
+            <p>Телефон технической поддержки: <strong>+375 (29) 888-88-88</strong></p>
+            <p>Электронная почта технической поддержки: <strong>support@parking-bykaxxa.com</strong></p>
+        </div>
+    </div>
+
+    <div class="block-contacts">
+        <div class="card-wrapper">
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img class="contact-image" src="{% static 'myparking/images/contacts/stethem-boss.jpg' %}" alt="Contact Photo">
+                    </div>
+                    <div class="card-back">
+                        <h2>Back</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="contact-summary text-20">
+            <p class=" text-bold">Денис Иванов</p>
+            <p>Должность: <b>Генеральный директор</b></p>
+            <p>Телефон: <b>+375 (29) 111-11-11</b></p>
+            <p>Электронная почта: <b>ivanov@parking-bykaxxa.com</b></p>
+        </div>
+    </div>
+
+    <div class="block-contacts">
+        <div class="card-wrapper">
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img class="contact-image" src="{% static 'myparking/images/contacts/margo-manager.jpg' %}" alt="Contact Photo">
+                    </div>
+                    <div class="card-back">
+                        <h2>Back</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="contact-summary text-20">
+            <p class=" text-bold">Мария Петрова</p>
+            <p>Должность: <b>Менеджер по клиентским отношениям</b></p>
+            <p>Телефон: <b>+375 (29) 222-22-22</b></p>
+            <p>Электронная почта: <b>petrova@parking-bykaxxa.com</b></p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="{% static 'myparking/js/contacts/cards3D.js' %}"></script>
+{% endblock %}

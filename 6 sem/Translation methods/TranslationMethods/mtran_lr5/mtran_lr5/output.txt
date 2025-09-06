@@ -1,0 +1,23 @@
++----------------------------------------------------------------+
+|   №  |  Token                       |   Info                   |
++----------------------------------------------------------------+
+|  1     |#include                           |PREPROCESSOR DIRECTIVE                              
+|  1     |<iostream>                         |HEADER FILE                                         
+|  3     |using                              |KEYWORD                                             
+|  3     |namespace                          |KEYWORD                                             
+|  3     |std                                |NAMESPACE                                           
+|  3     |;                                  |END OF CONSTRUCTION                                 
+|  5     |int                                |DATA TYPE                                           
+|  5     |main                               |FUNCTION (INT)                                      
+|  5     |(                                  |PARENTHESIS                                         
+|  5     |)                                  |PARENTHESIS                                         
+|  5     |{                                  |PARENTHESIS                                         
+|  6     |cout                               |KEYWORD                                             
+|  6     |<<                                 |OPERATOR                                            
+|  6     |"Hello!"                           |STRING                                              
+|  6     |;                                  |END OF CONSTRUCTION                                 
+|  7     |return                             |KEYWORD                                             
+|  7     |0                                  |INTEGER                                             
+|  7     |;                                  |END OF CONSTRUCTION                                 
+|  8     |}                                  |PARENTHESIS                                         
++----------------------------------------------------------------+

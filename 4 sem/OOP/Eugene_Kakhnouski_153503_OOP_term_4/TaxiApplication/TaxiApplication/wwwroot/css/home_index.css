@@ -1,0 +1,51 @@
+﻿.home-index-block {
+    width: 100%;
+    margin-top: 60px;
+    border-radius: 30px;
+    padding: 30px 40px 30px 40px;   
+}
+
+.tariff-block {
+    width: 100%;
+    margin: 10px;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.tariff-label {
+    font-weight: bolder;
+    font-size: 18px;
+    text-align: center;
+}
+
+.standart-label {
+    font-weight: bolder;
+    font-size: 30px
+}
+
+.color-green-to-malina {
+    background: linear-gradient(to bottom right, #40E0D0, #FF8C00, #FF0080);
+}
+.color-rainbow-blue {
+    background: linear-gradient(to bottom right, #00F260, #0575E6);
+}
+.color-argon {
+    background: linear-gradient(to bottom right, #fdeff9,#ec38bc,#7303c0, #03001e);
+}
+.color-radar {
+    background: linear-gradient(to bottom right, #A770EF, #CF8BF3, #ec38bc);
+}
+
+.color-grey{
+    background-color: darkgrey;
+}
+.color-crimson{
+    background-color: crimson;
+}
+.color-lawngreen {
+    background-color: lawngreen;
+}
+.color-gold{
+    background-color: goldenrod;
+}
+

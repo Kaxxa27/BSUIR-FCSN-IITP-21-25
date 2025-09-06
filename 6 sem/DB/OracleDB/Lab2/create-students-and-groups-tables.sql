@@ -1,0 +1,17 @@
+DROP TABLE Students;
+DROP TABLE St_Groups;
+
+CREATE TABLE St_Groups (
+    ID NUMBER PRIMARY KEY,
+    NAME VARCHAR2(50),
+    C_VAL NUMBER
+);
+
+CREATE TABLE Students (
+    ID NUMBER,
+    NAME VARCHAR2(50),
+    St_Groups_ID NUMBER,
+    FOREIGN KEY (St_Groups_ID) REFERENCES St_Groups(ID)
+);
+
+

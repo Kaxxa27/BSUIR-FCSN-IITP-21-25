@@ -1,0 +1,16 @@
+{% extends "base_generic.html"%}
+
+{% block title%}
+<title>Payment Paid</title>
+{% endblock %}
+
+{% block content%}
+<h1>Оплата платежа!</h1>
+<h1>Номер парковочного места: {{payment.park.number}}.</h1>
+<label>Сумма: {{ payment.amount}}$.</label>
+<form method="post">
+  {% csrf_token %}
+  <button class="btn btn-success" type="submit">Оплатить</button>
+  <a href="{% url 'my_payments' %}" class="btn btn-danger">Отменить</a>
+</form>
+{% endblock %}

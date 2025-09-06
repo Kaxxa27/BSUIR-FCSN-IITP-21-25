@@ -1,0 +1,82 @@
+{% extends "base_generic.html" %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'myparking/css/registration.css' %}">
+{% endblock %}
+
+{% block title %}
+<title>Registartion</title>
+{% endblock %}
+
+{% block content %}
+<div>
+    <form method="post">
+        {% csrf_token %}
+        <table>
+
+            <tr>
+                <td>{{ form.username.label_tag }}</td>
+                <td>{{ form.username }}</td>
+            </tr>
+
+            <tr>
+                <td>{{ form.first_name.label_tag }}</td>
+                <td>{{ form.first_name }}</td>
+            </tr>
+
+            <tr>
+                <td>{{ form.last_name.label_tag }}</td>
+                <td>{{ form.last_name }}</td>
+            </tr>
+
+            <tr>
+                <td>{{ form.email.label_tag }}</td>
+                <td>{{ form.email }}</td>
+            </tr>
+            <tr>
+                <td><label>Birth Day:</label></td>
+                <td><input type="date" id="age" required></td>
+            </tr>
+            <tr>
+                <td>{{ form.password1.label_tag }}</td>
+                <td>{{ form.password1 }}</td>
+            </tr>
+
+            <tr>
+                <td>{{ form.password2.label_tag }}</td>
+                <td>{{ form.password2 }}</td>
+            </tr>
+
+        </table>
+        <button id="reg_button" type="submit">Зарегистрироваться</button>
+    </form>
+</div>
+<div style="display: column;">
+    <div>
+        <label>Min 0/ Max 3</label>
+        <input type="number" min="0" max="3">
+    </div>
+    <div>
+        <label>Disabled</label>
+        <input type="number" min="0" max="3" disabled>
+    </div>
+    <div>
+        <input class="check-box-custom" type="checkbox" id="check" checked/>
+        <label for="check">check</label>
+    </div>
+    <div>
+        <input class="radio-btn-custom" type="radio" id="radio1" name="radio"/>
+        <label for="radio1">radio1</label>
+        <input class="radio-btn-custom" type="radio" id="radio2" name="radio"/>
+        <label for="radio2">radio2</label>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'myparking/js/registration/age.js' %}"></script>
+{% endblock %}

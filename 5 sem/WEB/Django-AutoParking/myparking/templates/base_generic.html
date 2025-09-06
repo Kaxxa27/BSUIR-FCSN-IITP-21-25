@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    {% block title %}<title>My Parking</title>{% endblock %}
+    <meta charset="utf-8">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'myparking/css/site_style.css' %}">
+    <link rel="stylesheet" href="{% static 'myparking/css/elements/dropdown.css' %}">
+    <link rel="stylesheet" href="{% static 'myparking/css/elements/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'myparking/css/font_text.css' %}">
+    <link rel="icon" href="{% static 'myparking/images/logo/bykaxxa_logo.png' %}" type="image/png">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    {% block style %}
+    {% endblock %}
+
+</head>
+
+<body class="bg-site">
+<!--Main NavBar-->
+<nav class="navbar">
+
+    <a class="navbar-item" href="{% url 'index'%}">Home</a>
+    <a class="navbar-item" href="{% url 'parking_list'%}">Parking's</a>
+
+    <div class="navbar-item dropdown">
+        <button class="dropbtn">About us</button>
+        <div class="dropdown-content">
+            <a href="{% url 'about'%}">About</a>
+            <a href="{% url 'FAQ'%}">FAQ</a>
+            <a href="{% url 'news'%}">News</a>
+            <a href="{% url 'contacts'%}">Our Contacts</a>
+            <a href="{% url 'privacy_policy'%}">Privacy Policy</a>
+            <a href="{% url 'promo_codes'%}">Promo Codes</a>
+            <a href="{% url 'reviews'%}">Reviews</a>
+            <a href="{% url 'matrix'%}">Matrix</a>
+            <a href="{% url 'paint'%}">Paint</a>
+            <a href="{% url 'hash_table'%}">Hash Table</a>
+            <a href="{% url 'class'%}">Classes</a>
+        </div>
+    </div>
+
+    <div class="navbar-item dropdown">
+        <button class="dropbtn">API</button>
+        <div class="dropdown-content">
+            <a href="{% url 'get_fact_about_cats' %}">Fact about cats</a>
+            <a href="{% url 'get_ip'%}">Server IP</a>
+        </div>
+    </div>
+
+    {% if user.is_authenticated %}
+    <div class="navbar-item dropdown">
+        <button class="dropbtn">Services</button>
+        <div class="dropdown-content">
+            <a href="{% url 'my_parking_list'%}">My Parkings</a>
+            <a href="{% url 'my_cars'%}">My Cars</a>
+            <a href="{% url 'my_payments'%}">My Payments</a>
+        </div>
+    </div>
+    <label class="navbar-label">User: {{ user.get_username }}</label>
+    <label class="navbar-label">Account: {{ user.account.amount }}$</label>
+
+
+    <a class="navbar-item" href="{% url 'my_account'%}">My Account</a>
+
+    {% if user.is_superuser %}
+    <a class="navbar-item" href="{% url 'admin_panel' %}">AdminPanel</a>
+    {% endif %}
+
+    <a class="navbar-item" href="{% url 'logout'%}">Logout</a>
+    {% else %}
+
+    <a class="navbar-item" href="{% url 'login'%}">Login</a>
+    <a class="navbar-item" href="{% url 'register'%}">Registration</a>
+    {% endif %}
+</nav>
+
+<div class="my-main-container">
+    {% block content %}
+    {% endblock %}
+
+</div>
+
+{% block scripts %}
+{% endblock %}
+
+</body>
+</html>

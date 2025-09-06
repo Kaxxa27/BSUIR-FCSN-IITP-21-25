@@ -1,0 +1,205 @@
+; Распечатать строку [Макрос]
+Print macro str
+push ax
+push dx
+
+mov ah,09h ; Номер функции DOS
+lea dx,str ; Смещение str в DX
+int 21h    ; 21 прерывание
+
+pop dx
+pop ax
+endm
+
+; Распечатать символ [Макрос]
+printSymb macro ascii
+mov ah,06h
+mov dl,ascii
+int 21h
+endm
+
+; Модель памяти (код в 1 сегменте, данные и стек в DGROUP)
+.model small
+
+; Сегмент кода
+.code
+
+; Начало прогарммы
+START:
+
+mov ax,@data  ; @data - идентификатор сегмента данных
+mov ds,ax     ; Адрес сегмента данных — в DS
+mov es,ax     ; Адрес сегмента данных — в ES
+
+Print Enter_ArraySize_Str
+Print New_Line
+
+call Enter_Number
+Print Enter_Number
+
+
+;====================Процедура ввода числа====================
+Enter_Number PROC near
+
+Enter_Number_Loop_Start:
+; Ввод числа в строку
+mov ah,0Ah        ; Функция DOS (считать строку символов из STDIN в буфер)
+lea dx,String_Number  ; Смещение строки в DX
+int 21h
+
+mov ah,0Ah           ; Функция DOS (считать строку символов из STDIN в буфер)
+lea dx,String_Number; Смещение строки в DX
+int 21h
+
+; Вычисление длины введеного числа
+lea si, String_Number ; Смещение в SI наше число String_Number
+inc si     ; SI++  ; Возможно не надо !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+mov ax, 0d ; Занулить AX
+lodsb      ; DS:SI в AL
+mov cx,ax  ; CX = длина введеного числа
+
+cmp cx, 0d ; Если длина = 0, то Exeption_NumberIsZero ->
+jz Exeption_NumberIsZero
+
+mov Main_Number, 0d; Занулим главное число
+; Будем в AX хранить степент 10 (TEN) ->
+; 1234 -> 4 * 10^0 + 3 * 10^1 + 2 * 10^2 + 1 * 10^3 = 1234
+mov ax, 01d ; Будем в AX хранить степень 10
+
+NumberStr_In_Number_Loop:
+mov bx, 0d; Занулим BX
+mov si, cx; SI = CX -> идем с конца слова, можно было так же поменять флаг DF(направления)
+;inc si;
+mov bl, String_Number[si]
+
+; Проверка на то, что введеное число(str) является числом(int)
+Proverka_Na_SymbolASCII:
+
+cmp bl, 48d; Сверка с нулем [ASCII] 48d = 0
+jl Exeption_Invalid_Number; bl < 48d
+
+cmp bl, 57d; Сверка с 9 [ASCII] 57d = 9
+jg Exeption_Invalid_Number; bl > 57d
+
+sub bl, 48d; Получить реальное число, "N" - 48 = N
+
+push ax; Сохранение AX
+
+clc; Очистить CF
+mul bl; bl = bl * AX -> Реальное число * 10^ax
+
+jc Exeption_OverFlow   ; Если есть флаг переноса от mul
+add Main_Number, ax    ;  Main_Number + ax = Полноценное число
+jc Exeption_OverFlow   ; Если есть флаг переноса от add
+
+pop ax; Восстановление AX
+
+mul TEN; Увеличиваем AX * 10
+dec cx; Уменьшаем счетчик
+
+cmp cx,0d
+
+jne Enter_Number_Loop_Start
+
+ret ;Вернуться туда, откуда была вызвана PROC
+
+Enter_Number endp
+;=======================================================
+
+
+
+;====================Exeption_NumberIsZero==============
+Exeption_NumberIsZero:
+Print New_Line
+Print Exeption_NumberIsZero_Str
+Print New_Line
+jmp Enter_Number_Loop_Start
+;=======================================================
+
+;====================Exeption_OverFlow==============
+Exeption_OverFlow:
+Print New_Line
+Print Exeption_OverFlow_Str
+Print New_Line
+jmp Enter_Number_Loop_Start
+;=======================================================
+
+;====================Exeption_Invalid_Number==============
+Exeption_Invalid_Number:
+Print New_Line
+Print Exeption_Invalid_Number_Str
+Print New_Line
+jmp Enter_Number_Loop_Start
+;=======================================================
+
+
+;====================Конец программы====================
+end:
+mov ax,4C00h   ; 4C (выход из программы) в AH
+; 00 (успешное звершение) в AL
+int 21h        ; Функция DOS "Завершить программу"
+;=======================================================
+
+; Сегмент данных
+.data
+
+;Exceptions
+Exeption_NumberIsZero_Str db "You didn't enter a number, please repeat the input!$"
+Exeption_Invalid_Number_Str db "The number is entered in the wrong format, repeat the input!$"
+Exeption_OverFlow_Str db "Oops, you've caught an overflow(65535), repeat the input!$"
+
+; Strings
+New_Line   db 0Ah, 0Dh, '$'; Переход на новую строку
+Enter_ArraySize_Str db "Enter array size: $"
+; ВВОД ЧИСЕЛ
+String_Number db 10 DUP(?) ; Строка, в которую вводим число
+Main_Number dw 0d           ; Введенное число (высчитывается)
+
+;isValidNumber db 01d
+TEN dw 10d
+numberOfNumber dw 0d; Номер числа в массиве
+needNumberOfNumber db 0h ; bool, печатать ли номер числа
+
+
+; МАССИВ
+array_size dw 10   ; Заполняемое число элементов массива
+array dw 40 DUP(?) ; Массив чисел
+max_item dw 0      ; Максимальный элемент массива
+existsMaxItemFromRange db 0
+strEnterArray db 'Enter array of values: $'
+
+strAskSymbolsAmount db 'How many numbers would you like to enter [min: 1, max: 30]?$'
+
+; ГИСТОГРАММА
+max_symb dw 50d       ; Максимальное количество символов для гистограммы
+symb db '#$'          ; Символ для заполнения столбика
+symbStart db '> $' ; Символ для начала столбика
+
+; ДИАПАЗОН
+numberFrom dw 0
+numberTo dw 0
+strRange db 'Build histogram for numbers$'
+strFrom db 'from: $'
+strTo db 'to:   $'
+strRangeFormat db '"from" must be <= "to"$'
+strNoNumbersFromRange db 'Not a single number from the range has been entered$'
+needPrintFrom db 0h
+needPrintTo db 0h
+
+; Символы перехода на новую строку (v,<)
+toNewLine db 0Ah, 0Dh, '$'
+
+; Строка для передачи в процедуру
+strGeneral_offset dw 0
+strGeneral_size db 0
+
+; Число для передачи в процедуру
+numberGeneral dw 0
+
+; Сегмент стека (256 байт)
+.stack 100h
+
+; Конец программы
+end START
+
+

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Name="shell"
+    x:Class="Lab1_Calculator.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:Lab1_Calculator.ViewModel"
+    xmlns:view="clr-namespace:Lab1_Calculator.View"
+    xmlns:local="clr-namespace:Lab1_Calculator"
+    Shell.TabBarIsVisible="False">
+
+    <!--<Shell.FlyoutContentTemplate>
+        <DataTemplate>
+            <VerticalStackLayout>
+
+                <Label Text="Калькулятор"/>
+                <CollectionView BindingContext="{x:Reference shell}"
+                            IsGrouped="True"
+                            ItemsSource="{Binding FlyoutItems}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding Title}"
+                               TextColor="Black"
+                               FontSize="18" >
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroupList>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal" />
+                                            <VisualState x:Name="Disabled">
+                                                <VisualState.Setters>
+                                                    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateGroupList>
+                                </VisualStateManager.VisualStateGroups>
+                            </Label>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </DataTemplate>
+    </Shell.FlyoutContentTemplate>-->
+    
+    <!--<Shell.FlyoutHeader>
+        <Label 
+           Text="Калькулятор"
+           FontSize="18"/>
+    </Shell.FlyoutHeader>-->
+
+
+    <!--<ItemGroup>
+        <MauiIcon Include="calculator.svg" />
+    </ItemGroup>-->
+
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <HorizontalStackLayout>
+                <Image Source="{Binding FlyoutIcon}" 
+                       WidthRequest="20"
+                       HeightRequest="20"
+                       Aspect="AspectFill"
+                       Margin="10"/>
+                <Label 
+                       Padding="10"
+                       FontFamily="CalculateSymbolStyle" 
+                       Text="{Binding Title}"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Start"
+                       HeightRequest="30"
+                       FontSize="18"/>
+            </HorizontalStackLayout>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent
+            x:Name="UsualCalculateShellContent"
+            Shell.NavBarIsVisible="true" 
+            FlyoutIcon="calculator.png"
+            Title="Обычный"
+            ContentTemplate="{DataTemplate view:CalculatorPage}"
+            Route="CalculatorPage" />
+        <ShellContent
+            Shell.NavBarIsVisible="false"  
+            FlyoutIcon="integral.png"
+            Title="IntegralCalculate"
+            ContentTemplate="{DataTemplate view:IntegralCalculatePage}"
+            Route="IntegralCalculatePage" />
+        <ShellContent
+            Shell.NavBarIsVisible="false"  
+            FlyoutIcon="folder.png"
+            Title="BrigadeAndJobs"
+            ContentTemplate="{DataTemplate view:SqlLitePickerPage}"
+            Route="SqlLitePickerPage" />
+        <ShellContent
+            Shell.NavBarIsVisible="false"  
+            FlyoutIcon="bankcurrency.png"
+            Title="CurrencyConverter"
+            ContentTemplate="{DataTemplate view:СurrencyСonverterPage}"
+            Route="CurrencyConverterPage" />
+    </FlyoutItem>
+
+
+ </Shell>

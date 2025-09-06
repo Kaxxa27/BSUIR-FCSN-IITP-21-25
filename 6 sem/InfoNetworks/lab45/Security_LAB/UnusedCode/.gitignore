@@ -1,0 +1,7 @@
+/dist
+/build
+/__pycache__
+/Output
+/ISOB45
+*.docx
+*.pdf

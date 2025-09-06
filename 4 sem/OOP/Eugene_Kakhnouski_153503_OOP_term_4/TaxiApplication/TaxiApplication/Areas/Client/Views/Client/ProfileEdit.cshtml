@@ -1,0 +1,141 @@
+﻿@model TaxiApplication.Domain.Entity.Client
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Profile";
+}
+
+<div class="add-user-form">
+
+    <h1 class="login-style-size-50 ">Изменение профиля</h1>
+
+    <div class="row">
+		<div class="col-sm-4">
+            <div>
+                @if (Model.Profile.Photo != null && Model.Profile.Photo.Length > 0)
+                {
+                    <div><img class="image-options" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Profile.Photo)" /></div>
+                }
+                else
+                {
+                    <div><img class="image-options" src="~/images/photo_not_found.jpg" /> </div>
+                }
+
+                <p>
+                    <form asp-controller="Client" asp-action="UploadPhoto" asp-area="Client" method="post" enctype="multipart/form-data">
+                        <input class="photo-input" type="file" name="photoFile" />
+                        <p><button class="photo-btn" type="submit">Сохранить фото</button></p> 
+                    </form>
+                </p>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <fieldset form="ProfileEdit_Form">
+                <p>
+                    <div class="add-user-name-surname-div">
+                        <div class="form-floating add-user-form-name-surname">
+                            <input form="ProfileEdit_Form" asp-for="Profile.Name" class="form-control " id="NameInput" placeholder="Password" autocomplete="off">
+                            <label class="login-style-for-labels" asp-for="Profile.Name" for="NameInput">Name</label>
+                            <div asp-validation-summary="ModelOnly" class="login-style-for-errors"></div>
+                            <span asp-validation-for="Profile.Name" class="login-style-for-errors"></span>
+                        </div>
+                        <div class="form-floating add-user-form-name-surname">
+                            <input form="ProfileEdit_Form" asp-for="Profile.Surname" class="form-control " id="SurnameInput" placeholder="Password" autocomplete="off">
+                            <label class="login-style-for-labels" asp-for="Profile.Surname" for="SurnameInput">Surname</label>
+                            <div asp-validation-summary="ModelOnly" class="login-style-for-errors"></div>
+                            <span asp-validation-for="Profile.Surname" class="login-style-for-errors"></span>
+                        </div>
+                    </div>
+
+                </p>
+
+                <p>
+                    <div class="form-floating  ">
+                        <input form="ProfileEdit_Form" asp-for="Profile.Email" class="form-control " id="EmailInput" placeholder="Password" autocomplete="off">
+                        <label class="login-style-for-labels" asp-for="Profile.Email" for="EmailInput">Email</label>
+                        <div asp-validation-summary="ModelOnly" class="login-style-for-errors"></div>
+                        <span asp-validation-for="Profile.Email" class="login-style-for-errors"></span>
+                    </div>
+                </p>
+
+
+                <p>
+                    <div class="form-floating ">
+                        <input form="ProfileEdit_Form" asp-for="Profile.PhoneNumber" class="form-control " id="PhoneNumberInput" placeholder="Password" autocomplete="off">
+                        <label class="login-style-for-labels" asp-for="Profile.PhoneNumber" for="PhoneNumberInput">PhoneNumber</label>
+                        <div asp-validation-summary="ModelOnly" class="login-style-for-errors"></div>
+                        <span asp-validation-for="Profile.PhoneNumber" class="login-style-for-errors"></span>
+                    </div>
+                </p>
+
+                <p>
+                    <div class="form-floating ">
+                        <input form="ProfileEdit_Form" asp-for="Profile.Age" class="form-control " id="AgeInput" placeholder="Age" autocomplete="off"
+                               data-val="true" data-val-required="Пожалуйста, введите ваш возраст">
+                        <label class="login-style-for-labels" asp-for="Profile.Age" for="AgeInput">Age</label>
+                        <div asp-validation-summary="ModelOnly" class="login-style-for-errors"></div>
+                        <span asp-validation-for="Profile.Age" class="login-style-for-errors"></span>
+                    </div>
+                </p>
+
+                <p>
+                    <div  class="form-floating  ">
+                        <input form="ProfileEdit_Form" asp-for="Login" class="form-control" id="LoginInput" placeholder="test@gmail.com" autocomplete="off">
+                        <label class="login-style-for-labels" asp-for="Login" for="LoginInput">Login</label>
+                        <span asp-validation-for="Login" class="login-style-for-errors"></span>
+                    </div>
+                </p>
+
+                <p>
+                    <div  class="form-floating ">
+                        <input form ="ProfileEdit_Form" asp-for="Password" class="form-control " id="PasswordInput" placeholder="Password" autocomplete="off">
+                        <label class="login-style-for-labels" asp-for="Password" for="PasswordInput">Password</label>
+                        <div asp-validation-summary="ModelOnly" class="login-style-for-errors"></div>
+                        <span asp-validation-for="Password" class="login-style-for-errors"></span>
+                    </div>
+                </p>
+
+            </fieldset>
+        </div>
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="col-sm-4">
+            <form asp-action="DeleteProfile" asp-controller="Client" asp-area="Client">
+
+                <input hidden="hidden" name="Role" value="@TaxiApplication.Domain.Enum.Role.Client" />
+                <input hidden="hidden" name="Id" value="@Model.Id" />
+                <input hidden="hidden" name="Profile.Id" value="@Model.Profile.Id" />
+                <input hidden="hidden" name="Profile.ClientId" value="@Model.Profile.ClientId" />
+                <p>
+                    <div>
+                        <button class="btn-block cancel-btn" type="submit">Удалить профиль</button>
+                    </div>
+                </p>
+            </form>
+        </div>
+        <div class="col-sm-8">
+            <form asp-action="ProfileEdit" asp-controller="Client" asp-area="Client" id="ProfileEdit_Form">
+
+                <input hidden="hidden" name="Role" value="@TaxiApplication.Domain.Enum.Role.Client" />
+                <input hidden="hidden" name="Id" value="@Model.Id" />
+                <input hidden="hidden" name="Profile.Id" value="@Model.Profile.Id" />
+                <input hidden="hidden" name="Profile.ClientId" value="@Model.Profile.ClientId" />
+                <p>
+                    <div>
+                        <button class="btn-block standart-btn" type="submit">Сохранить</button>
+                    </div>
+                </p>
+            </form>
+        </div>
+    </div>
+   
+</div>
+
+
+@*Скрипты для валидации свойств модели на строное клиента.*@
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>

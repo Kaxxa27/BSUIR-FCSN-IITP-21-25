@@ -1,0 +1,43 @@
+{% extends "base_generic.html"%}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'myparking/css/hash_table.css' %}">
+{% endblock %}
+
+
+{% block title%}
+<title>Hash Table</title>
+{% endblock %}
+
+{% block content%}
+<div>
+    <form id="substanceForm">
+        <label for="substanceName">Название вещества:</label>
+        <input type="text" id="substanceName" required>
+        <br>
+
+        <label for="specificWeight">Удельный вес:</label>
+        <input type="number" id="specificWeight" required>
+        <br>
+
+        <label for="conductivity">Проводимость:</label>
+        <select id="conductivity" required>
+            <option value="conductor">Проводник</option>
+            <option value="semiconductor">Полупроводник</option>
+            <option value="dielectric">Диэлектрик</option>
+        </select>
+        <br>
+
+        <button type="button" id="addSubstanceButton">Добавить вещество</button>
+    </form>
+
+    <h2>Результаты:</h2>
+    <div id="results"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'myparking/js/hash_table/hash_table.js' %}"></script>
+{% endblock %}
+

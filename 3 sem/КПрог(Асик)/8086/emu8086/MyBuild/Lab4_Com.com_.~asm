@@ -1,0 +1,456 @@
+; Распечатать строку [Макрос]
+Print macro str
+push ax
+push dx
+
+mov ah,09h ; Номер функции DOS
+lea dx,str ; Смещение str в DX
+int 21h    ; 21 прерывание
+
+pop dx
+pop ax
+endm
+
+readChars MACRO id, number, buf
+mov ah,3Fh    ; Функция DOS (чтение из файла)
+mov bx,id     ; Загрузка дескриптора
+mov cx,number ; Количество считываемых чисволов
+lea dx,buf    ; Загрузка буфера
+int 21h       ; Считать данные
+endm
+
+writeChars MACRO id, number, buf
+mov ah,40h    ; Функция DOS (запись в файл)
+mov bx,id     ; Дескриптор
+mov cx,number ; Количество записываемых символов
+lea dx,buf    ; Буфер
+int 21h       ; Записать данные
+endm
+
+
+setCursor MACRO id, distance, type
+mov ah,42h      ; Функция DOS (переместить указатель чтения/записи)
+mov bx,id       ; Идентификатор
+mov cx,0h       ;
+mov dx,distance ;
+mov al,type     ; Относительно чего
+int 21h         ; Переместить указатель
+endm
+
+closeFile MACRO id
+mov bx,id  ; Дескриптор
+mov ah,3Eh ; Функция DOS 3Eh
+int 21h    ; Закрыть файл
+endm
+
+deleteFile MACRO name
+mov ah,41h  ; Функция DOS 41h (удалить файл)
+lea dx,name ; Адрес ASCIZ-строки с именем файла
+int 21h     ; Удалить файл
+endm
+
+createFile MACRO name, id
+mov ah,3Ch       ; Функция DOS 3Ch (создать файл)
+mov cx,00100000b ; Атрибут файла
+lea dx,name      ; Адрес ASCIZ-строки с именем файла
+int 21h          ; Создать файл
+mov id,ax        ; Сохранить дескриптор
+endm
+
+
+openFile MACRO name, id
+lea dx,name ; адрес ASCIZ-строки с именем файла
+mov ah,3Dh  ; Функция DOS 3Dh (открыть существующий файл)
+mov al,02h  ; 02 - для чтения и записи
+int 21h     ; Открыть файл
+mov id,ax   ; Сохранить дескриптор
+endm
+
+.model tiny
+.code
+org 100h
+START:
+
+mov ax,@data  ; @data - идентификатор сегмента данных
+mov ds,ax     ; Адрес сегмента данных — в DS
+mov es,ax     ; Адрес сегмента данных — в ES
+
+Print Start_Info_String
+Print New_line
+
+openFile source_file_name, source_file_ID            ; Открыть исходный файл
+createFile temp_file_name,temp_file_ID               ; Создать временный файл
+createFile destination_file_name,destination_file_ID ; Создать файл с результатом
+
+mainWhile:
+
+; Считывание порции символов
+readChars source_file_ID, buffer_dose, buffer
+mov charsRead,ax
+
+; Поиск симола 0Dh в считанном буфере
+mov cx,charsRead ; Количество считанных символов
+mov al,0Dh       ; Символ 0Dh
+lea di,buffer    ; Смещение буфера
+repne scasb      ; Сравниваем, пока не равны
+jz Exists0Dh     ; ZF = 1?
+
+; Действие, если нет символа 0Dh
+NotExists0Dh:
+
+mov dx,charsRead           ; Число символов в порции =
+mov charsOfStringInDose,dx ; = число считанных символов
+mov isEndOfString,00h      ; Конца строки нет
+
+; Поиск символа NULL в считанном буфере
+mov cx,charsRead          ; Количество считанных символов
+mov al,0h                 ; Символ NULL
+lea di,buffer             ; Смещение буфера
+repne scasb               ; Сравниваем, пока не равны
+jnz writeCharsInTempFile  ; ZF <> 0?
+
+; Действие, если есть символ NULL
+dec charsOfStringInDose  ; charsOfStringInDose--
+mov isEndOfString,01h    ; Конец строки
+mov isEndOfFile,01h      ; Конец файла
+jmp writeCharsInTempFile
+
+; Действие, если есть символ 0Dh
+Exists0Dh:
+
+; Определения числа символов строки в порции
+; charsOfStringInDose = charsRead - CX + 1
+mov dx,charsRead
+mov charsOfStringInDose,dx
+sub charsOfStringInDose,cx
+inc charsOfStringInDose
+mov isEndOfString,01h
+
+; Кейс когда .. .. .. .. 0Dh, порция закончилась
+; то есть в порцию не влезло 0Ah
+mov bx,charsOfStringInDose
+mov buffer[bx-1],0Ah
+
+
+; Запись символов во временный файл
+writeCharsInTempFile:
+writeChars temp_file_ID,charsOfStringInDose,buffer
+mov dx,charsOfStringInDose  ; charactersInString +=
+add charsInString,dx        ; += charOfStringInDose
+
+; Есть конец строки или нет
+cmp isEndOfString,0h
+je notEndOfString
+
+; Действие, если в порции есть конец строки
+endOfString:
+
+; Установка курсора в source_file
+; cursorOffset = -(charsRead - charsOfStringInDose)
+mov bx,charsRead
+mov cursorOffset,bx
+mov bx,charsOfStringInDose
+sub cursorOffset,bx
+neg cursorOffset
+setCursor source_file_ID,cursorOffset,01h
+
+
+
+; Проверка, подходит ли строка из файла под условие
+; "не содержать ни одного символа из заданных"
+setCursor temp_file_ID,00h,00h ; Курсор на начало файла
+mov dx,charsInString
+mov charsInStringCopy,dx
+mov dx,buffer_dose
+cmp charsInStringCopy,dx
+jbe skipCheckCycle
+
+; Цикл сравнения порциями
+checkCycle:
+readChars temp_file_ID buffer_dose, buffer ; Считать символы
+checkBufferMacro buffer_dose               ; Проверить
+cmp contains,01h
+je Inc_Result
+
+mov dx,buffer_dose       ;
+sub charsInStringCopy,dx ; charsInStringCopy -= buffer_dose
+
+mov dx,buffer_dose       ; Сравнение charsInStringCopy
+cmp charsInStringCopy,dx ; и buffer_dose
+ja checkCycle                ; charsInStringCopy > buffer_dose?
+
+; charsInStringCopy <= buffer_dose
+skipCheckCycle:
+readChars temp_file_ID charsInStringCopy, buffer ; Считать символы
+checkBufferMacro charsInStringCopy               ; Проверить
+cmp contains,01h
+;je resetTempfile
+je Inc_Result
+
+;  inc Result
+
+; Сбросить временный файл
+resetTempfile:
+mov charsInString,0h           ; charsInString = 0
+setCursor temp_file_ID,00h,00h ; Курсор на начало файла
+
+; Действие, если в порции нет конца строки
+notEndOfString:
+mov isEndOfString,0h ; Не конец строки
+cmp isEndOfFile,01h  ; Сравнение
+
+jne mainWhile ; Конец файла?
+
+; Завершение программы
+exit:
+closeFile temp_file_ID    ; Закрыть временный файл
+deleteFile temp_file_name ; Удалить временный файл
+
+; dec Result
+;dec Result
+
+Print New_Line
+Print Result_Info_String
+Print_Number Result
+
+ret ; Завершение COM-программы
+
+
+Inc_Result:
+inc Result
+mov contains, 0d
+jmp resetTempfile
+
+; [Процедура] – результат в contains
+; Есть ли символы в порции строки
+checkBuffer PROC near
+; mov contains,0h
+
+mov si,0h ; SI = 0 [счетчик]
+dec si
+for1:
+inc si
+
+mov isFor1_Or_2, 1
+
+cmp contains, 1d
+je Exit_Loop
+
+cmp si,bufferNumberCheck
+je Exit_Loop
+
+mov dx,0h         ; DX = 0
+mov dl,buffer[si] ; DX = текущий символ из порции
+;  push si           ; Сохранение SI
+
+; mov si,0h         ; SI = 0 [счетчик]
+
+mov Count_For_FindString, 0d
+mov Count_MainString_Copy, si
+
+push dx
+mov dx,Size_FindString
+mov Size_FindString_Copy, dx
+pop dx
+
+for2:
+mov Checking_Symbol, dl
+
+Start_For2:
+push si
+mov si,Count_For_FindString
+;  cmp dl,Find_String[Count_For_FindString]; Сравнение символа из порции с
+
+push dx
+mov dl,Checking_Symbol
+cmp dl,Find_String[si];
+pop dx
+
+jne not_equals ; символом из набора символов
+
+;-----Если символы равны----------------------------
+
+mov isFor1_Or_2, 2
+
+pop si
+mov contains,01h   ; contains = 1
+inc Count_MainString_Copy
+inc Count_For_FindString
+
+push si
+mov si,Count_MainString_Copy
+; mov dl, Find_String[Count_MainString_Copy]
+
+push dx
+; mov dl,Checking_Symbol
+mov dl, buffer[si]
+; mov dl, Find_String[si]
+mov Checking_Symbol,dl
+pop dx
+
+pop si
+
+dec Size_FindString_Copy  ; Size-- искомого слова
+cmp Size_FindString_Copy,0 ; Сравнение
+;jz for1
+je for1 ;
+
+jmp Start_For2
+;--------------------------------------------------
+
+
+
+; Не равен
+not_equals:
+
+cmp isFor1_Or_2, 1
+je  not_eq_For1
+
+mov contains, 0d
+pop si
+
+dec Size_FindString_Copy  ; Size-- искомого слова
+cmp Size_FindString_Copy,0 ; Сравнение
+;jz for1
+je for1 ;
+
+;jmp for1
+jmp Start_For2
+
+not_eq_For1:
+mov contains, 0d
+pop si
+jmp for1
+
+Exit_Loop:
+ret
+
+checkBuffer endp
+
+; [Макрос] – есть ли символы в порции строки
+checkBufferMacro MACRO number
+mov dx,number
+mov bufferNumberCheck,dx
+call checkBuffer
+endm
+
+;====================Процедура вывода числа====================
+
+Print_Number_Proc PROC near
+
+mov cx,0h ; Количество цифр у числа
+
+; Добавление цифр в тек
+pushDigitsWhile:
+mov dx,0h
+mov ax,Number_General ; AX = число
+div ten              ; DX:AX / ten = DX:AX
+
+mov Number_General,ax ; numberGeneral уже /= 10
+
+add dx,48d ; DX += 48 (перевод в ASCII)
+push dx ; DX = текущая цифра числа
+
+inc cx ; CX ++
+
+; Условие выхода из цикла
+cmp Number_General,0h
+jne pushDigitsWhile
+
+; Доставание из стека и печать цифр
+printDigitsWhile:
+mov dx,0h
+mov ax,Number_General ; AX = число
+div ten              ; DX:AX / ten = DX:AX
+
+mov Number_General,ax ; numberGeneral уже /= 10
+
+; Цифра числа DX
+; прерывание берет ASCII символа из DL
+pop dx
+mov ah,06h
+int 21h
+
+
+; Условие выхода из цикла
+dec cx
+cmp cx,0h
+jne printDigitsWhile
+
+ret
+
+Print_Number_Proc endp
+
+; Макрос - передает число в процедуру [Number_General]
+Print_Number macro digit
+
+push ax
+
+mov ax,digit
+mov Number_General,ax
+call Print_Number_Proc
+
+pop ax
+endm
+;=================================================================
+
+; Данные программы
+
+;Info_Strings
+Start_Info_String db 'Start Programm$'
+Result_Info_String  db 'Result: $'
+; Символы перехода на новую строку (v,<)
+New_Line db 0Ah, 0Dh, '$'
+
+; Число для передачи в процедуру
+Number_General dw 0
+
+source_file_name db 'd:\data.txt',0 ; Исходный файл
+source_file_ID   dw 0               ; Дескриптор
+
+destination_file_name db 'd:\result.txt',0 ; Файл с результатом
+destination_file_ID dw 0                   ; Дескриптор
+
+temp_file_name db 'd:\temp.txt',0 ; Временный файл
+temp_file_ID   dw 0               ; Дескриптор
+
+buffer      db 100 DUP(0) ; Буфер данных
+buffer_dose dw 50d        ; Размер порции
+
+isEndOfFile   db 0 ; [bool] – конец ли файла
+isEndOfString db 0 ; [bool] – конец ли строки
+
+isFor1_Or_2 db 0 ; bool - нахождение в цикле 1 - первый цикл, 2 - второй
+
+charsRead           dw 0 ; Считано символов
+charsOfStringInDose dw 0 ; Символов строки в порции
+charsInString       dw 0 ; Символов в строке
+
+cursorOffset        dw 0 ; Смещение курсора
+
+Find_String db 'jeka' ; Искомое слово
+Count_For_FindString dw 0  ; Счетчик для цикла идущего по проверяемому слову
+Count_MainString_Copy dw 0 ; Счетчик для доп цикла пробега по строке
+Size_FindString dw 4 ; Размер искомого слова
+Size_FindString_Copy dw 0
+Result dw 0 ; Кол-во строк с заданным словом
+
+Checking_Symbol db 0 ; проверяемый символ
+; Для алгоритма перевода числа
+TEN dw 10d
+
+symbols           db '0123456789' ; Символы, которых быть не дложно
+symbolsNumber     dw 10           ; Их число
+
+bufferNumberCheck dw 0 ; Количество символов из буфера для проверки
+charsInStringCopy dw 0 ; Символов в строке (копия)
+contains          db 0 ; [bool] – есть ли в первых charsOfStringInDose
+; символах из buffer 1 из символов symbols
+
+end START
+
+
+
+
+
+; [SOURCE]: C:\BSUIR\3 sem\КПрог(Асик)\8086\Lab4\Lab4_Com.asm

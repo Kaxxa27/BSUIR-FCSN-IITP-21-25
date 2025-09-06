@@ -1,0 +1,7 @@
+.mainBtn{
+    color: teal;
+    padding: 5px;
+    background: transparent;
+    border: 1px solid teal;
+    cursor: pointer;
+}

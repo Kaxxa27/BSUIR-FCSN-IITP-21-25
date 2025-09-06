@@ -1,0 +1,9 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                    org $8000
+                    ldy
+E                       ^ Operand (expression) expected.
+  8000 18 3C        pshy
+  8002 33           pulb
+  8003 32           pula
+  8004 18 8F        xgdy

@@ -1,0 +1,48 @@
+﻿
+<nav aria-label="Page navigation example">
+	<ul class="pagination">
+		<li class="page-item">
+			<button class="btn btn-primary page-link" disabled="@IsFirstPage" @onclick="async () => await GoToPageAsync(CurrentPage - 1)">
+				&laquo;
+			</button>
+		</li>
+		@foreach (var pageN in Enumerable.Range(1, TotalPages))
+		{
+			<li class="page-item">
+				<button class="btn btn-primary page-link @(pageN == CurrentPage ? "active" : "")" @onclick="async () => await GoToPageAsync(pageN)">@pageN</button>
+			</li>
+		}
+		<li class="page-item">
+			<button class="btn btn-primary page-link" disabled="@IsLastPage" @onclick=" async () => await GoToPageAsync(CurrentPage + 1)">
+				&raquo;
+			</button>
+		</li>
+	</ul>
+</nav>
+
+@code {
+	[Inject]
+	public IDataService DataService { get; set; }
+
+	[Parameter]
+	public int CurrentPage { get; set; }
+
+	[Parameter]
+	public int TotalPages { get; set; }
+
+	[Parameter]
+	public string? Category { get; set; }
+
+	private bool IsFirstPage => CurrentPage == 1;
+	private bool IsLastPage => CurrentPage == TotalPages;
+
+	private async Task GoToPageAsync(int page)
+	{
+		if (page >= 1 && page <= TotalPages)
+		{
+			await DataService.GetCarListAsync(Category, page);
+			CurrentPage = DataService.CurrentPage;
+			TotalPages = DataService.TotalPages;
+		}
+	}
+}

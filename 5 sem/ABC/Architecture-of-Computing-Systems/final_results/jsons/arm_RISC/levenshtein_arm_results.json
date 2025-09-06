@@ -1,0 +1,52 @@
+[
+    {
+        "durationL": 4,
+        "durationL_NEON": 229,
+        "n": 100
+    },
+    {
+        "durationL": 21167,
+        "durationL_NEON": 44453,
+        "n": 1000100
+    },
+    {
+        "durationL": 35113,
+        "durationL_NEON": 40259,
+        "n": 2000100
+    },
+    {
+        "durationL": 60000,
+        "durationL_NEON": 55994,
+        "n": 3000100
+    },
+    {
+        "durationL": 83408,
+        "durationL_NEON": 85298,
+        "n": 4000100
+    },
+    {
+        "durationL": 91211,
+        "durationL_NEON": 82936,
+        "n": 5000100
+    },
+    {
+        "durationL": 94614,
+        "durationL_NEON": 110859,
+        "n": 6000100
+    },
+    {
+        "durationL": 213476,
+        "durationL_NEON": 119286,
+        "n": 7000100
+    },
+    {
+        "durationL": 162313,
+        "durationL_NEON": 170657,
+        "n": 8000100
+    },
+    {
+        "durationL": 186942,
+        "durationL_NEON": 194307,
+        "n": 9000100
+    }
+]

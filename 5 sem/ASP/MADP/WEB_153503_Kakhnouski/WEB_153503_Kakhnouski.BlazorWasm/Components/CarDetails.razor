@@ -1,0 +1,38 @@
+﻿@using Domain.Entities;
+
+<style>
+	.Car-details-container {
+		display: flex;
+		align-items: center;
+	}
+	.Car-image {
+		flex: 0 0 auto;
+		margin-right: 20px;
+	}
+	.Car-info {
+		flex: 1 1 auto;
+	}
+</style>
+
+
+@if (SelectedCar is not null)
+{
+	<div class="Car-details-container">
+		<div class="Car-image">
+			@if (!string.IsNullOrEmpty(SelectedCar.Image))
+			{
+				<img src="@SelectedCar.Image" alt="Car Image" width="400" height="300" />
+			}
+		</div>
+		<div class= "Car-info">
+			<h2>@SelectedCar.Name</h2>
+			<p>@SelectedCar.Description</p>
+			<p>Price: @SelectedCar.Price</p>
+		</div>
+	</div>
+}
+
+@code {
+	[Parameter]
+	public Car? SelectedCar { get; set; }
+}

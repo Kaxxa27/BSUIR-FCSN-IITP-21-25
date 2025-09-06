@@ -1,0 +1,10 @@
+﻿@model Cart?
+
+@{
+    double totalPrice = Math.Round(Model?.TotalPrice ?? 0, 1);
+    int count = Model?.Count ?? 0;
+}
+
+<a asp-controller="Cart" asp-action="Index" class="navbar-text ms-auto text-decoration-none">
+    $@totalPrice  <i class="fa-solid fa-cart-shopping"></i> (@count)
+</a>

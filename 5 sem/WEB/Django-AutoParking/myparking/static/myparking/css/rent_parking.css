@@ -1,0 +1,10 @@
+.rent-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.rent-info{
+    font-size: 24px;
+    margin-top: 10px;
+}

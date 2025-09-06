@@ -1,0 +1,221 @@
+using System;
+
+namespace SimpleCSharpApp
+{
+    class Program
+    {
+
+        static void Main(string[] args)
+        {
+            
+             switch (num)
+            {
+                case 180:
+                    result = one;
+                    break;
+                case 200:
+                    result = two;
+                    break;
+
+                default:
+                    result = three;
+                    break;
+            }
+            check = check ? yes : no;
+            LinkedList<int> linkedList = new LinkedList<int>();
+
+            int 1vawriable = 500;
+            float $iNvalidIdentiefier = 3.14;
+            int 700 = 500;
+            float ^ = 3.14;
+            int %SomeText = 400;
+
+            incdecERROR-;
+            incdecERROR---;
+            incdecERROR----;
+            incdecERROR+;
+            incdecERROR+++;
+
+
+            int float = 4.2;
+            string string = "double string";
+
+            char str5 = 50853 > 353; 
+            string value = 8343 < 234 > 123 + 4553; 
+            char value = 8343 | 234 ~ 12353 ^ 4553 & 3222; 
+            string x4 = 553 + 353; 
+            char SomeChar = 12353  / 4534 + 653 - 453 - 1453 * 234234; 
+            string SomeChar = 253-253 * 253; 
+
+            bool var1 = 234 + 324 - 3724 & 1112 ;
+            bool var2 = 576 * 5234 % 543 | 1232;
+            bool var3 = 1999 / 22110 ^ 1443;
+
+            incdecERROR++++;
+            -incdecERROR;
+
+            +++incdecERROR;
+            ++++incdecERROR;
+
+            int Htx = 12300 && 1201;
+            double Htx = 900 || 675758;
+            decimal Htx = 454 < 277;
+            float Htx = 481 > 99999;
+            int Htx = 1501 != 1501;
+
+            var decimalLiteral = 420;  
+
+             ---incdecERROR;
+            ----incdecERROR;
+            +incdecERROR;
+
+            double a1 = 3D;
+            a1 = 4D;
+            a1 = 8.934001;    
+
+	        int b2 = 1e+18;
+	        int b2 = 1E-18;
+
+            float c1 = 4_000.5f;
+            c1 = 5.4f;
+	    
+            decimal myMoney = 3_000.5m;
+            myMoney = 400.75M;
+	    
+            char ch1 = 'j';
+            char ch2 = 'j';
+            char ch3 = '\u006A';
+            char ch3 = '\x006A';
+            char ch4 = char(1060);
+
+            string str1 = "";
+            string str4 = "PUBG";
+
+
+            bool check = true;
+            check = false;
+
+            Console.WriteLine(check);
+            
+            object obj = 670;
+
+            
+            LinkedList<int> linkedList = new LinkedList<int>();
+
+            linkedList.AddLast(1000);
+            linkedList.AddLast(2000);
+            Console.WriteLine(Linked List);
+            foreach (var item in linkedList)
+            {
+                Console.Write(item);
+            }
+
+            Stack<int> stack = new Stack<int>();
+
+            stack.Push(1000);
+            stack.Push(2000);
+
+            int topElement = stack.Peek();
+            Console.WriteLine("Top element of the stak:"  + topElement);
+
+            int poppedElement = stack.Pop();
+            Console.WriteLine("element:"  + poppedElement);
+
+            Queue<int> quue = new Queue<int>();
+
+            quue.Enqueue(1000);
+            quue.Enqueue(2000);
+            quue.Enqueue(3000);
+
+            int frontElement = quue.Peek();
+            Console.WriteLine("Front element of the que:"  + frontElement);
+
+            int dequeudElement = quue.Dequeue();
+            Console.WriteLine("Deqeued element:"  + dequeuedElement);
+
+            int[] numbers = { 1000, 2000, 3000, 4000, 5000 };
+
+            Dictionary<string, int> personAges = new Dictionary<string, int>();
+            personAges[Alice] = 3000;
+
+            int krf = 190;
+    
+            while (krf <= 500)
+            {
+                krf++;
+            }
+
+            do 
+            {
+                krf++;
+            } 
+            while (krf <= 700);
+
+            for (int glc = 190; glc <= 500; glc--)
+            {
+                glc++;
+            }
+            public struct MyStruct
+            {
+                public int Number;
+
+                public MyStruct(int number)
+                {
+                    Number = number;
+                }
+            }
+
+            check = check - 200;
+            check = check / 200;
+            check = check * 200;
+            check = check % 200;
+            check = check - 200;
+            ++check;
+            --check;
+
+            check = check && check;
+            check = check || check;
+            check = wockew version;
+            check = check == check;
+            check = check != check;
+            check = check >= check;
+            check = check <= check;
+            check = check < check;
+            check = check > check;
+
+
+            check += check;
+            check -= check;
+            check *= check;
+            check /= check;
+            check %= check;
+            check &= check;
+            check |= check;
+            check ^= check;
+            check = check & check;
+            check = !check;
+            check = check | check;
+            check = check ^ check;
+
+            check = check ~ check;
+            check = check >> 500;
+            check = check << 500;
+
+            if (check) {
+                check++;
+            }
+            else if (check) {
+                check--;
+            }
+            else {
+                check++;
+            }
+
+            int num = 200;
+            string result;
+
+           
+        }
+    }
+}
+

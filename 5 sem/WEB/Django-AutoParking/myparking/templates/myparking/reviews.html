@@ -1,0 +1,31 @@
+{% extends "base_generic.html"%}
+{% load static %}
+
+{% block style %}
+  <link rel="stylesheet" href="{% static 'myparking/css/reviews.css' %}">
+{% endblock %}
+
+
+{% block title%}
+<title>Reviews</title>
+{% endblock %}
+
+{% block content%}
+
+<div class="main-container">
+    <div class="block-review text-bold text-20">
+      {% for review in reviews %}
+        <div class="review-div">
+            <div>{{ review.created_at}}</div>
+            <div class="review-summary">
+                <div>Пользователь: {{ review.user.username}}</div>
+                <div>Рейтинг: {{ review.rating}} &#9733</div>
+                <div>Описание: {{ review.description}}</div>
+            </div>
+
+        </div>
+      {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

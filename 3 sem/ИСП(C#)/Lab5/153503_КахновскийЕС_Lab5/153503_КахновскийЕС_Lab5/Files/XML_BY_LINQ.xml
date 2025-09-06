@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Library>
+  <Book Name="Non" YearOfPublication="0" Availability="false" />
+  <Book Name="Book1" YearOfPublication="1890" Availability="false" />
+  <Book Name="Book2" YearOfPublication="2022" Availability="true" />
+  <Book Name="Book3" YearOfPublication="2010" Availability="true" />
+  <Book Name="Book4" YearOfPublication="1099" Availability="false" />
+</Library>

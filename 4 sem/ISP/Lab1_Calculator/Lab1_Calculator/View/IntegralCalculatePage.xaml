@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:Lab1_Calculator.ViewModel"
+             x:DataType="viewmodel:IntegralCalculateViewModel"
+             x:Class="Lab1_Calculator.View.IntegralCalculatePage">
+
+
+    <Grid BackgroundColor="{StaticResource Blue_IntegralBackgroungColor}"
+          ColumnDefinitions="*"
+          RowDefinitions="*,3*,*">
+        
+        <Label 
+            Grid.Row="0"
+            Text="{Binding ResultString}"
+            FontSize="40"
+            TextColor="{StaticResource Orange_IntegralCalculate}"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <HorizontalStackLayout Grid.Row="1"
+                               HorizontalOptions="Center">
+            <ProgressBar x:Name="a"
+                         Progress="{Binding Progress}"
+                         HeightRequest="50"
+                         ProgressColor="{StaticResource Pink500_IntegralCalculate}"
+                         WidthRequest="500"
+                         Margin="0,0,10,0"/>
+            <Label Text="{Binding ExecutionResultString}"
+                   FontSize="40"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Pink500_IntegralCalculate}"
+                   VerticalOptions="Center"/>
+        </HorizontalStackLayout>
+      
+        <HorizontalStackLayout Grid.Row="2"
+                               Padding="10"
+                               HorizontalOptions="CenterAndExpand">
+            <Button x:Name="StartBtn"
+                    Text="Start"
+                    Style="{StaticResource IntegralButton}"
+                    Margin="0,0,100,0"
+                    IsEnabled="{Binding IsBusy}"
+                    Command="{Binding StartCommand}"/>
+            <Button Text="Cancel"
+                    Style="{StaticResource IntegralButton}"
+                    Command="{Binding CancelCommand}"/>
+        </HorizontalStackLayout>
+
+    </Grid>
+</ContentPage>

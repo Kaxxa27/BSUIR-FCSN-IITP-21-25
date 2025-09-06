@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "Jeka",
+    "Age": 19,
+    "isWorking": true
+  },
+  {
+    "Name": "Den",
+    "Age": 100,
+    "isWorking": false
+  },
+  {
+    "Name": "Arthur",
+    "Age": 34,
+    "isWorking": true
+  },
+  {
+    "Name": "Tomas",
+    "Age": 777,
+    "isWorking": false
+  }
+]

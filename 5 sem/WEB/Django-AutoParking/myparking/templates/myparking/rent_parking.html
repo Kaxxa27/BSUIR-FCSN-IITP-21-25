@@ -1,0 +1,40 @@
+{% extends "base_generic.html"%}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'myparking/css/rent_parking.css' %}">
+{% endblock %}
+
+{% block title%}
+<title>Parking Rental</title>
+{% endblock %}
+
+{% block content%}
+<div class="rent-container">
+    <div class="rent-info">
+        <h1>Аренда парковочого места номер {{parking.number}}.</h1>
+        <label>Стоимость: <span id="price">{{ parking.price }}</span>$/месяц.</label>
+    </div>
+    <div>
+        <input type="text" id="promoCode" placeholder="Введите промокод">
+        <button id="checkPromoCode" class="btn btn-primary">Проверить промокод</button>
+    </div>
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" id="park_id" value="{{ parking.id }}">
+            <input type="hidden" id="new_price" name="new_price">
+            <input type="hidden" id="promo" name="promo">
+
+            <button class="btn btn-success" type="submit">Арендовать</button>
+            <a href="{% url 'parking_list' %}" class="btn btn-danger">Отменить</a>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'myparking/js/rent_parking/promocode.js' %}"></script>
+{% endblock %}

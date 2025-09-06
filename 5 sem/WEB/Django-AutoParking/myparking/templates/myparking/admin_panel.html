@@ -1,0 +1,22 @@
+{% extends "base_generic.html"%}
+
+{% block title%}
+<title>Admin Panel</title>
+{% endblock %}
+
+{% block content%}
+<table class="table table-striped table-bordered">
+  <thead>
+  <th>Информация</th>
+  </thead>
+  <tbody>
+  <tr>
+    <td>
+      <p>Больше всего задолжал {{ debtor }}</p>
+      <p>Кол-во неоплаченных счетов {{ debtor_unpaid_payments|length}}</p>
+      <p>Долг: {{ total_debt }}$</p>
+    </td>
+  </tr>
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,73 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+hello.com_ -- emu8086 assembler version: 4.05  
+ 
+[ 22.10.2023  --  16:38:15 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ; "hello, world!" step-by-step char-by-char way...
+[   2]        :                                       ; this is very similar to what int 21h/9h does behind your eyes.
+[   3]        :                                       ; instead of $, the string in this example is zero terminated
+[   4]        :                                       ; (the Microsoft Corporation has selected dollar to terminate the strings for MS-DOS operating system)
+[   5]        :                                       
+[   6]        :                                       name "hello"
+[   7]        :                                       
+[   8]        :                                       org     100h   ; compiler directive to make tiny com file.
+[   9]        :                                       
+[  10]        :                                       ; execution starts here, jump over the data string:
+[  11]    0100: EB 0E                                 jmp     start
+[  12]        :                                       
+[  13]        :                                       ; data string:
+[  14]    0102: 48 65 6C 6C 6F 2C 20 77 6F 72 6C 64   msg db 'Hello, world!', 0
+                21 00                               
+[  15]        :                                       
+[  16]    0110:                                       start:
+[  17]        :                                       
+[  18]        :                                       ; set the index register:
+[  19]    0110: BE 00 00                              mov     si, 0
+[  20]        :                                       
+[  21]    0113:                                       next_char:
+[  22]        :                                       
+[  23]        :                                       ; get current character:
+[  24]    0113: 8A 84 02 01                           mov     al, msg[si]
+[  25]        :                                       ; is it zero?
+[  26]        :                                       ; if so stop printing:
+[  27]    0117: 3C 00                                 cmp     al, 0
+[  28]    0119: 74 07                                 je      stop
+[  29]        :                                       
+[  30]        :                                       ; print character in teletype mode:
+[  31]    011B: B4 0E                                 mov     ah, 0eh
+[  32]    011D: CD 10                                 int     10h
+[  33]        :                                       
+[  34]        :                                       ; update index register by 1:
+[  35]    011F: 46                                    inc     si
+[  36]        :                                       
+[  37]        :                                       ; go back to print another char:
+[  38]    0120: EB F1                                 jmp     next_char
+[  39]        :                                       
+[  40]        :                                       
+[  41]    0122: B4 00                                 stop:  mov ah, 0  ; wait for any key press.
+[  42]    0124: CD 16                                 int 16h
+[  43]        :                                       
+[  44]        :                                       ; exit here and return control to operating system...
+[  45]    0126: C3                                    ret
+[  46]        :                                       
+[  47]        :                                       end     ; to stop compiler.
+[  48]        :                                       
+[  49]        :                                       this text is not compiled and is not checked for errors,
+[  50]        :                                       because it is after the end directive;
+[  51]        :                                       however, syntax highlight still works here.
+[  52]        :                                       
+[  53]        :                                       
+[  54]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================

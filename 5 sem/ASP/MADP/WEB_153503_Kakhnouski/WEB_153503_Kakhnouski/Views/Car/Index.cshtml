@@ -1,0 +1,70 @@
+﻿@model ListModel<Car>
+
+@{
+    ViewData["Title"] = "Cars";
+
+    var categories = ViewData["categories"] as List<Category>;
+    var currentCategory = ViewData["currentCategory"] as Category;
+
+}
+
+<h1>Автомобили</h1>
+
+
+<div class="col-10">
+
+    <!-- Выбор категории -->
+    <h2>Категории автомобилей</h2>
+    <div class="col-2">
+        <ul class="nav ">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"
+                   data-bs-toggle="dropdown"
+                   href="#"
+                   role="button"
+                   aria-expanded="false">
+                    <b>@(currentCategory?.Name ?? "Все")</b>
+                </a>
+
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item"
+                           asp-controller="Car"
+                           asp-route-category=@null><b>Все</b></a>
+                    </li>
+                    @foreach (var item in categories!)
+                    {
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="Car"
+                               asp-route-category="@item.NormalizedName">
+                               @item.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- Выбор категории - конец -->
+
+    <div id="output" class="row">
+        <partial name="_ProductIndexPartial"
+                 model="new { Model.Items, Model.CurrentPage, Model.TotalPages,
+                                  CategoryNormalizedName  = currentCategory?.NormalizedName }" />
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    $(function () {
+        $('#output').on('click', '.page-link', function (event) {
+            event.preventDefault();
+            let url = $(this).attr('href');
+            $('#output').load(url);
+            history.pushState(null, null, url);
+        });
+    });
+</script>
+}
+

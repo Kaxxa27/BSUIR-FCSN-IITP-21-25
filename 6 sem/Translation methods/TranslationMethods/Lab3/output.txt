@@ -1,0 +1,550 @@
++----------------------------------------------------------------+
+|   №  |  Token               |   Info                           |
++----------------------------------------------------------------+
+|  1     |#include                           |PREPROCESSOR DIRECTIVE                              
+|  1     |<iostream>                         |HEADER FILE                                         
+|  2     |#include                           |PREPROCESSOR DIRECTIVE                              
+|  2     |<string>                           |LIBRARY                                             
+|  4     |int                                |DATA TYPE                                           
+|  4     |t                                  |FUNCTION CALL                                       
+|  4     |(                                  |PARENTHESIS                                         
+|  4     |)                                  |PARENTHESIS                                         
+|  4     |{                                  |PARENTHESIS                                         
+|  5     |int                                |DATA TYPE                                           
+|  5     |a                                  |VARIABLE (INT)                                      
+|  5     |=                                  |ASSIGNMENT OPERATOR                                 
+|  5     |5                                  |INTEGER                                             
+|  5     |;                                  |END OF CONSTRUCTION                                 
+|  6     |return                             |KEYWORD                                             
+|  6     |a                                  |VARIABLE (INT)                                      
+|  6     |;                                  |END OF CONSTRUCTION                                 
+|  7     |}                                  |PARENTHESIS                                         
+|  9     |void                               |DATA TYPE                                           
+|  9     |print_arr                          |FUNCTION CALL                                       
+|  9     |(                                  |PARENTHESIS                                         
+|  9     |)                                  |PARENTHESIS                                         
+|  9     |{                                  |PARENTHESIS                                         
+|  10    |int                                |DATA TYPE                                           
+|  10    |arr                                |ARRAY (int)                                         
+|  10    |[                                  |PARENTHESIS                                         
+|  10    |]                                  |PARENTHESIS                                         
+|  10    |=                                  |ASSIGNMENT OPERATOR                                 
+|  10    |{                                  |PARENTHESIS                                         
+|  10    |64                                 |INTEGER                                             
+|  10    |,                                  |COMA                                                
+|  10    |25                                 |INTEGER                                             
+|  10    |,                                  |COMA                                                
+|  10    |12                                 |INTEGER                                             
+|  10    |,                                  |COMA                                                
+|  10    |22                                 |INTEGER                                             
+|  10    |,                                  |COMA                                                
+|  10    |11                                 |INTEGER                                             
+|  10    |}                                  |PARENTHESIS                                         
+|  10    |;                                  |END OF CONSTRUCTION                                 
+|  12    |int                                |DATA TYPE                                           
+|  12    |*                                  |ASTERIK                                             
+|  12    |n                                  |POINTER (INT)                                       
+|  12    |=                                  |ASSIGNMENT OPERATOR                                 
+|  12    |arr                                |ARRAY (int)                                         
+|  12    |.                                  |OPERATOR                                            
+|  12    |size                               |METHOD                                              
+|  12    |(                                  |PARENTHESIS                                         
+|  12    |)                                  |PARENTHESIS                                         
+|  12    |;                                  |END OF CONSTRUCTION                                 
+|  14    |for                                |KEYWORD                                             
+|  14    |(                                  |PARENTHESIS                                         
+|  14    |int                                |DATA TYPE                                           
+|  14    |i                                  |VARIABLE (INT)                                      
+|  14    |=                                  |ASSIGNMENT OPERATOR                                 
+|  14    |0                                  |INTEGER                                             
+|  14    |;                                  |END OF CONSTRUCTION                                 
+|  14    |i                                  |VARIABLE (INT)                                      
+|  14    |<                                  |COMPARISON OPERATOR                                 
+|  14    |n                                  |POINTER (INT)                                       
+|  14    |;                                  |END OF CONSTRUCTION                                 
+|  14    |++                                 |ARITHMETIC OPERATOR                                 
+|  14    |i                                  |VARIABLE (INT)                                      
+|  14    |)                                  |PARENTHESIS                                         
+|  14    |{                                  |PARENTHESIS                                         
+|  15    |std                                |NAMESPACE                                           
+|  15    |::                                 |DOUBLE COLON                                        
+|  15    |cout                               |KEYWORD                                             
+|  15    |<<                                 |OPERATOR                                            
+|  15    |arr                                |ARRAY (int)                                         
+|  15    |[                                  |PARENTHESIS                                         
+|  15    |i                                  |VARIABLE (INT)                                      
+|  15    |]                                  |PARENTHESIS                                         
+|  15    |<<                                 |OPERATOR                                            
+|  15    |" "                                |STRING                                              
+|  15    |;                                  |END OF CONSTRUCTION                                 
+|  16    |}                                  |PARENTHESIS                                         
+|  17    |}                                  |PARENTHESIS                                         
+|  19    |void                               |DATA TYPE                                           
+|  19    |sort_arr                           |FUNCTION CALL                                       
+|  19    |(                                  |PARENTHESIS                                         
+|  19    |)                                  |PARENTHESIS                                         
+|  19    |{                                  |PARENTHESIS                                         
+|  20    |int                                |DATA TYPE                                           
+|  20    |arr                                |ARRAY (int)                                         
+|  20    |[                                  |PARENTHESIS                                         
+|  20    |]                                  |PARENTHESIS                                         
+|  20    |=                                  |ASSIGNMENT OPERATOR                                 
+|  20    |{                                  |PARENTHESIS                                         
+|  20    |64                                 |INTEGER                                             
+|  20    |,                                  |COMA                                                
+|  20    |25                                 |INTEGER                                             
+|  20    |,                                  |COMA                                                
+|  20    |12                                 |INTEGER                                             
+|  20    |,                                  |COMA                                                
+|  20    |22                                 |INTEGER                                             
+|  20    |,                                  |COMA                                                
+|  20    |11                                 |INTEGER                                             
+|  20    |}                                  |PARENTHESIS                                         
+|  20    |;                                  |END OF CONSTRUCTION                                 
+|  22    |int                                |DATA TYPE                                           
+|  22    |*                                  |ASTERIK                                             
+|  22    |n                                  |POINTER (INT)                                       
+|  22    |=                                  |ASSIGNMENT OPERATOR                                 
+|  22    |arr                                |ARRAY (int)                                         
+|  22    |.                                  |OPERATOR                                            
+|  22    |size                               |METHOD                                              
+|  22    |(                                  |PARENTHESIS                                         
+|  22    |)                                  |PARENTHESIS                                         
+|  22    |;                                  |END OF CONSTRUCTION                                 
+|  24    |for                                |KEYWORD                                             
+|  24    |(                                  |PARENTHESIS                                         
+|  24    |int                                |DATA TYPE                                           
+|  24    |i                                  |VARIABLE (INT)                                      
+|  24    |=                                  |ASSIGNMENT OPERATOR                                 
+|  24    |0                                  |INTEGER                                             
+|  24    |i                                  |VARIABLE (INT)                                      
+|  24    |<                                  |COMPARISON OPERATOR                                 
+|  24    |n                                  |POINTER (INT)                                       
+|  24    |-                                  |ARITHMETIC OPERATOR                                 
+|  24    |1                                  |INTEGER                                             
+|  24    |;                                  |END OF CONSTRUCTION                                 
+|  24    |++                                 |ARITHMETIC OPERATOR                                 
+|  24    |i                                  |VARIABLE (INT)                                      
+|  24    |)                                  |PARENTHESIS                                         
+|  24    |{                                  |PARENTHESIS                                         
+|  25    |for                                |KEYWORD                                             
+|  25    |(                                  |PARENTHESIS                                         
+|  25    |int                                |DATA TYPE                                           
+|  25    |j                                  |VARIABLE (INT)                                      
+|  25    |=                                  |ASSIGNMENT OPERATOR                                 
+|  25    |0                                  |INTEGER                                             
+|  25    |;                                  |END OF CONSTRUCTION                                 
+|  25    |j                                  |VARIABLE (INT)                                      
+|  25    |<                                  |COMPARISON OPERATOR                                 
+|  25    |n                                  |POINTER (INT)                                       
+|  25    |-                                  |ARITHMETIC OPERATOR                                 
+|  25    |i                                  |VARIABLE (INT)                                      
+|  25    |-                                  |ARITHMETIC OPERATOR                                 
+|  25    |1                                  |INTEGER                                             
+|  25    |;                                  |END OF CONSTRUCTION                                 
+|  25    |++                                 |ARITHMETIC OPERATOR                                 
+|  25    |j                                  |VARIABLE (INT)                                      
+|  25    |)                                  |PARENTHESIS                                         
+|  25    |{                                  |PARENTHESIS                                         
+|  26    |if                                 |KEYWORD                                             
+|  26    |(                                  |PARENTHESIS                                         
+|  26    |arr                                |ARRAY (int)                                         
+|  26    |[                                  |PARENTHESIS                                         
+|  26    |j                                  |VARIABLE (INT)                                      
+|  26    |]                                  |PARENTHESIS                                         
+|  26    |>                                  |COMPARISON OPERATOR                                 
+|  26    |arr                                |ARRAY (int)                                         
+|  26    |[                                  |PARENTHESIS                                         
+|  26    |j                                  |VARIABLE (INT)                                      
+|  26    |+                                  |ARITHMETIC OPERATOR                                 
+|  26    |1                                  |INTEGER                                             
+|  26    |]                                  |PARENTHESIS                                         
+|  26    |)                                  |PARENTHESIS                                         
+|  26    |{                                  |PARENTHESIS                                         
+|  27    |std                                |NAMESPACE                                           
+|  27    |::                                 |DOUBLE COLON                                        
+|  27    |swap                               |METHOD                                              
+|  27    |(                                  |PARENTHESIS                                         
+|  27    |arr                                |ARRAY (int)                                         
+|  27    |[                                  |PARENTHESIS                                         
+|  27    |j                                  |VARIABLE (INT)                                      
+|  27    |]                                  |PARENTHESIS                                         
+|  27    |,                                  |COMA                                                
+|  27    |arr                                |ARRAY (int)                                         
+|  27    |[                                  |PARENTHESIS                                         
+|  27    |j                                  |VARIABLE (INT)                                      
+|  27    |+                                  |ARITHMETIC OPERATOR                                 
+|  27    |1                                  |INTEGER                                             
+|  27    |]                                  |PARENTHESIS                                         
+|  27    |)                                  |PARENTHESIS                                         
+|  27    |;                                  |END OF CONSTRUCTION                                 
+|  28    |}                                  |PARENTHESIS                                         
+|  29    |}                                  |PARENTHESIS                                         
+|  30    |}                                  |PARENTHESIS                                         
+|  32    |std                                |NAMESPACE                                           
+|  32    |::                                 |DOUBLE COLON                                        
+|  32    |cout                               |KEYWORD                                             
+|  32    |<<                                 |OPERATOR                                            
+|  32    |"Sorted array: "                   |STRING                                              
+|  32    |<<                                 |OPERATOR                                            
+|  32    |std                                |NAMESPACE                                           
+|  32    |::                                 |DOUBLE COLON                                        
+|  32    |endl                               |KEYWORD                                             
+|  32    |;                                  |END OF CONSTRUCTION                                 
+|  34    |for                                |KEYWORD                                             
+|  34    |(                                  |PARENTHESIS                                         
+|  34    |int                                |DATA TYPE                                           
+|  34    |i                                  |VARIABLE (INT)                                      
+|  34    |=                                  |ASSIGNMENT OPERATOR                                 
+|  34    |0                                  |INTEGER                                             
+|  34    |;                                  |END OF CONSTRUCTION                                 
+|  34    |i                                  |VARIABLE (INT)                                      
+|  34    |<                                  |COMPARISON OPERATOR                                 
+|  34    |n                                  |POINTER (INT)                                       
+|  34    |;                                  |END OF CONSTRUCTION                                 
+|  34    |++                                 |ARITHMETIC OPERATOR                                 
+|  34    |i                                  |VARIABLE (INT)                                      
+|  34    |)                                  |PARENTHESIS                                         
+|  34    |{                                  |PARENTHESIS                                         
+|  35    |std                                |NAMESPACE                                           
+|  35    |::                                 |DOUBLE COLON                                        
+|  35    |cout                               |KEYWORD                                             
+|  35    |<<                                 |OPERATOR                                            
+|  35    |arr                                |ARRAY (int)                                         
+|  35    |[                                  |PARENTHESIS                                         
+|  35    |i                                  |VARIABLE (INT)                                      
+|  35    |]                                  |PARENTHESIS                                         
+|  35    |<<                                 |OPERATOR                                            
+|  35    |" "                                |STRING                                              
+|  35    |;                                  |END OF CONSTRUCTION                                 
+|  36    |}                                  |PARENTHESIS                                         
+|  37    |}                                  |PARENTHESIS                                         
+|  39    |int                                |DATA TYPE                                           
+|  39    |main                               |FUNCTION CALL                                       
+|  39    |(                                  |PARENTHESIS                                         
+|  39    |)                                  |PARENTHESIS                                         
+|  39    |{                                  |PARENTHESIS                                         
+|  40    |std                                |NAMESPACE                                           
+|  40    |::                                 |DOUBLE COLON                                        
+|  40    |string                             |DATA TYPE                                           
+|  40    |text                               |VARIABLE (STRING)                                   
+|  40    |=                                  |ASSIGNMENT OPERATOR                                 
+|  40    |"Hello, world!"                    |STRING                                              
+|  40    |;                                  |END OF CONSTRUCTION                                 
+|  42    |std                                |NAMESPACE                                           
+|  42    |::                                 |DOUBLE COLON                                        
+|  42    |string                             |DATA TYPE                                           
+|  42    |pattern                            |VARIABLE (STRING)                                   
+|  42    |=                                  |ASSIGNMENT OPERATOR                                 
+|  42    |"world"                            |STRING                                              
+|  42    |;                                  |END OF CONSTRUCTION                                 
+|  44    |int                                |DATA TYPE                                           
+|  44    |n                                  |POINTER (INT)                                       
+|  44    |=                                  |ASSIGNMENT OPERATOR                                 
+|  44    |text                               |VARIABLE (STRING)                                   
+|  44    |.                                  |OPERATOR                                            
+|  44    |length                             |METHOD                                              
+|  44    |(                                  |PARENTHESIS                                         
+|  44    |)                                  |PARENTHESIS                                         
+|  44    |;                                  |END OF CONSTRUCTION                                 
+|  46    |int                                |DATA TYPE                                           
+|  46    |m                                  |VARIABLE (INT)                                      
+|  46    |=                                  |ASSIGNMENT OPERATOR                                 
+|  46    |pattern                            |VARIABLE (STRING)                                   
+|  46    |.                                  |OPERATOR                                            
+|  46    |length                             |METHOD                                              
+|  46    |(                                  |PARENTHESIS                                         
+|  46    |)                                  |PARENTHESIS                                         
+|  46    |;                                  |END OF CONSTRUCTION                                 
+|  48    |int                                |DATA TYPE                                           
+|  48    |pos                                |VARIABLE (INT)                                      
+|  48    |=                                  |ASSIGNMENT OPERATOR                                 
+|  48    |-                                  |ARITHMETIC OPERATOR                                 
+|  48    |1                                  |INTEGER                                             
+|  48    |;                                  |END OF CONSTRUCTION                                 
+|  50    |for                                |KEYWORD                                             
+|  50    |(                                  |PARENTHESIS                                         
+|  50    |int                                |DATA TYPE                                           
+|  50    |i                                  |VARIABLE (INT)                                      
+|  50    |=                                  |ASSIGNMENT OPERATOR                                 
+|  50    |0                                  |INTEGER                                             
+|  50    |;                                  |END OF CONSTRUCTION                                 
+|  50    |i                                  |VARIABLE (INT)                                      
+|  50    |<=                                 |COMPARISON OPERATOR                                 
+|  50    |n                                  |POINTER (INT)                                       
+|  50    |-                                  |ARITHMETIC OPERATOR                                 
+|  50    |m                                  |VARIABLE (INT)                                      
+|  50    |;                                  |END OF CONSTRUCTION                                 
+|  50    |++                                 |ARITHMETIC OPERATOR                                 
+|  50    |i                                  |VARIABLE (INT)                                      
+|  50    |)                                  |PARENTHESIS                                         
+|  50    |{                                  |PARENTHESIS                                         
+|  51    |int                                |DATA TYPE                                           
+|  51    |j                                  |VARIABLE (INT)                                      
+|  51    |;                                  |END OF CONSTRUCTION                                 
+|  53    |for                                |KEYWORD                                             
+|  53    |(                                  |PARENTHESIS                                         
+|  53    |j                                  |VARIABLE (INT)                                      
+|  53    |=                                  |ASSIGNMENT OPERATOR                                 
+|  53    |0                                  |INTEGER                                             
+|  53    |;                                  |END OF CONSTRUCTION                                 
+|  53    |j                                  |VARIABLE (INT)                                      
+|  53    |<                                  |COMPARISON OPERATOR                                 
+|  53    |m                                  |VARIABLE (INT)                                      
+|  53    |;                                  |END OF CONSTRUCTION                                 
+|  53    |++                                 |ARITHMETIC OPERATOR                                 
+|  53    |j                                  |VARIABLE (INT)                                      
+|  53    |)                                  |PARENTHESIS                                         
+|  53    |{                                  |PARENTHESIS                                         
+|  54    |if                                 |KEYWORD                                             
+|  54    |(                                  |PARENTHESIS                                         
+|  54    |text                               |VARIABLE (STRING)                                   
+|  54    |[                                  |PARENTHESIS                                         
+|  54    |i                                  |VARIABLE (INT)                                      
+|  54    |+                                  |ARITHMETIC OPERATOR                                 
+|  54    |j                                  |VARIABLE (INT)                                      
+|  54    |]                                  |PARENTHESIS                                         
+|  54    |!=                                 |COMPARISON OPERATOR                                 
+|  54    |pattern                            |VARIABLE (STRING)                                   
+|  54    |[                                  |PARENTHESIS                                         
+|  54    |j                                  |VARIABLE (INT)                                      
+|  54    |]                                  |PARENTHESIS                                         
+|  54    |)                                  |PARENTHESIS                                         
+|  54    |{                                  |PARENTHESIS                                         
+|  55    |break                              |KEYWORD                                             
+|  55    |;                                  |END OF CONSTRUCTION                                 
+|  56    |}                                  |PARENTHESIS                                         
+|  57    |}                                  |PARENTHESIS                                         
+|  59    |if                                 |KEYWORD                                             
+|  59    |(                                  |PARENTHESIS                                         
+|  59    |j                                  |VARIABLE (INT)                                      
+|  59    |==                                 |COMPARISON OPERATOR                                 
+|  59    |m                                  |VARIABLE (INT)                                      
+|  59    |)                                  |PARENTHESIS                                         
+|  59    |{                                  |PARENTHESIS                                         
+|  60    |pos                                |VARIABLE (INT)                                      
+|  60    |=                                  |ASSIGNMENT OPERATOR                                 
+|  60    |i                                  |VARIABLE (INT)                                      
+|  60    |;                                  |END OF CONSTRUCTION                                 
+|  61    |break                              |KEYWORD                                             
+|  61    |;                                  |END OF CONSTRUCTION                                 
+|  62    |}                                  |PARENTHESIS                                         
+|  63    |}                                  |PARENTHESIS                                         
+|  65    |if                                 |KEYWORD                                             
+|  65    |(                                  |PARENTHESIS                                         
+|  65    |pos                                |VARIABLE (INT)                                      
+|  65    |!=                                 |COMPARISON OPERATOR                                 
+|  65    |-                                  |ARITHMETIC OPERATOR                                 
+|  65    |1                                  |INTEGER                                             
+|  65    |)                                  |PARENTHESIS                                         
+|  65    |{                                  |PARENTHESIS                                         
+|  66    |std                                |NAMESPACE                                           
+|  66    |::                                 |DOUBLE COLON                                        
+|  66    |cout                               |KEYWORD                                             
+|  66    |<<                                 |OPERATOR                                            
+|  66    |"Pattern found at position: "            |STRING                                              
+|  66    |<<                                 |OPERATOR                                            
+|  66    |pos                                |VARIABLE (INT)                                      
+|  66    |<<                                 |OPERATOR                                            
+|  66    |std                                |NAMESPACE                                           
+|  66    |::                                 |DOUBLE COLON                                        
+|  66    |endl                               |KEYWORD                                             
+|  66    |;                                  |END OF CONSTRUCTION                                 
+|  67    |}                                  |PARENTHESIS                                         
+|  68    |else                               |KEYWORD                                             
+|  68    |{                                  |PARENTHESIS                                         
+|  69    |std                                |NAMESPACE                                           
+|  69    |::                                 |DOUBLE COLON                                        
+|  69    |cout                               |KEYWORD                                             
+|  69    |<<                                 |OPERATOR                                            
+|  69    |"Pattern not found."               |STRING                                              
+|  69    |<<                                 |OPERATOR                                            
+|  69    |std                                |NAMESPACE                                           
+|  69    |::                                 |DOUBLE COLON                                        
+|  69    |endl                               |KEYWORD                                             
+|  69    |;                                  |END OF CONSTRUCTION                                 
+|  70    |}                                  |PARENTHESIS                                         
+|  72    |return                             |KEYWORD                                             
+|  72    |0                                  |INTEGER                                             
+|  72    |;                                  |END OF CONSTRUCTION                                 
+|  73    |}                                  |PARENTHESIS                                         
+|  75    |class                              |KEYWORD                                             
+|  75    |Rectangle                          |CLASS                                               
+|  75    |{                                  |PARENTHESIS                                         
+|  76    |private                            |KEYWORD                                             
+|  76    |:                                  |COLON                                               
+|  77    |int                                |DATA TYPE                                           
+|  77    |width                              |VARIABLE (INT)                                      
+|  77    |;                                  |END OF CONSTRUCTION                                 
+|  78    |int                                |DATA TYPE                                           
+|  78    |height                             |VARIABLE (INT)                                      
+|  78    |;                                  |END OF CONSTRUCTION                                 
+|  80    |public                             |KEYWORD                                             
+|  80    |:                                  |COLON                                               
+|  81    |Rectangle                          |CONSTUCTURE                                         
+|  81    |(                                  |PARENTHESIS                                         
+|  81    |int                                |DATA TYPE                                           
+|  81    |w                                  |VARIABLE (INT)                                      
+|  81    |,                                  |COMA                                                
+|  81    |int                                |DATA TYPE                                           
+|  81    |h                                  |VARIABLE (INT)                                      
+|  81    |)                                  |PARENTHESIS                                         
+|  81    |{                                  |PARENTHESIS                                         
+|  81    |}                                  |PARENTHESIS                                         
+|  83    |void                               |DATA TYPE                                           
+|  83    |setWidth                           |FUNCTION CALL                                       
+|  83    |(                                  |PARENTHESIS                                         
+|  83    |int                                |DATA TYPE                                           
+|  83    |w                                  |VARIABLE (INT)                                      
+|  83    |)                                  |PARENTHESIS                                         
+|  83    |{                                  |PARENTHESIS                                         
+|  84    |width                              |VARIABLE (INT)                                      
+|  84    |=                                  |ASSIGNMENT OPERATOR                                 
+|  84    |w                                  |VARIABLE (INT)                                      
+|  84    |;                                  |END OF CONSTRUCTION                                 
+|  85    |}                                  |PARENTHESIS                                         
+|  87    |void                               |DATA TYPE                                           
+|  87    |setHeight                          |FUNCTION CALL                                       
+|  87    |(                                  |PARENTHESIS                                         
+|  87    |int                                |DATA TYPE                                           
+|  87    |h                                  |VARIABLE (INT)                                      
+|  87    |)                                  |PARENTHESIS                                         
+|  87    |{                                  |PARENTHESIS                                         
+|  88    |height                             |VARIABLE (INT)                                      
+|  88    |=                                  |ASSIGNMENT OPERATOR                                 
+|  88    |h                                  |VARIABLE (INT)                                      
+|  88    |;                                  |END OF CONSTRUCTION                                 
+|  89    |}                                  |PARENTHESIS                                         
+|  91    |int                                |DATA TYPE                                           
+|  91    |getWidth                           |FUNCTION CALL                                       
+|  91    |(                                  |PARENTHESIS                                         
+|  91    |)                                  |PARENTHESIS                                         
+|  91    |const                              |KEYWORD                                             
+|  91    |{                                  |PARENTHESIS                                         
+|  92    |return                             |KEYWORD                                             
+|  92    |width                              |VARIABLE (INT)                                      
+|  92    |;                                  |END OF CONSTRUCTION                                 
+|  93    |}                                  |PARENTHESIS                                         
+|  95    |int                                |DATA TYPE                                           
+|  95    |getHeight                          |FUNCTION CALL                                       
+|  95    |(                                  |PARENTHESIS                                         
+|  95    |)                                  |PARENTHESIS                                         
+|  95    |const                              |KEYWORD                                             
+|  95    |{                                  |PARENTHESIS                                         
+|  96    |return                             |KEYWORD                                             
+|  96    |height                             |VARIABLE (INT)                                      
+|  96    |;                                  |END OF CONSTRUCTION                                 
+|  97    |}                                  |PARENTHESIS                                         
+|  99    |int                                |DATA TYPE                                           
+|  99    |area                               |FUNCTION CALL                                       
+|  99    |(                                  |PARENTHESIS                                         
+|  99    |)                                  |PARENTHESIS                                         
+|  99    |const                              |KEYWORD                                             
+|  99    |{                                  |PARENTHESIS                                         
+|  100   |return                             |KEYWORD                                             
+|  100   |width                              |VARIABLE (INT)                                      
+|  100   |*                                  |ARITHMETIC OPERATOR                                 
+|  100   |height                             |VARIABLE (INT)                                      
+|  100   |;                                  |END OF CONSTRUCTION                                 
+|  101   |}                                  |PARENTHESIS                                         
+|  102   |}                                  |PARENTHESIS                                         
+|  102   |;                                  |END OF CONSTRUCTION                                 
+|  104   |void                               |DATA TYPE                                           
+|  104   |test_rect                          |FUNCTION CALL                                       
+|  104   |(                                  |PARENTHESIS                                         
+|  104   |)                                  |PARENTHESIS                                         
+|  104   |{                                  |PARENTHESIS                                         
+|  105   |int                                |DATA TYPE                                           
+|  105   |a                                  |VARIABLE (INT)                                      
+|  105   |;                                  |END OF CONSTRUCTION                                 
+|  107   |Rectangle                          |CLASS                                               
+|  107   |rect                               |OBJECT OF Rectangle                                 
+|  107   |(                                  |PARENTHESIS                                         
+|  107   |5                                  |INTEGER                                             
+|  107   |,                                  |COMA                                                
+|  107   |3                                  |INTEGER                                             
+|  107   |)                                  |PARENTHESIS                                         
+|  107   |;                                  |END OF CONSTRUCTION                                 
+|  109   |std                                |NAMESPACE                                           
+|  109   |::                                 |DOUBLE COLON                                        
+|  109   |cout                               |KEYWORD                                             
+|  109   |<<                                 |OPERATOR                                            
+|  109   |"Width: "                          |STRING                                              
+|  109   |<<                                 |OPERATOR                                            
+|  109   |rect                               |OBJECT OF Rectangle                                 
+|  109   |.                                  |OPERATOR                                            
+|  109   |getWidth                           |FUNCTION CALL                                       
+|  109   |(                                  |PARENTHESIS                                         
+|  109   |)                                  |PARENTHESIS                                         
+|  109   |<<                                 |OPERATOR                                            
+|  109   |std                                |NAMESPACE                                           
+|  109   |::                                 |DOUBLE COLON                                        
+|  109   |endl                               |KEYWORD                                             
+|  109   |;                                  |END OF CONSTRUCTION                                 
+|  111   |std                                |NAMESPACE                                           
+|  111   |::                                 |DOUBLE COLON                                        
+|  111   |cout                               |KEYWORD                                             
+|  111   |<<                                 |OPERATOR                                            
+|  111   |"Height: "                         |STRING                                              
+|  111   |<<                                 |OPERATOR                                            
+|  111   |rect                               |OBJECT OF Rectangle                                 
+|  111   |.                                  |OPERATOR                                            
+|  111   |getHeight                          |FUNCTION CALL                                       
+|  111   |(                                  |PARENTHESIS                                         
+|  111   |)                                  |PARENTHESIS                                         
+|  111   |<<                                 |OPERATOR                                            
+|  111   |std                                |NAMESPACE                                           
+|  111   |::                                 |DOUBLE COLON                                        
+|  111   |endl                               |KEYWORD                                             
+|  111   |;                                  |END OF CONSTRUCTION                                 
+|  113   |std                                |NAMESPACE                                           
+|  113   |::                                 |DOUBLE COLON                                        
+|  113   |cout                               |KEYWORD                                             
+|  113   |<<                                 |OPERATOR                                            
+|  113   |"Area of the rectangle: "            |STRING                                              
+|  113   |<<                                 |OPERATOR                                            
+|  113   |rect                               |OBJECT OF Rectangle                                 
+|  113   |.                                  |OPERATOR                                            
+|  113   |area                               |FUNCTION CALL                                       
+|  113   |(                                  |PARENTHESIS                                         
+|  113   |)                                  |PARENTHESIS                                         
+|  113   |<<                                 |OPERATOR                                            
+|  113   |std                                |NAMESPACE                                           
+|  113   |::                                 |DOUBLE COLON                                        
+|  113   |endl                               |KEYWORD                                             
+|  113   |;                                  |END OF CONSTRUCTION                                 
+|  115   |rect                               |OBJECT OF Rectangle                                 
+|  115   |.                                  |OPERATOR                                            
+|  115   |setWidth                           |FUNCTION CALL                                       
+|  115   |(                                  |PARENTHESIS                                         
+|  115   |7                                  |INTEGER                                             
+|  115   |)                                  |PARENTHESIS                                         
+|  115   |;                                  |END OF CONSTRUCTION                                 
+|  117   |rect                               |OBJECT OF Rectangle                                 
+|  117   |.                                  |OPERATOR                                            
+|  117   |setHeight                          |FUNCTION CALL                                       
+|  117   |(                                  |PARENTHESIS                                         
+|  117   |4                                  |INTEGER                                             
+|  117   |)                                  |PARENTHESIS                                         
+|  117   |;                                  |END OF CONSTRUCTION                                 
+|  119   |std                                |NAMESPACE                                           
+|  119   |::                                 |DOUBLE COLON                                        
+|  119   |cout                               |KEYWORD                                             
+|  119   |<<                                 |OPERATOR                                            
+|  119   |"Updated area of the rectangle: "            |STRING                                              
+|  119   |<<                                 |OPERATOR                                            
+|  119   |rect                               |OBJECT OF Rectangle                                 
+|  119   |.                                  |OPERATOR                                            
+|  119   |area                               |FUNCTION CALL                                       
+|  119   |(                                  |PARENTHESIS                                         
+|  119   |)                                  |PARENTHESIS                                         
+|  119   |<<                                 |OPERATOR                                            
+|  119   |std                                |NAMESPACE                                           
+|  119   |::                                 |DOUBLE COLON                                        
+|  119   |endl                               |KEYWORD                                             
+|  119   |;                                  |END OF CONSTRUCTION                                 
+|  121   |return                             |KEYWORD                                             
+|  121   |0                                  |INTEGER                                             
+|  121   |;                                  |END OF CONSTRUCTION                                 
+|  122   |}                                  |PARENTHESIS                                         
++----------------------------------------------------------------+

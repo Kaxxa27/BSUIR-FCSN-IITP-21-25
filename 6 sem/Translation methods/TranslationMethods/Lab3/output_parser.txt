@@ -1,0 +1,439 @@
+|- ProgramType: Program
+    |- PreprocessorDirective: #include
+        |- Header file: <iostream>
+    |- PreprocessorDirective: #include
+        |- Header file: <string>
+    |- Function: int t
+        |- Parameters: Parameters
+        |- Block: Block
+            |- Declare: int a
+                |- Assignment: =
+                |- Value: 5
+            |- Statement: ;
+            |- ReturnStatement: return
+                |- Variable: a
+                |- Statement: ;
+    |- Function: void print_arr
+        |- Parameters: Parameters
+        |- Block: Block
+            |- Declare: int arr
+                |- Array: arr[]
+                    |- Assignment: =
+                    |- Block: Block
+                        |- Value: 64
+                        |- Comma: ,
+                        |- Value: 25
+                        |- Comma: ,
+                        |- Value: 12
+                        |- Comma: ,
+                        |- Value: 22
+                        |- Comma: ,
+                        |- Value: 11
+            |- Statement: ;
+            |- Declare: int n
+                |- Assignment: =
+                |- Variable: arr
+                    |- DotOperator: .
+                    |- Method f: size
+                        |- Parameters: Parameters
+            |- Statement: ;
+            |- ForLoop: for
+                |- Parameters: Parameters
+                    |- Declare: int i
+                        |- Assignment: =
+                        |- Value: 0
+                    |- Statement: ;
+                    |- Variable: i
+                        |- Comparison: <
+                        |- Variable: n
+                    |- Statement: ;
+                    |- Operator: ++
+                    |- Variable: i
+                |- Block: Block
+                    |- StdNamespace: std
+                        |- Colon: ::
+                            |- Method: cout
+                            |- Operator Input: <<
+                                |- Variable: arr
+                                    |- Array: arr[]
+                                        |- Variable: i
+                                            |- Operator Input: <<
+                                                |- Value: " "
+                                |- Statement: ;
+                                |- Declare: int n
+                                    |- Assignment: =
+                                    |- Variable: arr
+                                        |- DotOperator: .
+                                        |- Method f: size
+                                            |- Parameters: Parameters
+                                |- Statement: ;
+                                |- ForLoop: for
+                                    |- Parameters: Parameters
+                                        |- Declare: int i
+                                            |- Assignment: =
+                                            |- Value: 0
+                                            |- Variable: i
+                                                |- Comparison: <
+                                                |- Variable: n
+                                                    |- Operator: -
+                                                    |- Value: 1
+                                        |- Statement: ;
+                                        |- Operator: ++
+                                        |- Variable: i
+                                    |- Block: Block
+                                        |- ForLoop: for
+                                            |- Parameters: Parameters
+                                                |- Declare: int j
+                                                    |- Assignment: =
+                                                    |- Value: 0
+                                                |- Statement: ;
+                                                |- Variable: j
+                                                    |- Comparison: <
+                                                    |- Variable: n
+                                                        |- Operator: -
+                                                        |- Variable: i
+                                                            |- Operator: -
+                                                            |- Value: 1
+                                                |- Statement: ;
+                                                |- Operator: ++
+                                                |- Variable: j
+                                            |- Block: Block
+                                                |- IfStatement: if
+                                                    |- Parameters: Parameters
+                                                        |- Variable: arr
+                                                            |- Array: arr[]
+                                                                |- Variable: j
+                                                                    |- Comparison: >
+                                                                    |- Variable: arr
+                                                                        |- Array: arr[]
+                                                                            |- Variable: j
+                                                                                |- Operator: +
+                                                                                |- Value: 1
+                                                    |- Block: Block
+                                                        |- StdNamespace: std
+                                                            |- Colon: ::
+                                                                |- Method f: swap
+                                                                    |- Parameters: Parameters
+                                                                        |- Variable: arr
+                                                                            |- Array: arr[]
+                                                                                |- Variable: j
+                                                                                |- Comma: ,
+                                                                                |- Variable: arr
+                                                                                    |- Array: arr[]
+                                                                                        |- Variable: j
+                                                                                            |- Operator: +
+                                                                                            |- Value: 1
+                                                        |- Statement: ;
+                                |- StdNamespace: std
+                                    |- Colon: ::
+                                        |- Method: cout
+                                        |- Operator Input: <<
+                                            |- Value: "Sorted array: "
+                                        |- Operator Input: <<
+                                            |- StdNamespace: std
+                                                |- Colon: ::
+                                                    |- Method: endl
+                                |- Statement: ;
+                                |- ForLoop: for
+                                    |- Parameters: Parameters
+                                        |- Declare: int i
+                                            |- Assignment: =
+                                            |- Value: 0
+                                        |- Statement: ;
+                                        |- Variable: i
+                                            |- Comparison: <
+                                            |- Variable: n
+                                        |- Statement: ;
+                                        |- Operator: ++
+                                        |- Variable: i
+                                    |- Block: Block
+                                        |- StdNamespace: std
+                                            |- Colon: ::
+                                                |- Method: cout
+                                                |- Operator Input: <<
+                                                    |- Variable: arr
+                                                        |- Array: arr[]
+                                                            |- Variable: i
+                                                                |- Operator Input: <<
+                                                                    |- Value: " "
+                                        |- Statement: ;
+                    |- Statement: ;
+    |- Function: void sort_arr
+        |- Parameters: Parameters
+        |- Block: Block
+            |- Declare: int arr
+                |- Array: arr[]
+                    |- Assignment: =
+                    |- Block: Block
+                        |- Value: 64
+                        |- Comma: ,
+                        |- Value: 25
+                        |- Comma: ,
+                        |- Value: 12
+                        |- Comma: ,
+                        |- Value: 22
+                        |- Comma: ,
+                        |- Value: 11
+    |- Function: int main
+        |- Parameters: Parameters
+        |- Block: Block
+            |- StdNamespace: std
+                |- Colon: ::
+                    |- Declare: string text
+                        |- Assignment: =
+                        |- Value: "Hello, world!"
+            |- Statement: ;
+            |- StdNamespace: std
+                |- Colon: ::
+                    |- Declare: string pattern
+                        |- Assignment: =
+                        |- Value: "world"
+            |- Statement: ;
+            |- Declare: int n
+                |- Assignment: =
+                |- Variable: text
+                    |- DotOperator: .
+                    |- Method f: length
+                        |- Parameters: Parameters
+            |- Statement: ;
+            |- Declare: int m
+                |- Assignment: =
+                |- Variable: pattern
+                    |- DotOperator: .
+                    |- Method f: length
+                        |- Parameters: Parameters
+            |- Statement: ;
+            |- Declare: int pos
+                |- Assignment: =
+                |- Operator: -
+                |- Value: 1
+            |- Statement: ;
+            |- ForLoop: for
+                |- Parameters: Parameters
+                    |- Declare: int i
+                        |- Assignment: =
+                        |- Value: 0
+                    |- Statement: ;
+                    |- Variable: i
+                        |- Comparison: <=
+                        |- Variable: n
+                            |- Operator: -
+                            |- Variable: m
+                    |- Statement: ;
+                    |- Operator: ++
+                    |- Variable: i
+                |- Block: Block
+                    |- Declare: int j
+                    |- Statement: ;
+                    |- ForLoop: for
+                        |- Parameters: Parameters
+                            |- Variable: j
+                                |- Assignment: =
+                                |- Value: 0
+                            |- Statement: ;
+                            |- Variable: j
+                                |- Comparison: <
+                                |- Variable: m
+                            |- Statement: ;
+                            |- Operator: ++
+                            |- Variable: j
+                        |- Block: Block
+                            |- IfStatement: if
+                                |- Parameters: Parameters
+                                    |- Variable: text
+                                        |- Variable: i
+                                            |- Operator: +
+                                            |- Variable: j
+                                                |- Comparison: !=
+                                                |- Variable: pattern
+                                                    |- Variable: j
+                                |- Block: Block
+                                    |- Break: break
+                                    |- Statement: ;
+                    |- IfStatement: if
+                        |- Parameters: Parameters
+                            |- Variable: j
+                                |- Comparison: ==
+                                |- Variable: m
+                        |- Block: Block
+                            |- Variable: pos
+                                |- Assignment: =
+                                |- Variable: i
+                            |- Statement: ;
+                            |- Break: break
+                            |- Statement: ;
+            |- IfStatement: if
+                |- Parameters: Parameters
+                    |- Variable: pos
+                        |- Comparison: !=
+                        |- Operator: -
+                        |- Value: 1
+                |- Block: Block
+                    |- StdNamespace: std
+                        |- Colon: ::
+                            |- Method: cout
+                            |- Operator Input: <<
+                                |- Value: "Pattern found at position: "
+                            |- Operator Input: <<
+                                |- Variable: pos
+                                    |- Operator Input: <<
+                                        |- StdNamespace: std
+                                            |- Colon: ::
+                                                |- Method: endl
+                                |- Statement: ;
+                    |- Statement: ;
+            |- Else: else
+            |- Block: Block
+                |- StdNamespace: std
+                    |- Colon: ::
+                        |- Method: cout
+                        |- Operator Input: <<
+                            |- Value: "Pattern not found."
+                        |- Operator Input: <<
+                            |- StdNamespace: std
+                                |- Colon: ::
+                                    |- Method: endl
+                |- Statement: ;
+            |- ReturnStatement: return
+                |- Value: 0
+    |- Class: Rectangle
+        |- Block: Block
+            |- AccessModifier: private
+                |- Declare: int width
+                |- Statement: ;
+                |- Declare: int height
+                |- Statement: ;
+            |- AccessModifier: public
+                |- Constructure: Rectangle
+                    |- Parameters: Parameters
+                        |- Declare: int w
+                        |- Comma: ,
+                        |- Declare: int h
+                    |- Block: Block
+                |- Function: void setWidth
+                    |- Parameters: Parameters
+                        |- Declare: int w
+                    |- Block: Block
+                        |- Variable: width
+                            |- Assignment: =
+                            |- Variable: w
+                        |- Statement: ;
+                |- Function: void setHeight
+                    |- Parameters: Parameters
+                        |- Declare: int h
+                    |- Block: Block
+                        |- Variable: height
+                            |- Assignment: =
+                            |- Variable: h
+                        |- Statement: ;
+                |- Function: int getWidth
+                    |- Parameters: Parameters
+                    |- ConstModifier: const
+                    |- Block: Block
+                        |- ReturnStatement: return
+                            |- Variable: width
+                            |- Statement: ;
+                |- Function: int getHeight
+                    |- Parameters: Parameters
+                    |- ConstModifier: const
+                    |- Block: Block
+                        |- ReturnStatement: return
+                            |- Variable: height
+                            |- Statement: ;
+                |- Function: int area
+                    |- Parameters: Parameters
+                    |- ConstModifier: const
+                    |- Block: Block
+                        |- ReturnStatement: return
+                            |- Variable: width
+                                |- Operator: *
+                                |- Variable: height
+                            |- Statement: ;
+    |- Statement: ;
+    |- Function: void test_rect
+        |- Parameters: Parameters
+        |- Block: Block
+            |- Declare: int a
+            |- Statement: ;
+            |- Class: Rectangle
+                |- Object: rect
+                    |- Parameters: Parameters
+                        |- Value: 5
+                        |- Comma: ,
+                        |- Value: 3
+            |- Statement: ;
+            |- StdNamespace: std
+                |- Colon: ::
+                    |- Method: cout
+                    |- Operator Input: <<
+                        |- Value: "Width: "
+                    |- Operator Input: <<
+                        |- Object: rect
+                            |- DotOperator: .
+                            |- Function Call: getWidth
+                                |- Parameters: Parameters
+                            |- Operator Input: <<
+                                |- StdNamespace: std
+                                    |- Colon: ::
+                                        |- Method: endl
+            |- Statement: ;
+            |- StdNamespace: std
+                |- Colon: ::
+                    |- Method: cout
+                    |- Operator Input: <<
+                        |- Value: "Height: "
+                    |- Operator Input: <<
+                        |- Object: rect
+                            |- DotOperator: .
+                            |- Function Call: getHeight
+                                |- Parameters: Parameters
+                            |- Operator Input: <<
+                                |- StdNamespace: std
+                                    |- Colon: ::
+                                        |- Method: endl
+            |- Statement: ;
+            |- StdNamespace: std
+                |- Colon: ::
+                    |- Method: cout
+                    |- Operator Input: <<
+                        |- Value: "Area of the rectangle: "
+                    |- Operator Input: <<
+                        |- Object: rect
+                            |- DotOperator: .
+                            |- Function Call: area
+                                |- Parameters: Parameters
+                            |- Operator Input: <<
+                                |- StdNamespace: std
+                                    |- Colon: ::
+                                        |- Method: endl
+            |- Statement: ;
+            |- Object: rect
+                |- DotOperator: .
+                |- Function Call: setWidth
+                    |- Parameters: Parameters
+                        |- Value: 7
+                |- Statement: ;
+                |- Object: rect
+                    |- DotOperator: .
+                    |- Function Call: setHeight
+                        |- Parameters: Parameters
+                            |- Value: 4
+                    |- Statement: ;
+                    |- StdNamespace: std
+                        |- Colon: ::
+                            |- Method: cout
+                            |- Operator Input: <<
+                                |- Value: "Updated area of the rectangle: "
+                            |- Operator Input: <<
+                                |- Object: rect
+                                    |- DotOperator: .
+                                    |- Function Call: area
+                                        |- Parameters: Parameters
+                                    |- Operator Input: <<
+                                        |- StdNamespace: std
+                                            |- Colon: ::
+                                                |- Method: endl
+                    |- Statement: ;
+                    |- ReturnStatement: return
+                        |- Value: 0
+                        |- Statement: ;

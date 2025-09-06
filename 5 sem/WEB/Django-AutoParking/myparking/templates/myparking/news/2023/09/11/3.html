@@ -1,0 +1,25 @@
+{% extends "base_news.html"%}
+{% load static %}
+
+{% block title%}
+<title>News</title>
+{% endblock %}
+
+{% block details_page_pk %} {{ certain_news.pk }} {% endblock %}
+
+{% block details_page_title%} {{ certain_news.title }} {% endblock %}
+
+{% block details_page_summary %} {{ certain_news.summary }} {% endblock %}
+
+{% block details_page_image %}
+    {% if certain_news.image %}
+        <img width="100%" src="{{ certain_news.image.url }}" alt="News Image">
+    {% else %}
+        <img src="https://via.placeholder.com/500x500?text=No+Image" alt="No Image">
+    {% endif %}
+{% endblock %}
+
+
+
+
+

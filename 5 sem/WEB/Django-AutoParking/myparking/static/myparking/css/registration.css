@@ -1,0 +1,31 @@
+input:enabled {
+  background-color: lemonchiffon;
+  color: black;
+}
+
+input:required {
+  border: 2px solid red;
+}
+
+input:disabled {
+  background-color: lightgray;
+  color: gray;
+}
+
+input[type="number"]:out-of-range {
+  border: 2px solid red;
+  background-color: red;
+}
+
+.check-box-custom[type="checkbox"]:checked {
+    width: 100px;
+    height: 100px;
+}
+.radio-btn-custom[type="radio"]{
+    width: 20px;
+    height: 20px;
+}
+.radio-btn-custom[type="radio"]:checked {
+    width: 100px;
+    height: 100px;
+}

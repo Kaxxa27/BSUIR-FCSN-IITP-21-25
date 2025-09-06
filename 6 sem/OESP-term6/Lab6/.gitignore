@@ -1,0 +1,4 @@
+server/
+client/
+.idea/
+cmake-build-debug/

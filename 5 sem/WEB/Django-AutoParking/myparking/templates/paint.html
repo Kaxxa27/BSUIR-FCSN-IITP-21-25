@@ -1,0 +1,38 @@
+{% extends "base_generic.html"%}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'myparking/css/paint.css' %}">
+{% endblock %}
+
+
+{% block title%}
+<title>Paint</title>
+{% endblock %}
+
+{% block content%}
+<div>
+    <form id="styleForm">
+        <label>
+            <input type="checkbox" id="fontSizeCheckbox"> Change Font Size
+        </label>
+        <input type="number" id="fontSizeInput" min="10" max="50" step="1" disabled>
+        <br>
+        <label>
+            <input type="checkbox" id="textColorCheckbox"> Change Text Color
+        </label>
+        <input type="color" id="textColorPicker" disabled>
+        <br>
+        <label>
+            <input type="checkbox" id="bgColorCheckbox"> Change Background Color
+        </label>
+        <input type="color" id="bgColorPicker" disabled>
+    </form>
+    <h1 id="header">Hello, World!</h1>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'myparking/js/paint/paint.js' %}"></script>
+{% endblock %}
+

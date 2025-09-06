@@ -1,0 +1,47 @@
+﻿@{
+    var userName = User.Claims.FirstOrDefault(
+        c => c.Type.Equals("Name", StringComparison.OrdinalIgnoreCase))?.Value;
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    @await Component.InvokeAsync("Cart")
+
+    <div class="dropdown ms-4 nav-color">
+        <button class="btn btn-secondary dropdown-toggle"
+                type="button" id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+            @userName
+            <img src="https://localhost:7003/avatar" width="30"
+                 alt="@userName" class="rounded nav-color" />
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li>
+                <span class="dropdown-item-text">
+                    <img src="https://localhost:7003/avatar"
+                         width="100" alt="Avatar" class="rounded" />
+                    test@gmail.com
+                </span>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+                <form id="logoutForm" class="form-inline" asp-controller="Identity" asp-action="Logout">
+                    <button id="logout" type="submit" class="nav-link btn btn-link text-dark">
+                        Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+}
+else
+{
+    <form id="loginForm" class="form-inline" asp-controller="Identity" asp-action="Login">
+        <button id="login" type="submit" class="nav-link btn btn-link text-white">
+            Login
+        </button>
+    </form>
+}
+

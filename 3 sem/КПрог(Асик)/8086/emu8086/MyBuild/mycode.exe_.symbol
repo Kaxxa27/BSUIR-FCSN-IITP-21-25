@@ -1,0 +1,45 @@
+< THE SYMBOL TABLE >  mycode.exe_  --  emu8086 assembler version: 4.05 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+STACK                    	00000     	-5        	SEGMENT   	(ITSELF)  
+CODE                     	00010     	-5        	SEGMENT   	(ITSELF)  
+START                    	00000     	-1        	LABEL     	code      
+STRINGEMPTY              	000E6     	-1        	LABEL     	code      
+CONTINUE                 	000F7     	-1        	LABEL     	code      
+FOR                      	00106     	-1        	LABEL     	code      
+WORDBEGINNING            	00113     	-1        	LABEL     	code      
+WORDEND                  	00126     	-1        	LABEL     	code      
+NOTEQUAL                 	00152     	-1        	LABEL     	code      
+NOTSEARCHINGWORD         	00152     	-1        	LABEL     	code      
+NOTWORDEND               	00152     	-1        	LABEL     	code      
+NOTWORDBEGINNING         	00152     	-1        	LABEL     	code      
+EXITFOR                  	0015B     	-1        	LABEL     	code      
+PLACEFOUND               	00173     	-1        	LABEL     	code      
+PLACENOTFOUND            	001F2     	-1        	LABEL     	code      
+END                      	001F2     	-1        	LABEL     	code      
+DATA                     	00030     	-5        	SEGMENT   	(ITSELF)  
+STRING                   	00000     	1         	VAR       	data      
+STRING_MAXSIZE           	000C8     	1         	VAR       	data      
+STRING_SIZE              	000C9     	1         	VAR       	data      
+NEW_STRING_SIZE          	000CA     	1         	VAR       	data      
+STRING_INFO              	000CB     	1         	VAR       	data      
+SFIND                    	000DB     	1         	VAR       	data      
+SFIND_MAXSIZE            	001A3     	1         	VAR       	data      
+SFIND_SIZE               	001A4     	1         	VAR       	data      
+SFIND_INFO               	001A5     	1         	VAR       	data      
+SPASTE                   	001B5     	1         	VAR       	data      
+SPASTE_MAXSIZE           	0027D     	1         	VAR       	data      
+SPASTE_SIZE              	0027E     	1         	VAR       	data      
+SPASTE_INFO              	0027F     	1         	VAR       	data      
+TEMP                     	0028F     	1         	VAR       	data      
+PLACE                    	00290     	1         	VAR       	data      
+FOUND                    	00291     	1         	VAR       	data      
+STRPLACENOTFOUND         	00292     	1         	VAR       	data      
+STRRESULT                	002C0     	1         	VAR       	data      
+STREMPTY                 	002D0     	1         	VAR       	data      
+TONEWLINE                	002E8     	1         	VAR       	data      
+===================================================================================================
+[ 26.11.2022  --  14:21:24 ] 
+< END >
+ 

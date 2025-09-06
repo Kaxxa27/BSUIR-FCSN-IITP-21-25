@@ -1,0 +1,415 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+mycode.exe_ -- emu8086 assembler version: 4.05  
+ 
+[ 26.11.2022  --  14:21:24 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ; hello_exe.asm
+[   2]        :                                       .model small    ; Модель памяти (код в 1 сегменте, данные и стек в DGROUP)
+[   3]        :                                       .stack 100h     ; Сегмент стека (256 байт)
+[   4]        :                                       .code           ; Сегмент кода
+[   5]    0100:                                       START:
+[   6]        :                                       
+[   7]        :                                       ; Распечатать строку
+[   8]        :                                       printStr macro str
+[   9]        :                                       mov ah,09h ; Номер функции DOS
+[  10]        :                                       lea dx,str ; Смещение str в DX
+[  11]        :                                       int 21h ; 21 прерывание
+[  12]        :                                       endm
+[  13]        :                                       
+[  14]        :                                       ; Ввести строку
+[  15]        :                                       enterStr macro str
+[  16]        :                                       mov ah,0Ah  ; Функция DOS (считать строку символов из STDIN в буфер)
+[  17]        :                                       lea dx,str  ; Смещение строки в DX
+[  18]        :                                       int 21h
+[  19]        :                                       endm
+[  20]        :                                       
+[  21]        :                                       ; Задать в строке макисмальное количество символов для ввода
+[  22]        :                                       ; [Занести в первый байт число]
+[  23]        :                                       setMaxEnterSymbols macro str,number
+[  24]        :                                       lea di,str ; Смещение строки в DI
+[  25]        :                                       mov al,number ; Максимальное число символов для ввода
+[  26]        :                                       stosb  ; AL в ES:DI
+[  27]        :                                       endm
+[  28]        :                                       
+[  29]        :                                       ; Вычислить размер введенной строки
+[  30]        :                                       ; [Занести в str_size второй байт str]
+[  31]        :                                       calcSizeOfEnteredStr macro str_size,str
+[  32]        :                                       lea si,str ; Смещение str в SI
+[  33]        :                                       add si,01d ; SI++
+[  34]        :                                       lodsb ; DS:SI в AL
+[  35]        :                                       mov str_size,al ; AL в str_size
+[  36]        :                                       endm
+[  37]        :                                       
+[  38]        :                                       ; Отформатировать строку
+[  39]        :                                       ; [Убрать первые два байта, добавить в конец '$']
+[  40]        :                                       formatStr macro str_size,str
+[  41]        :                                       
+[  42]        :                                       ; Сдвигаем строку на 2 влево
+[  43]        :                                       lea di,str ; Смещение str в DI
+[  44]        :                                       mov si,di
+[  45]        :                                       add si,02d ; SI = DI + 2
+[  46]        :                                       
+[  47]        :                                       mov CH,0h
+[  48]        :                                       mov CL,str_size ; CX = str_size
+[  49]        :                                       rep movsb ; Пересылка DS:SI в ES:DI пока CX <> 0
+[  50]        :                                       
+[  51]        :                                       ; Добавление '$' в конец
+[  52]        :                                       lea di,str ; Смещение строки в DI
+[  53]        :                                       mov dh,0d
+[  54]        :                                       mov dl,str_size ; DX = str_size
+[  55]        :                                       add di,dx ; DI += str_size
+[  56]        :                                       mov al,'$' ; Символ '$'
+[  57]        :                                       stosb  ; AL в ES:DI
+[  58]        :                                       endm
+[  59]        :                                       
+[  60]        :                                       
+[  61]        :                                       
+[  62]    0100: B8 30 00                              mov ax,@data    ; @data - идентификатор сегмента данных
+[  63]    0103: 8E D8                                 mov ds,ax       ; Адрес сегмента данных — в DS
+[  64]    0105: 8E C0                                 mov es,ax; Адрес сегмента данных — в ES
+[  65]        :                                       
+[  66]    0107: BF 00 00 A0 C8 00 AA                  setMaxEnterSymbols string,string_maxSize
+[  67]    010E: B4 09 BA CB 00 CD 21                  printStr string_info
+[  68]    0115: B4 0A BA 00 00 CD 21                  enterStr string
+[  69]    011C: BE 00 00 83 C6 01 AC A2 C9 00         calcSizeOfEnteredStr string_size,string
+[  70]    0126: 80 3E C9 00 00                        cmp string_size,0h ; if string_size == 0
+[  71]    012B: 75 03 E9 B6 00                        je stringEmpty     ; строка пустая
+[  72]    0130: BF 00 00 8B F7 83 C6 02 B5 00 8A 0E   formatStr string_size,string
+                C9 00 F3 A4 BF 00 00 B6 00 8A 16 C9 
+                00 03 FA B0 24 AA                   
+[  73]        :                                       
+[  74]    014E: BF DB 00 A0 A3 01 AA                  setMaxEnterSymbols sfind,sfind_maxSize
+[  75]    0155: B4 09 BA E8 02 CD 21                  printStr toNewLine
+[  76]    015C: B4 09 BA A5 01 CD 21                  printStr sfind_info
+[  77]    0163: B4 0A BA DB 00 CD 21                  enterStr sfind
+[  78]    016A: BE DB 00 83 C6 01 AC A2 A4 01         calcSizeOfEnteredStr sfind_size,sfind
+[  79]    0174: 80 3E A4 01 00                        cmp sfind_size,0h ; if sfind_size == 0
+[  80]    0179: 74 6B                                 je stringEmpty    ; строка пустая
+[  81]    017B: BF DB 00 8B F7 83 C6 02 B5 00 8A 0E   formatStr sfind_size,sfind
+                A4 01 F3 A4 BF DB 00 B6 00 8A 16 A4 
+                01 03 FA B0 24 AA                   
+[  82]        :                                       
+[  83]    0199: BF B5 01 A0 7D 02 AA                  setMaxEnterSymbols spaste,spaste_maxSize
+[  84]    01A0: B4 09 BA E8 02 CD 21                  printStr toNewLine
+[  85]    01A7: B4 09 BA 7F 02 CD 21                  printStr spaste_info
+[  86]    01AE: B4 0A BA B5 01 CD 21                  enterStr spaste
+[  87]    01B5: BE B5 01 83 C6 01 AC A2 7E 02         calcSizeOfEnteredStr spaste_size,spaste
+[  88]    01BF: 80 3E 7E 02 00                        cmp spaste_size,0h ; if spaste_size == 0
+[  89]    01C4: 74 20                                 je stringEmpty     ; строка пустая
+[  90]    01C6: BF B5 01 8B F7 83 C6 02 B5 00 8A 0E   formatStr spaste_size,spaste
+                7E 02 F3 A4 BF B5 01 B6 00 8A 16 7E 
+                02 03 FA B0 24 AA                   
+[  91]        :                                       
+[  92]    01E4: EB 11                                 jmp continue
+[  93]        :                                       
+[  94]        :                                       ; Если пустая строка
+[  95]    01E6:                                       stringEmpty:
+[  96]        :                                       
+[  97]    01E6: B4 09 BA E8 02 CD 21                  printStr toNewLine
+[  98]    01ED: B4 09 BA D0 02 CD 21                  printStr strEmpty
+[  99]    01F4: E9 FB 00                              jmp end ; Прыжок в конец программы
+[ 100]        :                                       
+[ 101]    01F7:                                       continue:
+[ 102]        :                                       
+[ 103]        :                                       ;printStr toNewLine
+[ 104]        :                                       ;printStr string
+[ 105]        :                                       
+[ 106]        :                                       ;printStr toNewLine
+[ 107]        :                                       ;printStr sfind
+[ 108]        :                                       
+[ 109]        :                                       ;printStr toNewLine
+[ 110]        :                                       ;printStr spaste
+[ 111]        :                                       
+[ 112]    01F7: A0 C9 00                              mov al,string_size
+[ 113]    01FA: 2A 06 A4 01                           sub al,sfind_size
+[ 114]    01FE: FE C0                                 inc al
+[ 115]    0200: A2 8F 02                              mov temp,al ; temp = string_size - sfind_size + 1
+[ 116]        :                                       ; до куда пойдет цикл for
+[ 117]    0203: BE 00 00                              mov si,0h   ; SI выступает в роли счетчика i
+[ 118]        :                                       
+[ 119]    0206:                                       for:
+[ 120]    0206: 83 FE 00                              cmp si,0h            ; if i == 0
+[ 121]    0209: 74 08                                 je wordBeginning     ; Этот символ – начало слова
+[ 122]    020B: 80 7C FF 20                           cmp string[si-1],' ' ; if string[i-1]==' '
+[ 123]    020F: 74 02                                 je wordBeginning     ; Этот символ – начало слова
+[ 124]    0211: EB 3F                                 jmp notWordBeginning ; Иначе – не начало слова
+[ 125]        :                                       
+[ 126]        :                                       ; Если символ – начало слова
+[ 127]    0213:                                       wordBeginning:
+[ 128]    0213: BB 00 00                              mov bx,0h
+[ 129]    0216: 8A 1E A4 01                           mov bl,sfind_size       ; BX = sfind_size
+[ 130]    021A: 80 38 20                              cmp string[bx][si], ' ' ; if string[i + sfind_size] == ' '
+[ 131]    021D: 74 07                                 je wordEnd              ; Есть символ конца слова
+[ 132]    021F: 80 38 24                              cmp string[bx][si], '$' ; if string[i + sfind_size] == '$'
+[ 133]    0222: 74 02                                 je wordEnd              ; Есть символ конца слова
+[ 134]    0224: EB 2C                                 jmp notWordEnd          ; Иначе – символа конца слова нет
+[ 135]        :                                       
+[ 136]        :                                       ; Если есть символ конца слова
+[ 137]    0226:                                       wordEnd:
+[ 138]    0226: BA 00 00                              mov dx,0h
+[ 139]    0229: 8A 16 DB 00                           mov dl,sfind         ; DX = sfind[0]
+[ 140]    022D: 38 14                                 cmp string[si],dl    ; if string[i] != sfind[0]
+[ 141]    022F: 75 21                                 jne notSearchingWord ; Это слово не искомое
+[ 142]        :                                       
+[ 143]    0231: 56                                    push si           ; Сохранение SI
+[ 144]    0232: 8B C6                                 mov ax,si
+[ 145]    0234: BE 00 00                              lea si,string
+[ 146]    0237: 03 F0                                 add si,ax         ; В SI смещение на string[i]
+[ 147]    0239: BF DB 00                              lea di,sfind      ; В DI смещение на sfind[0]
+[ 148]    023C: B9 00 00                              mov cx,0h
+[ 149]    023F: 8A 0E A4 01                           mov cl,sfind_size ; в CX размер искомого слова
+[ 150]        :                                       
+[ 151]    0243: F3 A6                                 repe cmpsb   ; Сравниваем string и sfind пока они равны
+[ 152]        :                                       ; и пока CX <> 0
+[ 153]    0245: 5E                                    pop si       ; Восстановление SI
+[ 154]    0246: 75 0A                                 jnz notEqual ; Если подстрока со словом не равны
+[ 155]        :                                       
+[ 156]        :                                       ; Действие, если равны
+[ 157]    0248: A2 90 02                              mov place,al  ; В place индекс, с которого начинается слово
+[ 158]    024B: C6 06 91 02 01                        mov found,01h ; found = true
+[ 159]    0250: EB 09                                 jmp exitFor   ; Выход из for
+[ 160]        :                                       
+[ 161]        :                                       
+[ 162]    0252:                                       notEqual:
+[ 163]        :                                       
+[ 164]    0252:                                       notSearchingWord:
+[ 165]        :                                       
+[ 166]    0252:                                       notWordEnd:
+[ 167]        :                                       
+[ 168]    0252:                                       notWordBeginning:
+[ 169]        :                                       
+[ 170]    0252: 46                                    inc si      ; SI++
+[ 171]    0253: 8B C6                                 mov ax,si
+[ 172]    0255: 3A 06 8F 02                           cmp al,temp ; Сравнить si с temp
+[ 173]    0259: E0 AB                                 loopnz for   ; Если не равны, следующая итерация
+[ 174]        :                                       
+[ 175]        :                                       ; Выход из цикла
+[ 176]    025B:                                       exitFor:
+[ 177]        :                                       
+[ 178]    025B: 80 3E 91 02 01                        cmp found,01h ; if found == true
+[ 179]    0260: 74 11                                 je placeFound ; Место найдено
+[ 180]        :                                       
+[ 181]    0262: B4 09 BA E8 02 CD 21                  printStr toNewLine
+[ 182]    0269: B4 09 BA 92 02 CD 21                  printStr strPlaceNotFound
+[ 183]    0270: E9 7F 00                              jmp placeNotFound
+[ 184]        :                                       
+[ 185]    0273:                                       placeFound:
+[ 186]        :                                       
+[ 187]    0273: A0 C9 00                              mov al,string_size
+[ 188]    0276: 02 06 7E 02                           add al,spaste_size
+[ 189]    027A: FE C0                                 inc al
+[ 190]    027C: A2 CA 00                              mov new_string_size,al ; new_string_size = string_size + spaste_size + 1
+[ 191]        :                                       
+[ 192]        :                                       ; Добавление '$' в конец (расширение строки)
+[ 193]    027F: BF 00 00                              lea di,string ; Смещение строки в DI
+[ 194]    0282: B6 00                                 mov dh,0d
+[ 195]    0284: 8A 16 CA 00                           mov dl,new_string_size ; DX = new_string_size
+[ 196]    0288: 03 FA                                 add di,dx ; DI += new_string_size
+[ 197]    028A: B0 24                                 mov al,'$' ; Символ '$'
+[ 198]    028C: AA                                    stosb  ; AL в ES:DI
+[ 199]        :                                       
+[ 200]    028D: FD                                    std ; DF = 1
+[ 201]        :                                       
+[ 202]    028E: BE 00 00                              lea si,string
+[ 203]    0291: B8 00 00                              mov ax,0h
+[ 204]    0294: A0 C9 00                              mov al,string_size
+[ 205]    0297: 03 F0                                 add si,ax
+[ 206]    0299: 4E                                    dec si ; SI – смещение на последний символ
+[ 207]        :                                       ; введенной строки
+[ 208]        :                                       
+[ 209]    029A: BF 00 00                              lea di,string
+[ 210]    029D: B8 00 00                              mov ax,0h
+[ 211]    02A0: A0 CA 00                              mov al,new_string_size
+[ 212]    02A3: 03 F8                                 add di,ax
+[ 213]    02A5: 4F                                    dec di ; DI – смещение на последний символ
+[ 214]        :                                       ; расширенной строки
+[ 215]        :                                       
+[ 216]        :                                       ; Освобождение места для введенного слова
+[ 217]    02A6: B8 00 00                              mov ax,0h
+[ 218]    02A9: A0 CA 00                              mov al,new_string_size
+[ 219]    02AC: FE C8                                 dec al
+[ 220]    02AE: 2A 06 90 02                           sub al,place
+[ 221]    02B2: 8B C8                                 mov cx,ax ; CX = new_string_size - 1 - place
+[ 222]    02B4: F3 A4                                 rep movsb    ; DS:SI в ES:DI пока CX <> 0
+[ 223]        :                                       
+[ 224]        :                                       ; Вставка введенного слова
+[ 225]    02B6: FC                                    cld ; DF = 0
+[ 226]    02B7: BE B5 01                              lea si,spaste ; SI – смещение на первый символ
+[ 227]        :                                       ; вставляемого слова
+[ 228]        :                                       
+[ 229]        :                                       
+[ 230]    02BA: BF 00 00                              lea di,string
+[ 231]    02BD: B8 00 00                              mov ax,0h
+[ 232]    02C0: A0 90 02                              mov al,place
+[ 233]    02C3: 03 F8                                 add di,ax ; DI – смещение на место начала
+[ 234]        :                                       ; вставки в string
+[ 235]        :                                       
+[ 236]    02C5: B8 00 00                              mov ax,0h
+[ 237]    02C8: A0 7E 02                              mov al,spaste_size
+[ 238]    02CB: 8B C8                                 mov cx,ax ; CX = spaste_size
+[ 239]        :                                       
+[ 240]    02CD: F3 A4                                 rep movsb ; DS:SI в ES:DI пока CX <> 0
+[ 241]        :                                       
+[ 242]        :                                       ; Вставка пробела после введенного слова
+[ 243]    02CF: BB 00 00                              mov bx,0h
+[ 244]    02D2: 02 1E 90 02                           add bl,place
+[ 245]    02D6: 02 1E 7E 02                           add bl,spaste_size ; BX = place + spaste_size
+[ 246]    02DA: C6 07 20                              mov string[bx],' ' ; string[place + spaste_size] = ' '
+[ 247]        :                                       
+[ 248]        :                                       ; Вывод результата
+[ 249]    02DD: B4 09 BA E8 02 CD 21                  printStr toNewLine
+[ 250]    02E4: B4 09 BA C0 02 CD 21                  printStr strResult
+[ 251]    02EB: B4 09 BA 00 00 CD 21                  printStr string
+[ 252]        :                                       
+[ 253]    02F2:                                       placeNotFound:
+[ 254]    02F2:                                       end:
+[ 255]        :                                       
+[ 256]    02F2: B8 00 4C                              mov ax,4C00h    ; 4C (выход из программы) в AH, 00 (успешное звершение) в AL
+[ 257]    02F5: CD 21                                 int 21h         ; Функция DOS "Завершить программу"
+[ 258]        :                                       
+[ 259]        :                                       .data ; Сегмент данных
+[ 260]        :                                       
+[ 261]        :                                       ; Исходная строка
+[ 262]    0300: 00 00 00 00 00 00 00 00 00 00 00 00   string db 200 DUP(?)
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00             
+[ 263]    03C8: 64                                    string_maxSize db equ 100
+[ 264]    03C9: 00                                    string_size db 0
+[ 265]    03CA: 00                                    new_string_size db 0
+[ 266]    03CB: 53 6F 75 72 63 65 20 73 74 72 69 6E   string_info db 'Source string: $'
+                67 3A 20 24                         
+[ 267]        :                                       
+[ 268]        :                                       ; Строка, перед которой вставляем
+[ 269]    03DB: 00 00 00 00 00 00 00 00 00 00 00 00   sfind db 200 DUP(?)
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00             
+[ 270]    04A3: 14                                    sfind_maxSize db equ 20
+[ 271]    04A4: 00                                    sfind_size db 0
+[ 272]    04A5: 50 61 73 74 65 20 62 65 66 6F 72 65   sfind_info db 'Paste before:  $'
+                3A 20 20 24                         
+[ 273]        :                                       
+[ 274]        :                                       ; Строка, которую вставляем
+[ 275]    04B5: 00 00 00 00 00 00 00 00 00 00 00 00   spaste db 200 DUP(?)
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00             
+[ 276]    057D: 14                                    spaste_maxSize db equ 20
+[ 277]    057E: 00                                    spaste_size db 0
+[ 278]    057F: 50 61 73 74 69 6E 67 20 77 6F 72 64   spaste_info db 'Pasting word:  $'
+                3A 20 20 24                         
+[ 279]        :                                       
+[ 280]        :                                       
+[ 281]        :                                       
+[ 282]    058F: 00                                    temp db 0   ; Временная переменная
+[ 283]    0590: 00                                    place db 0  ; Место в строке, где начинается слово
+[ 284]        :                                       ; перед которым надо вставить
+[ 285]    0591: 00                                    found db 0  ; bool, найдено ли слово
+[ 286]        :                                       
+[ 287]        :                                       ; Строка если не нашли слово, перед которым вставить
+[ 288]    0592: 54 68 65 20 77 6F 72 64 20 74 6F 20   strPlaceNotFound db 'The word to insert before which was not found$'
+                69 6E 73 65 72 74 20 62 65 66 6F 72 
+                65 20 77 68 69 63 68 20 77 61 73 20 
+                6E 6F 74 20 66 6F 75 6E 64 24       
+[ 289]        :                                       
+[ 290]    05C0: 52 65 73 75 6C 74 3A 20 20 20 20 20   strResult db 'Result:        $'      ; Результат
+                20 20 20 24                         
+[ 291]    05D0: 45 6E 74 65 72 65 64 20 73 74 72 69   strEmpty db 'Entered string is empty$' ; Введенное слово пустое
+                6E 67 20 69 73 20 65 6D 70 74 79 24 
+                                                    
+[ 292]    05E8: 0A 0D 24                              toNewLine db 0Ah, 0Dh, '$'           ; Символы перехода на новую строку (v,<)
+[ 293]        :                                       
+[ 294]        :                                       end START   ; Конец программы
+[ 295]        :                                       
+[ 296]        :                                       
+[ 297]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: EB      -   bytes on last page (l.byte)
+0003: 01      -   bytes on last page (h.byte)
+0004: 04      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 00      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 00      -   SP - stack pointer (l.byte)
+0011: 01      -   SP - stack pointer (h.byte)
+0012: A9      -   check sum (l.byte)
+0013: 28      -   check sum (h.byte)
+0014: 00      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 10      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: 01      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 10      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================

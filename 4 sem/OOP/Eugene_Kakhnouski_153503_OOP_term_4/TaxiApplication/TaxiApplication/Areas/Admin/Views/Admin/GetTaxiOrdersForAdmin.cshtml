@@ -1,0 +1,66 @@
+﻿@model IEnumerable<TaxiApplication.Domain.Entity.TaxiOrder>
+@{
+    ViewBag.Title = "GetAllOrdersForAdmin";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <div class="container-for-table-outgoing-fields">
+        <div class="table-outgoing-fields-div">
+            <table class="table-outgoing-fields">
+                <thead>
+                    <tr>
+                        <th>Номер</th>
+                        <th>Описание</th>
+                        <th>Старт</th>
+                        <th>Финиш</th>
+                        <th>Тариф</th>
+                        <th>Цена</th>
+                        <th>Дистанция</th>
+                        <th>Время</th>
+                        <th>Оплата</th>
+                        <th>Кол-во пассажиров</th>
+                        <th>Гендер водителя</th>
+                        <th>Удалить</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int num = 0;
+                    }
+                    @foreach (var taxiOrder in Model.ToList())
+                    {
+                        num += 1;
+                        <tr>
+                            <td>@num.ToString()</td>
+                            <td>@taxiOrder.CurrentRoute!.Description</td>
+                            <td>@taxiOrder.CurrentRoute.StartLocation</td>
+                            <td>@taxiOrder.CurrentRoute.EndLocation</td>
+                            <td>@taxiOrder.Tariff</td>
+                            <td>@taxiOrder.Price</td>
+                            <td>@taxiOrder.CurrentRoute.Distance</td>
+                            <td>@taxiOrder.CurrentRoute.Time</td>
+                            <td>@taxiOrder.PaymentMethod</td>
+                            <td>@taxiOrder.NumberOfPassengers</td>
+                            <td>@taxiOrder.DriverGenderPreference</td>
+                            <td>
+                                <form asp-controller="Admin" asp-action="DeleteOrder" asp-route-id="@taxiOrder.Id">
+                                    <button class="standart-btn" type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
+
+

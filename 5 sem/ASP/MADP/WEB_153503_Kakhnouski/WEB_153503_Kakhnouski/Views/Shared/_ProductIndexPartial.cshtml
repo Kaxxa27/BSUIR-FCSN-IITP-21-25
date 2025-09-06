@@ -1,0 +1,29 @@
+﻿ <!-- Вывод карточек -->
+
+@{
+    var request = ViewContext.HttpContext.Request;
+    var returnUrl = request.Path + request.QueryString.ToUriComponent();
+}
+
+@foreach (var car in Model.Items)
+{
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <img src="@car.Image" width="100" height="250" class="card-img-top" alt="@car.Name">
+            <div class="card-body">
+                <h5 class="card-title">Марка: @car.Name</h5>
+                <div class="card-text">Цена: @car.Price</div>
+                <p class="card-text"> Описание: @car.Description</p>
+                <a asp-controller="Cart" asp-action="Add" asp-route-id="@car.Id" asp-route-returnurl="@returnUrl"
+                    class="btn btn-primary">Добавить в корзину</a>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Вывод карточек - конец -->
+<!-- Пагинация -->
+<Pager current-page="@Model.CurrentPage"
+       total-pages="@Model.TotalPages"
+       category="@(Model.CategoryNormalizedName)"></Pager>
+<!-- Пагинация - конец -->

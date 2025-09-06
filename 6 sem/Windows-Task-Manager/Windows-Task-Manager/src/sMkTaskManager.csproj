@@ -1,0 +1,86 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <BaseOutputPath>..\bin</BaseOutputPath>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Title>sMk TaskManager</Title>
+    <AssemblyName>sMkTaskManager</AssemblyName>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/creizlein/sMkTaskManager</RepositoryUrl>
+    <IsPublishable>true</IsPublishable>
+    <Authors>Smoke</Authors>
+    <Company>sMkDesigns</Company>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <SignAssembly>False</SignAssembly>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath> 
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <ProduceReferenceAssemblyInOutDir>false</ProduceReferenceAssemblyInOutDir>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <GenerateSerializationAssemblies>off</GenerateSerializationAssemblies>
+    <BuildProjectReferences>true</BuildProjectReferences>
+    <UseCommonOutputDirectory>false</UseCommonOutputDirectory>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Copyright>Copyright © sMkDesigns</Copyright>
+    <Version>3.0.0</Version>
+    <Deterministic>false</Deterministic>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>sMkTaskManager.ico</ApplicationIcon>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <StartupObject>sMkTaskManager.Program</StartupObject>
+    <ApplicationHighDpiMode>DpiUnawareGdiScaled</ApplicationHighDpiMode>
+    <ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
+    <NoWarn>CS8618</NoWarn>
+    <BuildMark>$([System.DateTime]::UtcNow.Ticks)</BuildMark>
+  </PropertyGroup>
+
+  <!--
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" >
+    <OutputPath>$(BaseOutputPath)\Debug</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" >
+    <OutputPath>$(BaseOutputPath)\Release</OutputPath>
+  </PropertyGroup>
+  -->
+
+  <!--
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="echo BuildMark Ticks: $(BuildMark)" />
+  </Target>
+  -->
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="3.1.3" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="7.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="sMkTaskManager.ico">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <Content Include="sMkTaskManager.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

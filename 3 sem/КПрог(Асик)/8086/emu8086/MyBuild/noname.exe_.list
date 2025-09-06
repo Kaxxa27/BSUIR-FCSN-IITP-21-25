@@ -1,0 +1,294 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+noname.exe_ -- emu8086 assembler version: 4.05  
+ 
+[ 04.12.2022  --  18:34:04 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ; Распечатать строку [Макрос]
+[   2]        :                                       Print macro str
+[   3]        :                                       push ax
+[   4]        :                                       push dx
+[   5]        :                                       
+[   6]        :                                       mov ah,09h ; Номер функции DOS
+[   7]        :                                       lea dx,str ; Смещение str в DX
+[   8]        :                                       int 21h    ; 21 прерывание
+[   9]        :                                       
+[  10]        :                                       pop dx
+[  11]        :                                       pop ax
+[  12]        :                                       endm
+[  13]        :                                       
+[  14]        :                                       ; Распечатать символ [Макрос]
+[  15]        :                                       printSymb macro ascii
+[  16]        :                                       mov ah,06h
+[  17]        :                                       mov dl,ascii
+[  18]        :                                       int 21h
+[  19]        :                                       endm
+[  20]        :                                       
+[  21]        :                                       ; Модель памяти (код в 1 сегменте, данные и стек в DGROUP)
+[  22]        :                                       .model small
+[  23]        :                                       
+[  24]        :                                       ; Сегмент кода
+[  25]        :                                       .code
+[  26]        :                                       
+[  27]        :                                       ; Начало прогарммы
+[  28]    0000:                                       START:
+[  29]        :                                       
+[  30]    0000: B8 0F 00                              mov ax,@data  ; @data - идентификатор сегмента данных
+[  31]    0003: 8E D8                                 mov ds,ax     ; Адрес сегмента данных — в DS
+[  32]    0005: 8E C0                                 mov es,ax     ; Адрес сегмента данных — в ES
+[  33]        :                                       
+[  34]    0007: 50 52 B4 09 BA AE 00 CD 21 5A 58      Print Enter_ArraySize_Str
+[  35]    0012: 50 52 B4 09 BA AB 00 CD 21 5A 58      Print New_Line
+[  36]        :                                       
+[  37]    001D: E8 0B 00                              call Enter_Number
+[  38]    0020: 50 52 B4 09 BA 2B 00 CD 21 5A 58      Print Enter_Number
+[  39]        :                                       
+[  40]        :                                       
+[  41]        :                                       ;====================Процедура ввода числа====================
+[  42]    002B:                                       Enter_Number PROC near
+[  43]        :                                       
+[  44]    002B:                                       Enter_Number_Loop_Start:
+[  45]        :                                       ; Ввод числа в строку
+[  46]    002B: B4 0A                                 mov ah,0Ah        ; Функция DOS (считать строку символов из STDIN в буфер)
+[  47]    002D: BA C1 00                              lea dx,String_Number  ; Смещение строки в DX
+[  48]    0030: CD 21                                 int 21h
+[  49]        :                                       
+[  50]    0032: B4 0A                                 mov ah,0Ah           ; Функция DOS (считать строку символов из STDIN в буфер)
+[  51]    0034: BA C1 00                              lea dx,String_Number; Смещение строки в DX
+[  52]    0037: CD 21                                 int 21h
+[  53]        :                                       
+[  54]        :                                       ; Вычисление длины введеного числа
+[  55]    0039: BE C1 00                              lea si, String_Number ; Смещение в SI наше число String_Number
+[  56]    003C: 46                                    inc si     ; SI++  ; Возможно не надо !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+[  57]    003D: B8 00 00                              mov ax, 0d ; Занулить AX
+[  58]    0040: AC                                    lodsb      ; DS:SI в AL
+[  59]    0041: 8B C8                                 mov cx,ax  ; CX = длина введеного числа
+[  60]        :                                       
+[  61]    0043: 83 F9 00                              cmp cx, 0d ; Если длина = 0, то Exeption_NumberIsZero ->
+[  62]    0046: 74 37                                 jz Exeption_NumberIsZero
+[  63]        :                                       
+[  64]    0048: C7 06 CB 00 00 00                     mov Main_Number, 0d; Занулим главное число
+[  65]        :                                       ; Будем в AX хранить степент 10 (TEN) ->
+[  66]        :                                       ; 1234 -> 4 * 10^0 + 3 * 10^1 + 2 * 10^2 + 1 * 10^3 = 1234
+[  67]    004E: B8 01 00                              mov ax, 01d ; Будем в AX хранить степень 10
+[  68]        :                                       
+[  69]    0051:                                       NumberStr_In_Number_Loop:
+[  70]    0051: BB 00 00                              mov bx, 0d; Занулим BX
+[  71]    0054: 8B F1                                 mov si, cx; SI = CX -> идем с конца слова, можно было так же поменять флаг DF(направления)
+[  72]        :                                       ;inc si;
+[  73]    0056: 8A 9C C1 00                           mov bl, String_Number[si]
+[  74]        :                                       
+[  75]        :                                       ; Проверка на то, что введеное число(str) является числом(int)
+[  76]    005A:                                       Proverka_Na_SymbolASCII:
+[  77]        :                                       
+[  78]    005A: 80 FB 30                              cmp bl, 48d; Сверка с нулем [ASCII] 48d = 0
+[  79]    005D: 7C 67                                 jl Exeption_Invalid_Number; bl < 48d
+[  80]        :                                       
+[  81]    005F: 80 FB 39                              cmp bl, 57d; Сверка с 9 [ASCII] 57d = 9
+[  82]    0062: 7F 62                                 jg Exeption_Invalid_Number; bl > 57d
+[  83]        :                                       
+[  84]    0064: 80 EB 30                              sub bl, 48d; Получить реальное число, "N" - 48 = N
+[  85]        :                                       
+[  86]    0067: 50                                    push ax; Сохранение AX
+[  87]        :                                       
+[  88]    0068: F8                                    clc; Очистить CF
+[  89]    0069: F6 E3                                 mul bl; bl = bl * AX -> Реальное число * 10^ax
+[  90]        :                                       
+[  91]    006B: 72 35                                 jc Exeption_OverFlow   ; Если есть флаг переноса от mul
+[  92]    006D: 01 06 CB 00                           add Main_Number, ax    ;  Main_Number + ax = Полноценное число
+[  93]    0071: 72 2F                                 jc Exeption_OverFlow   ; Если есть флаг переноса от add
+[  94]        :                                       
+[  95]    0073: 58                                    pop ax; Восстановление AX
+[  96]        :                                       
+[  97]    0074: F7 26 CD 00                           mul TEN; Увеличиваем AX * 10
+[  98]    0078: 49                                    dec cx; Уменьшаем счетчик
+[  99]        :                                       
+[ 100]    0079: 83 F9 00                              cmp cx,0d
+[ 101]        :                                       
+[ 102]    007C: 75 AD                                 jne Enter_Number_Loop_Start
+[ 103]        :                                       
+[ 104]    007E: C3                                    ret ;Вернуться туда, откуда была вызвана PROC
+[ 105]        :                                       
+[ 106]        :                                       Enter_Number endp
+[ 107]        :                                       ;=======================================================
+[ 108]        :                                       
+[ 109]        :                                       
+[ 110]        :                                       
+[ 111]        :                                       ;====================Exeption_NumberIsZero==============
+[ 112]    007F:                                       Exeption_NumberIsZero:
+[ 113]    007F: 50 52 B4 09 BA AB 00 CD 21 5A 58      Print New_Line
+[ 114]    008A: 50 52 B4 09 BA 00 00 CD 21 5A 58      Print Exeption_NumberIsZero_Str
+[ 115]    0095: 50 52 B4 09 BA AB 00 CD 21 5A 58      Print New_Line
+[ 116]    00A0: EB 89                                 jmp Enter_Number_Loop_Start
+[ 117]        :                                       ;=======================================================
+[ 118]        :                                       
+[ 119]        :                                       ;====================Exeption_OverFlow==============
+[ 120]    00A2:                                       Exeption_OverFlow:
+[ 121]    00A2: 50 52 B4 09 BA AB 00 CD 21 5A 58      Print New_Line
+[ 122]    00AD: 50 52 B4 09 BA 71 00 CD 21 5A 58      Print Exeption_OverFlow_Str
+[ 123]    00B8: 50 52 B4 09 BA AB 00 CD 21 5A 58      Print New_Line
+[ 124]    00C3: E9 65 FF                              jmp Enter_Number_Loop_Start
+[ 125]        :                                       ;=======================================================
+[ 126]        :                                       
+[ 127]        :                                       ;====================Exeption_Invalid_Number==============
+[ 128]    00C6:                                       Exeption_Invalid_Number:
+[ 129]    00C6: 50 52 B4 09 BA AB 00 CD 21 5A 58      Print New_Line
+[ 130]    00D1: 50 52 B4 09 BA 34 00 CD 21 5A 58      Print Exeption_Invalid_Number_Str
+[ 131]    00DC: 50 52 B4 09 BA AB 00 CD 21 5A 58      Print New_Line
+[ 132]    00E7: E9 41 FF                              jmp Enter_Number_Loop_Start
+[ 133]        :                                       ;=======================================================
+[ 134]        :                                       
+[ 135]        :                                       
+[ 136]        :                                       ;====================Конец программы====================
+[ 137]    00EA:                                       end:
+[ 138]    00EA: B8 00 4C                              mov ax,4C00h   ; 4C (выход из программы) в AH
+[ 139]        :                                       ; 00 (успешное звершение) в AL
+[ 140]    00ED: CD 21                                 int 21h        ; Функция DOS "Завершить программу"
+[ 141]        :                                       ;=======================================================
+[ 142]        :                                       
+[ 143]        :                                       ; Сегмент данных
+[ 144]        :                                       .data
+[ 145]        :                                       
+[ 146]        :                                       ;Exceptions
+[ 147]    00F0: 59 6F 75 20 64 69 64 6E 27 74 20 65   Exeption_NumberIsZero_Str db "You didn't enter a number, please repeat the input!$"
+                6E 74 65 72 20 61 20 6E 75 6D 62 65 
+                72 2C 20 70 6C 65 61 73 65 20 72 65 
+                70 65 61 74 20 74 68 65 20 69 6E 70 
+                75 74 21 24                         
+[ 148]    0124: 54 68 65 20 6E 75 6D 62 65 72 20 69   Exeption_Invalid_Number_Str db "The number is entered in the wrong format, repeat the input!$"
+                73 20 65 6E 74 65 72 65 64 20 69 6E 
+                20 74 68 65 20 77 72 6F 6E 67 20 66 
+                6F 72 6D 61 74 2C 20 72 65 70 65 61 
+                74 20 74 68 65 20 69 6E 70 75 74 21 
+                24                                  
+[ 149]    0161: 4F 6F 70 73 2C 20 79 6F 75 27 76 65   Exeption_OverFlow_Str db "Oops, you've caught an overflow(65535), repeat the input!$"
+                20 63 61 75 67 68 74 20 61 6E 20 6F 
+                76 65 72 66 6C 6F 77 28 36 35 35 33 
+                35 29 2C 20 72 65 70 65 61 74 20 74 
+                68 65 20 69 6E 70 75 74 21 24       
+[ 150]        :                                       
+[ 151]        :                                       ; Strings
+[ 152]    019B: 0A 0D 24                              New_Line   db 0Ah, 0Dh, '$'; Переход на новую строку
+[ 153]    019E: 45 6E 74 65 72 20 61 72 72 61 79 20   Enter_ArraySize_Str db "Enter array size: $"
+                73 69 7A 65 3A 20 24                
+[ 154]        :                                       ; ВВОД ЧИСЕЛ
+[ 155]    01B1: 00 00 00 00 00 00 00 00 00 00         String_Number db 10 DUP(?) ; Строка, в которую вводим число
+[ 156]    01BB: 00 00                                 Main_Number dw 0d           ; Введенное число (высчитывается)
+[ 157]        :                                       
+[ 158]        :                                       ;isValidNumber db 01d
+[ 159]    01BD: 0A 00                                 TEN dw 10d
+[ 160]    01BF: 00 00                                 numberOfNumber dw 0d; Номер числа в массиве
+[ 161]    01C1: 00                                    needNumberOfNumber db 0h ; bool, печатать ли номер числа
+[ 162]        :                                       
+[ 163]        :                                       
+[ 164]        :                                       ; МАССИВ
+[ 165]    01C2: 0A 00                                 array_size dw 10   ; Заполняемое число элементов массива
+[ 166]    01C4: 00 00 00 00 00 00 00 00 00 00 00 00   array dw 40 DUP(?) ; Массив чисел
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00             
+[ 167]    0214: 00 00                                 max_item dw 0      ; Максимальный элемент массива
+[ 168]    0216: 00                                    existsMaxItemFromRange db 0
+[ 169]    0217: 45 6E 74 65 72 20 61 72 72 61 79 20   strEnterArray db 'Enter array of values: $'
+                6F 66 20 76 61 6C 75 65 73 3A 20 24 
+                                                    
+[ 170]        :                                       
+[ 171]    022F: 48 6F 77 20 6D 61 6E 79 20 6E 75 6D   strAskSymbolsAmount db 'How many numbers would you like to enter [min: 1, max: 30]?$'
+                62 65 72 73 20 77 6F 75 6C 64 20 79 
+                6F 75 20 6C 69 6B 65 20 74 6F 20 65 
+                6E 74 65 72 20 5B 6D 69 6E 3A 20 31 
+                2C 20 6D 61 78 3A 20 33 30 5D 3F 24 
+                                                    
+[ 172]        :                                       
+[ 173]        :                                       ; ГИСТОГРАММА
+[ 174]    026B: 32 00                                 max_symb dw 50d       ; Максимальное количество символов для гистограммы
+[ 175]    026D: 23 24                                 symb db '#$'          ; Символ для заполнения столбика
+[ 176]    026F: 3E 20 24                              symbStart db '> $' ; Символ для начала столбика
+[ 177]        :                                       
+[ 178]        :                                       ; ДИАПАЗОН
+[ 179]    0272: 00 00                                 numberFrom dw 0
+[ 180]    0274: 00 00                                 numberTo dw 0
+[ 181]    0276: 42 75 69 6C 64 20 68 69 73 74 6F 67   strRange db 'Build histogram for numbers$'
+                72 61 6D 20 66 6F 72 20 6E 75 6D 62 
+                65 72 73 24                         
+[ 182]    0292: 66 72 6F 6D 3A 20 24                  strFrom db 'from: $'
+[ 183]    0299: 74 6F 3A 20 20 20 24                  strTo db 'to:   $'
+[ 184]    02A0: 22 66 72 6F 6D 22 20 6D 75 73 74 20   strRangeFormat db '"from" must be <= "to"$'
+                62 65 20 3C 3D 20 22 74 6F 22 24    
+[ 185]    02B7: 4E 6F 74 20 61 20 73 69 6E 67 6C 65   strNoNumbersFromRange db 'Not a single number from the range has been entered$'
+                20 6E 75 6D 62 65 72 20 66 72 6F 6D 
+                20 74 68 65 20 72 61 6E 67 65 20 68 
+                61 73 20 62 65 65 6E 20 65 6E 74 65 
+                72 65 64 24                         
+[ 186]    02EB: 00                                    needPrintFrom db 0h
+[ 187]    02EC: 00                                    needPrintTo db 0h
+[ 188]        :                                       
+[ 189]        :                                       ; Символы перехода на новую строку (v,<)
+[ 190]    02ED: 0A 0D 24                              toNewLine db 0Ah, 0Dh, '$'
+[ 191]        :                                       
+[ 192]        :                                       ; Строка для передачи в процедуру
+[ 193]    02F0: 00 00                                 strGeneral_offset dw 0
+[ 194]    02F2: 00                                    strGeneral_size db 0
+[ 195]        :                                       
+[ 196]        :                                       ; Число для передачи в процедуру
+[ 197]    02F3: 00 00                                 numberGeneral dw 0
+[ 198]        :                                       
+[ 199]        :                                       ; Сегмент стека (256 байт)
+[ 200]        :                                       .stack 100h
+[ 201]        :                                       
+[ 202]        :                                       ; Конец программы
+[ 203]        :                                       end START
+[ 204]        :                                       
+[ 205]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: 00      -   bytes on last page (l.byte)
+0003: 00      -   bytes on last page (h.byte)
+0004: 03      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 30      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 00      -   SP - stack pointer (l.byte)
+0011: 01      -   SP - stack pointer (h.byte)
+0012: AE      -   check sum (l.byte)
+0013: E6      -   check sum (h.byte)
+0014: 00      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 00      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: 01      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 00      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================

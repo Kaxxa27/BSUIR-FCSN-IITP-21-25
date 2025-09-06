@@ -1,0 +1,300 @@
+; hello_exe.asm
+.model small    ; Модель памяти (код в 1 сегменте, данные и стек в DGROUP)
+.stack 100h     ; Сегмент стека (256 байт)
+.code           ; Сегмент кода
+START:
+
+; Распечатать строку
+printStr macro str
+mov ah,09h ; Номер функции DOS
+lea dx,str ; Смещение str в DX
+int 21h ; 21 прерывание
+endm
+
+; Ввести строку
+enterStr macro str
+mov ah,0Ah  ; Функция DOS (считать строку символов из STDIN в буфер)
+lea dx,str  ; Смещение строки в DX
+int 21h
+endm
+
+; Задать в строке макисмальное количество символов для ввода
+; [Занести в первый байт число]
+setMaxEnterSymbols macro str,number
+lea di,str ; Смещение строки в DI
+mov al,number ; Максимальное число символов для ввода
+stosb  ; AL в ES:DI
+endm
+
+; Вычислить размер введенной строки
+; [Занести в str_size второй байт str]
+calcSizeOfEnteredStr macro str_size,str
+lea si,str ; Смещение str в SI
+add si,01d ; SI++
+lodsb ; DS:SI в AL
+mov str_size,al ; AL в str_size
+endm
+
+; Отформатировать строку
+; [Убрать первые два байта, добавить в конец '$']
+formatStr macro str_size,str
+
+; Сдвигаем строку на 2 влево
+lea di,str ; Смещение str в DI
+mov si,di
+add si,02d ; SI = DI + 2
+
+mov CH,0h
+mov CL,str_size ; CX = str_size
+rep movsb ; Пересылка DS:SI в ES:DI пока CX <> 0
+
+; Добавление '$' в конец
+lea di,str ; Смещение строки в DI
+mov dh,0d
+mov dl,str_size ; DX = str_size
+add di,dx ; DI += str_size
+mov al,'$' ; Символ '$'
+stosb  ; AL в ES:DI
+endm
+
+
+
+mov ax,@data    ; @data - идентификатор сегмента данных
+mov ds,ax       ; Адрес сегмента данных — в DS
+mov es,ax; Адрес сегмента данных — в ES
+
+setMaxEnterSymbols string,string_maxSize
+printStr string_info
+enterStr string
+calcSizeOfEnteredStr string_size,string
+cmp string_size,0h ; if string_size == 0
+je stringEmpty     ; строка пустая
+formatStr string_size,string
+
+setMaxEnterSymbols sfind,sfind_maxSize
+printStr toNewLine
+printStr sfind_info
+enterStr sfind
+calcSizeOfEnteredStr sfind_size,sfind
+cmp sfind_size,0h ; if sfind_size == 0
+je stringEmpty    ; строка пустая
+formatStr sfind_size,sfind
+
+setMaxEnterSymbols spaste,spaste_maxSize
+printStr toNewLine
+printStr spaste_info
+enterStr spaste
+calcSizeOfEnteredStr spaste_size,spaste
+cmp spaste_size,0h ; if spaste_size == 0
+je stringEmpty     ; строка пустая
+formatStr spaste_size,spaste
+
+jmp continue
+
+; Если пустая строка
+stringEmpty:
+
+printStr toNewLine
+printStr strEmpty
+jmp end ; Прыжок в конец программы
+
+continue:
+
+;printStr toNewLine
+;printStr string
+
+;printStr toNewLine
+;printStr sfind
+
+;printStr toNewLine
+;printStr spaste
+
+mov al,string_size
+sub al,sfind_size
+inc al
+mov temp,al ; temp = string_size - sfind_size + 1
+; до куда пойдет цикл for
+mov si,0h   ; SI выступает в роли счетчика i
+
+for:
+cmp si,0h            ; if i == 0
+je wordBeginning     ; Этот символ – начало слова
+cmp string[si-1],' ' ; if string[i-1]==' '
+je wordBeginning     ; Этот символ – начало слова
+jmp notWordBeginning ; Иначе – не начало слова
+
+; Если символ – начало слова
+wordBeginning:
+mov bx,0h
+mov bl,sfind_size       ; BX = sfind_size
+cmp string[bx][si], ' ' ; if string[i + sfind_size] == ' '
+je wordEnd              ; Есть символ конца слова
+cmp string[bx][si], '$' ; if string[i + sfind_size] == '$'
+je wordEnd              ; Есть символ конца слова
+jmp notWordEnd          ; Иначе – символа конца слова нет
+
+; Если есть символ конца слова
+wordEnd:
+mov dx,0h
+mov dl,sfind         ; DX = sfind[0]
+cmp string[si],dl    ; if string[i] != sfind[0]
+jne notSearchingWord ; Это слово не искомое
+
+push si           ; Сохранение SI
+mov ax,si
+lea si,string
+add si,ax         ; В SI смещение на string[i]
+lea di,sfind      ; В DI смещение на sfind[0]
+mov cx,0h
+mov cl,sfind_size ; в CX размер искомого слова
+
+repe cmpsb   ; Сравниваем string и sfind пока они равны
+; и пока CX <> 0
+pop si       ; Восстановление SI
+jnz notEqual ; Если подстрока со словом не равны
+
+; Действие, если равны
+mov place,al  ; В place индекс, с которого начинается слово
+mov found,01h ; found = true
+jmp exitFor   ; Выход из for
+
+
+notEqual:
+
+notSearchingWord:
+
+notWordEnd:
+
+notWordBeginning:
+
+inc si      ; SI++
+mov ax,si
+cmp al,temp ; Сравнить si с temp
+loopnz for   ; Если не равны, следующая итерация
+
+; Выход из цикла
+exitFor:
+
+cmp found,01h ; if found == true
+je placeFound ; Место найдено
+
+printStr toNewLine
+printStr strPlaceNotFound
+jmp placeNotFound
+
+placeFound:
+
+mov al,string_size
+add al,spaste_size
+inc al
+mov new_string_size,al ; new_string_size = string_size + spaste_size + 1
+
+; Добавление '$' в конец (расширение строки)
+lea di,string ; Смещение строки в DI
+mov dh,0d
+mov dl,new_string_size ; DX = new_string_size
+add di,dx ; DI += new_string_size
+mov al,'$' ; Символ '$'
+stosb  ; AL в ES:DI
+
+std ; DF = 1
+
+lea si,string
+mov ax,0h
+mov al,string_size
+add si,ax
+dec si ; SI – смещение на последний символ
+; введенной строки
+
+lea di,string
+mov ax,0h
+mov al,new_string_size
+add di,ax
+dec di ; DI – смещение на последний символ
+; расширенной строки
+
+; Освобождение места для введенного слова
+mov ax,0h
+mov al,new_string_size
+dec al
+sub al,place
+mov cx,ax ; CX = new_string_size - 1 - place
+rep movsb    ; DS:SI в ES:DI пока CX <> 0
+
+; Вставка введенного слова
+cld ; DF = 0
+lea si,spaste ; SI – смещение на первый символ
+; вставляемого слова
+
+
+lea di,string
+mov ax,0h
+mov al,place
+add di,ax ; DI – смещение на место начала
+; вставки в string
+
+mov ax,0h
+mov al,spaste_size
+mov cx,ax ; CX = spaste_size
+
+rep movsb ; DS:SI в ES:DI пока CX <> 0
+
+; Вставка пробела после введенного слова
+mov bx,0h
+add bl,place
+add bl,spaste_size ; BX = place + spaste_size
+mov string[bx],' ' ; string[place + spaste_size] = ' '
+
+; Вывод результата
+printStr toNewLine
+printStr strResult
+printStr string
+
+placeNotFound:
+end:
+
+mov ax,4C00h    ; 4C (выход из программы) в AH, 00 (успешное звершение) в AL
+int 21h         ; Функция DOS "Завершить программу"
+
+.data ; Сегмент данных
+
+; Исходная строка
+string db 200 DUP(?)
+string_maxSize db equ 100
+string_size db 0
+new_string_size db 0
+string_info db 'Source string: $'
+
+; Строка, перед которой вставляем
+sfind db 200 DUP(?)
+sfind_maxSize db equ 20
+sfind_size db 0
+sfind_info db 'Paste before:  $'
+
+; Строка, которую вставляем
+spaste db 200 DUP(?)
+spaste_maxSize db equ 20
+spaste_size db 0
+spaste_info db 'Pasting word:  $'
+
+
+
+temp db 0   ; Временная переменная
+place db 0  ; Место в строке, где начинается слово
+; перед которым надо вставить
+found db 0  ; bool, найдено ли слово
+
+; Строка если не нашли слово, перед которым вставить
+strPlaceNotFound db 'The word to insert before which was not found$'
+
+strResult db 'Result:        $'      ; Результат
+strEmpty db 'Entered string is empty$' ; Введенное слово пустое
+toNewLine db 0Ah, 0Dh, '$'           ; Символы перехода на новую строку (v,<)
+
+end START   ; Конец программы
+
+
+
+
+
+; [SOURCE]: C:\BSUIR\3 sem\КПрог(Асик)\8086\Lab2\lab6\mycode.asm

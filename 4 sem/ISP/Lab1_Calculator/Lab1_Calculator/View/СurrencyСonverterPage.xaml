@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lab1_Calculator.View.СurrencyСonverterPage"
+             xmlns:viewmodel="clr-namespace:Lab1_Calculator.ViewModel"
+             xmlns:entities="clr-namespace:Lab1_Calculator.Entities"
+             x:DataType="viewmodel:CurrencyConverterViewModel"
+             Title="СurrencyСonverter">
+
+    <Grid ColumnDefinitions="2.2*,*"
+          RowDefinitions="*,*"
+          BackgroundColor="{StaticResource Gray500}">
+
+        <DatePicker x:Name="DatePicker"
+                    BackgroundColor="Bisque"
+                    WidthRequest="150"
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    MinimumDate="{Binding MinDate}"
+                    MaximumDate="{Binding MaxDate}"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    VerticalOptions="StartAndExpand"
+                    HorizontalOptions="Center"
+                    Margin="0,26,0,0"
+                    Date="{Binding SelectedDate}">
+        </DatePicker>
+
+        <VerticalStackLayout Grid.Column="0"
+                             Grid.RowSpan="2">
+
+            <Button Text="Update Rates"
+                Command="{Binding DatePickCommand}"
+                WidthRequest="150"
+                HeightRequest="50"
+                Grid.Column="0"
+                VerticalOptions="StartAndExpand"
+                Margin="20"
+                FontAttributes="Bold"
+                FontSize="18"
+                BackgroundColor="{StaticResource Orange_IntegralCalculate}"
+                />
+
+            <Grid ColumnDefinitions="*,*,*"
+                  HorizontalOptions="CenterAndExpand"
+                  WidthRequest="580"
+                  Grid.Column="0">
+                <Label Text="Currency"
+                       Grid.Column="0"
+                       Margin="10,0,0,0"
+                       FontSize="20"
+                       FontAttributes="Bold"/>
+                <Label Text="Rate"
+                       Grid.Column="1"
+                       Margin="10,0,0,0"
+                       FontSize="20"
+                       FontAttributes="Bold"/>
+                <Label Text="Scale"
+                       Grid.Column="2"
+                       Margin="10,0,0,0"
+                       FontSize="20"
+                       FontAttributes="Bold"/>
+            </Grid>
+            <CollectionView ItemsSource="{Binding Rates}"
+                            HeightRequest="400"
+                            HorizontalOptions="CenterAndExpand"
+                           >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="entities:Rate">
+                        <Grid ColumnDefinitions="*,*,*"
+                              Margin="10">
+                            <Frame CornerRadius="0"
+                                   Grid.ColumnSpan="3"
+                                   BorderColor="Black"
+                                   WidthRequest="580"
+                                   HorizontalOptions="Start"
+                                   BackgroundColor="{StaticResource LightGreen}"/>
+                            
+                            <Label Text="{Binding Cur_Name}"
+                                       Grid.Column="0"
+                                       Margin="10"
+                                       FontSize="16"
+                                       FontAttributes="Bold"/>
+                            <Label Text="{Binding Cur_OfficialRate}"
+                                       Grid.Column="1"
+                                       Margin="10"
+                                       FontSize="16"
+                                       FontAttributes="Bold"/>
+                            <Label Text="{Binding Cur_Scale}"
+                                       Grid.Column="2"
+                                       Margin="10"
+                                       FontSize="16"
+                                       FontAttributes="Bold"/>
+                            
+                            <!--<Frame CornerRadius="10"
+                               BorderColor="Black"
+                               BackgroundColor="{StaticResource Pink0_IntegralCalculate}"
+                               Margin="10"
+                               WidthRequest="200"
+                               HeightRequest="100"
+                                   Grid.Column="0">
+                                    <Label Text="{Binding Cur_Name, StringFormat='Currency: {0}'}"
+                                       Grid.Column="0"/>
+                                    <Label Text="{Binding Cur_OfficialRate, StringFormat='Rate: {0}'}"
+                                       Grid.Column="1"/>
+                                    <Label Text="{Binding Cur_Scale, StringFormat='Scale: {0}'}"
+                                       Grid.Column="2"/>
+                            </Frame>-->
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Column="1"
+                             Grid.Row="1"
+                             HorizontalOptions="Center">
+
+            <!--<Picker 
+                Margin="20"
+                Title="Pick Brigade"  
+                TitleColor="{StaticResource Orange_IntegralCalculate}"
+                ItemsSource="{Binding Brigades}"
+                ItemDisplayBinding="{Binding Title}"
+                SelectedItem="{Binding Brigade}">
+            </Picker>-->
+
+            
+            <Picker ItemsSource="{Binding Rates}"
+                    SelectedItem="{Binding CurrentRate}"
+                    ItemDisplayBinding="{Binding Cur_Name}"></Picker>
+            
+            <HorizontalStackLayout >
+                <Entry Placeholder="BYN"
+                       Text="{Binding CurrencyBYN}"
+                       WidthRequest="100"
+                       HeightRequest="50"
+                       BackgroundColor="{StaticResource Gray300}"></Entry>
+
+                <Label Text="="
+                   HeightRequest="75"
+                   FontSize="50"
+                   FontAttributes="Bold"/>
+
+                <Entry Placeholder="{Binding CurrentRate.Cur_Abbreviation}"
+                   Text="{Binding CurrencyToConvertBYN}"
+                   IsEnabled="false"
+                   WidthRequest="100"
+                   HeightRequest="50"
+                   BackgroundColor="{StaticResource Gray300}"></Entry>
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout >
+                <Entry Placeholder="{Binding CurrentRate.Cur_Abbreviation}"
+                       Text="{Binding CurrencyAny}"
+                       WidthRequest="100"
+                       HeightRequest="50"
+                       BackgroundColor="{StaticResource Gray300}"></Entry>
+
+                <Label Text="="
+                   HeightRequest="75"
+                   FontSize="50"
+                   FontAttributes="Bold"/>
+
+                <Entry Placeholder="BYN"
+                   Text="{Binding CurrencyToConvertAny}"
+                   WidthRequest="100"
+                   HeightRequest="50"
+                   IsEnabled="false"
+                   BackgroundColor="{StaticResource Gray300}"></Entry>
+            </HorizontalStackLayout>
+
+            <Button Text="Convert"
+                    WidthRequest="100"
+                    HorizontalOptions="StartAndExpand"
+                    HeightRequest="50"
+                    Command="{Binding ConvertCommand}"/>
+        </VerticalStackLayout>
+       
+        
+    </Grid>
+</ContentPage>

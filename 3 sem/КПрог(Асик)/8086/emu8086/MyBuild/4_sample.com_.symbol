@@ -1,0 +1,17 @@
+< THE SYMBOL TABLE >  4_sample.com_  --  emu8086 assembler version: 4.05 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+GAME                     	00131     	-1        	LABEL     	(NOSEG)   
+BELOW                    	0014F     	-1        	LABEL     	(NOSEG)   
+ABOVE                    	00154     	-1        	LABEL     	(NOSEG)   
+PRINT                    	00157     	-1        	LABEL     	(NOSEG)   
+STOP                     	0015D     	-1        	LABEL     	(NOSEG)   
+MSG1                     	0015E     	1         	VAR       	(NOSEG)   
+EQUAL_5                  	0018F     	1         	VAR       	(NOSEG)   
+BELOW_5                  	001A3     	1         	VAR       	(NOSEG)   
+ABOVE_5                  	001B5     	1         	VAR       	(NOSEG)   
+===================================================================================================
+[ 22.10.2023  --  16:43:02 ] 
+< END >
+ 

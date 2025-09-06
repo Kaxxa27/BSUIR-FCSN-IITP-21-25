@@ -1,0 +1,41 @@
+﻿.login-style-for-errors {
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.login-style-for-labels {
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.login-style-size-50 {
+    font-size: 50px;
+}
+
+
+.login-form {
+    width: auto;
+    margin-top: 150px;
+    border-radius: 30px;
+    padding: 100px;
+    background: linear-gradient(to bottom right, #ffe259, #ffa751);
+}
+/*#C02425, #F0CB35*/
+
+button.sign-in-btn {
+    font-size: 16px;
+    font-weight: bold;
+    width: 49%;
+    border-radius: 10px;
+    background-color: violet;
+    color: black;
+    padding: 10px 20px;
+    transition: background-color 0.7s ease;
+}
+
+button.sign-in-btn:hover {
+    background-color: springgreen /*#6FD566*/;
+    cursor: pointer;
+}

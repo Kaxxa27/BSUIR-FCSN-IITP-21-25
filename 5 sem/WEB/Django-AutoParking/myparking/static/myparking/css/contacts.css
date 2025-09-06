@@ -1,0 +1,94 @@
+.block-contacts {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    margin: 10px;
+    padding: 2px;
+}
+
+.block-image{
+    width: 50%;
+    margin-right: 10px;
+}
+.contact-image{
+    width: 100%;
+    border-radius: 10%;
+}
+
+.contact-summary{
+    width: 100%;
+    background: lightgrey;
+    padding: 4%;
+}
+
+div > p {
+    font-size: 30px;
+}
+
+/*
+div[class^="contact-summary"] p {
+    background-color: yellow;
+}
+p[class$="bold"] {
+    color: blue;
+}
+div[class="block-contacts"] {
+    background-color: orange;
+}
+*/
+
+.card-wrapper {
+    perspective: 1000px;
+    width: 300px;
+    height: 400px;
+    margin-right: 20px;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+
+.card-front,
+.card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+
+.card-front {
+    color: white;
+}
+
+.card-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Заполняем всю площадь, сохраняя пропорции */
+}
+
+.card-back {
+    background-color: #e74c3c;
+    color: white;
+    transform: rotateY(180deg);
+}
+
+#app {
+    display: flex;
+    align-items: center;
+    perspective: 1000px;
+    height: 100vh;
+}

@@ -1,0 +1,119 @@
+{% extends "base_generic.html"%}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'myparking/css/home.css' %}">
+<link rel="stylesheet" href="{% static 'myparking/css/news.css' %}">
+{% endblock %}
+
+{% block title%}
+<title>Home</title>
+{% endblock %}
+
+{% block content%}
+
+<div class="main-container my-align-center">
+    
+    <div class="time-counter" id="time-counter"></div>
+    
+    <h2>Добро пожаловать в <span class="company-name">ByKaxxa</span>!</h2>
+
+    {% if user.is_superuser %}
+    <form id="rotationForm" onsubmit="event.preventDefault()">
+        <label>Ротация баннеров: <input type="number" min="100" id="inputRotation"></label>
+        <button type="button" id="interval_btn">Click</button>
+    </form>
+    {% endif %}
+    <div class="banner-container" data-interval="{{ banner_interval }}" >
+        {% if banners %}
+        {% for banner in banners %}
+         <div class="banner" {% if not forloop.first %}hidden{% endif %}>
+                <a href="{{ banner.link }}" target="_blank">
+                    <img class="banner-image" src="{{ banner.image.url }}" alt="{{ banner.title }}">
+                </a>
+         </div>
+        {% endfor %}
+        {% else %}
+        <p>No banners available.</p>
+        {% endif %}
+    </div>
+
+    <code>
+        def index(request):
+        """
+        Функция отображения для домашней страницы сайта.
+        """
+        parkings = ParkingSpot.objects.all()
+
+        # Если уже достали из базы данных объекты, то лучше сделать вот так,
+        # parkings_count = len(parkings) || parkings.count()
+        parkings_count = ParkingSpot.objects.all().count()
+
+        latest_news = News.objects.all().last()
+
+        return render(
+        request,
+        'index.html',
+        context={'parkings': parkings,
+        'parkings_count': parkings_count,
+        'latest_news': latest_news},
+        )
+    </code>
+    <pre>
+        Тучка лопнула с утра,
+        Дождик льет — как из ведра.
+        Тучке надобен ремонт,
+        А тебе — хороший зонт.
+    </pre>
+    <h1 class="text-bold">Последняя новость:</h1>
+    <div class="block-news-with-position news-bg-gradient-orange text-bold text-20">
+        <div>{{ latest_news.publish_date }}</div>
+        <br>
+        <div class="block-news">
+            <div>
+                <a href="{% url 'news_details' latest_news.pk %}">{{ latest_news.title }}</a>
+                <p>{{ latest_news.summary|slice:300 }}...</p>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+    <article class="parking-article">
+        <div>
+            <p><b><i>Автостоянка</i></b> - удобство и безопасность для вашего Автомобиля.</p>
+            <p class="dancing-script-font">Это неотъемлемая часть современной городской инфраструктуры,
+                которая приносит огромную пользу как владельцам автомобилей, так и всему сообществу.</p>
+            <blockquote style="column-count: 3;">
+                <p><q lang="en">EN</q></p>
+                <p><q lang="ru">RU</q></p>
+                <p><q lang="de">DE</q></p>
+                <p><q lang="fr">FR</q></p>
+                <q>Автостоянка - это не только место для парковки вашего автомобиля, это место,
+                    где начинается ваш путь к приключениям</q>,
+                где вы оставляете следы своих путешествий и ждете новых открытий.
+                Кахновский Евгений - владелец крупнейшой сети автостоянок Республики Беларусь
+            </blockquote>
+        </div>
+    </article>
+    <hr>
+
+    <h1 style="text-align: center;"><b>Наши партнеры</b></h1>
+    <section class="our-partners">
+        <a class="partner-block" href="https://www.shell.com" title="Shell" target="_blank">
+            <img class="our-partners-logo" src="{% static 'myparking/images/partners/shell.jpg' %}">
+        </a>
+        <a class="partner-block" href="http://www.belshina.by" title="Belshina" target="_blank">
+            <img class="our-partners-logo" src="{% static 'myparking/images/partners/belshina.png' %}">
+        </a>
+        <a class="partner-block" href="https://belarusbank.by" title="BelarusBank" target="_blank">
+            <img class="our-partners-logo" src="{% static 'myparking/images/partners/belarusbank.jpg' %}">
+        </a>
+    </section>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'myparking/js/index/banners.js' %}"></script>
+    <script src="{% static 'myparking/js/index/time-counter.js' %}"></script>
+{% endblock %}

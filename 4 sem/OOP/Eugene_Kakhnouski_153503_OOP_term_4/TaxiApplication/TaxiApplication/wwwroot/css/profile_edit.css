@@ -1,0 +1,27 @@
+﻿.image-options {
+    margin-top: 15px;
+    height: 330px;
+    width: 380px;
+    border: 3px solid black;
+}
+
+.photo-input{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+button.photo-btn {
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 15px;
+    border-radius: 10px;
+    background-color: darkgrey;
+    color: black;
+    transition: background-color 0.7s ease;
+}
+
+button.photo-btn:hover {
+    background-color: springgreen;
+    cursor: pointer;
+}

@@ -1,0 +1,53 @@
+﻿.registration-form {
+    width: 900px;
+    margin: 70px auto 0;
+    border-radius: 30px;
+    padding: 80px;
+    background: linear-gradient(to bottom right, #ffe259, #ffa751);
+}
+
+.form-name-surname {
+    width: 350px;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.width-for-labels-registration {
+    width: 720px;
+}
+
+.sign-up-btn-width {
+    width: 95%;
+}
+
+button.sign-up-btn {
+    font-size: 16px;
+    font-weight: bold;
+    width: 50%;
+    border-radius: 10px;
+    background-color: deepskyblue;
+    color: black;
+    padding: 10px 20px;
+    transition: background-color 0.7s ease;
+}
+
+button.sign-up-btn:hover {
+    background-color: springgreen /*#6FD566*/;
+    cursor: pointer;
+}
+
+.sign-up-btn-registration {
+    font-size: 16px;
+    font-weight: bold;
+    width: 97.5%;
+    border-radius: 10px;
+    background-color: deepskyblue;
+    color: black;
+    padding: 10px 20px;
+    transition: background-color 0.7s ease;
+}
+
+button.sign-up-btn-registration:hover {
+    background-color: springgreen /*#6FD566*/;
+    cursor: pointer;
+}

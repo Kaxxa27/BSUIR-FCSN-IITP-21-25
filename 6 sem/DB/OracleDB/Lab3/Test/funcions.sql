@@ -1,0 +1,39 @@
+CREATE OR REPLACE FUNCTION dev.hello_world_func RETURN VARCHAR2 AS
+BEGIN
+    RETURN 'Hello world';
+END;
+/
+CREATE OR REPLACE FUNCTION dev.cur_date_func RETURN NUMBER AS
+BEGIN
+    RETURN 1;
+END;
+/
+CREATE OR REPLACE FUNCTION prod.cur_date_func RETURN DATE AS
+BEGIN
+    RETURN sysdate;
+END;
+/
+CREATE OR REPLACE FUNCTION prod.goodbye_world_func RETURN VARCHAR2 AS
+BEGIN
+    RETURN 'Goodbye world';
+END;
+/
+CREATE OR REPLACE FUNCTION dev.diff_param_func (param1 VARCHAR2) RETURN VARCHAR2 AS
+BEGIN
+    RETURN 'Param VARCHAR2: ' || param1;
+END;
+/
+CREATE OR REPLACE FUNCTION prod.diff_param_func (param1 VARCHAR2, param2 NUMBER) RETURN NUMBER AS
+BEGIN
+    RETURN param2;
+END;
+/
+CREATE OR REPLACE FUNCTION dev.diff_code_func (param1 VARCHAR2) RETURN VARCHAR2 AS
+BEGIN
+    RETURN 'Param VARCHAR2: ' || param1;
+END;
+/
+CREATE OR REPLACE FUNCTION prod.diff_code_func (param1 VARCHAR2) RETURN VARCHAR2 AS
+BEGIN
+    RETURN 'Param param VARCHAR2: ' || param1;
+END;

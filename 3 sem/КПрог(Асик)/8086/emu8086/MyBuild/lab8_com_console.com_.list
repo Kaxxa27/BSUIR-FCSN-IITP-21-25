@@ -1,0 +1,733 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+lab8_com_console.com_ -- emu8086 assembler version: 4.05  
+ 
+[ 13.12.2022  --  21:53:10 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ; Распечатать строку [Макрос]
+[   2]        :                                       printStr macro str
+[   3]        :                                       push ax
+[   4]        :                                       push dx
+[   5]        :                                       
+[   6]        :                                       mov ah,09h ; Номер функции DOS
+[   7]        :                                       lea dx,str ; Смещение str в DX
+[   8]        :                                       int 21h    ; 21 прерывание
+[   9]        :                                       
+[  10]        :                                       pop dx
+[  11]        :                                       pop ax
+[  12]        :                                       endm
+[  13]        :                                       
+[  14]        :                                       ; Распечатать символ [Макрос]
+[  15]        :                                       printSymb macro ascii
+[  16]        :                                       mov ah,06h
+[  17]        :                                       mov dl,ascii
+[  18]        :                                       int 21h
+[  19]        :                                       endm
+[  20]        :                                       
+[  21]        :                                       ; Распечатать строку по смещению [Макрос]
+[  22]        :                                       printStrByOffset macro offset
+[  23]        :                                       push ax
+[  24]        :                                       push dx
+[  25]        :                                       
+[  26]        :                                       mov ah,09h    ; Номер функции DOS
+[  27]        :                                       mov dx,offset ; Смещение в DX
+[  28]        :                                       int 21h       ; 21 прерывание
+[  29]        :                                       
+[  30]        :                                       pop dx
+[  31]        :                                       pop ax
+[  32]        :                                       endm
+[  33]        :                                       
+[  34]        :                                       ; Открыть файл [Макрос]
+[  35]        :                                       openFile MACRO nameOffset, id
+[  36]        :                                       mov dx,nameOffset ; Адрес ASCIZ-строки с именем файла
+[  37]        :                                       mov ah,3Dh        ; Функция DOS 3Dh (открыть существующий файл)
+[  38]        :                                       mov al,02h        ; 02 - для чтения и записи
+[  39]        :                                       int 21h           ; Открыть файл
+[  40]        :                                       mov id,ax         ; Сохранить дескриптор
+[  41]        :                                       
+[  42]        :                                       jc openErrorLabel
+[  43]        :                                       endm
+[  44]        :                                       
+[  45]        :                                       ; Создать файл [Макрос]
+[  46]        :                                       createFile MACRO nameOffset, id
+[  47]        :                                       mov ah,3Ch        ; Функция DOS 3Ch (создать файл)
+[  48]        :                                       mov ch,00100000b  ; Атрибут файла
+[  49]        :                                       mov dx,nameOffset ; Адрес ASCIZ-строки с именем файла
+[  50]        :                                       int 21h           ; Создать файл
+[  51]        :                                       mov id,ax         ; Сохранить дескриптор
+[  52]        :                                       
+[  53]        :                                       jc createErrorLabel
+[  54]        :                                       endm
+[  55]        :                                       
+[  56]        :                                       ; Считать символы [Макрос]
+[  57]        :                                       readChars MACRO id, number, buf
+[  58]        :                                       mov ah,3Fh    ; Функция DOS (чтение из файла)
+[  59]        :                                       mov bx,id     ; Загрузка дескриптора
+[  60]        :                                       mov cx,number ; Количество считываемых символов
+[  61]        :                                       lea dx,buf    ; Загрузка буфера
+[  62]        :                                       int 21h       ; Считать данные
+[  63]        :                                       
+[  64]        :                                       jc readingErrorLabel
+[  65]        :                                       endm
+[  66]        :                                       
+[  67]        :                                       ; Записать символы [Макрос]
+[  68]        :                                       writeChars MACRO id, number, buf
+[  69]        :                                       mov ah,40h    ; Функция DOS (запись в файл)
+[  70]        :                                       mov bx,id     ; Дескриптор
+[  71]        :                                       mov cx,number ; Количество записываемых символов
+[  72]        :                                       lea dx,buf    ; Буфер
+[  73]        :                                       int 21h       ; Записать данные
+[  74]        :                                       
+[  75]        :                                       jc writingErrorLabel
+[  76]        :                                       endm
+[  77]        :                                       
+[  78]        :                                       ; Установить курсор [Макрос]
+[  79]        :                                       setCursor MACRO id, distance, type
+[  80]        :                                       mov ah,42h      ; Функция DOS (переместить указатель чтения/записи)
+[  81]        :                                       mov bx,id       ; Идентификатор
+[  82]        :                                       mov cx,0h       ;
+[  83]        :                                       mov dx,distance ;
+[  84]        :                                       mov al,type     ; Относительно чего
+[  85]        :                                       int 21h         ; Переместить указатель
+[  86]        :                                       
+[  87]        :                                       jc cursorErrorLabel
+[  88]        :                                       endm
+[  89]        :                                       
+[  90]        :                                       ; Закрыть файл [Макрос]
+[  91]        :                                       closeFile MACRO id
+[  92]        :                                       mov bx,id  ; Дескриптор
+[  93]        :                                       mov ah,3Eh ; Функция DOS 3Eh
+[  94]        :                                       int 21h    ; Закрыть файл
+[  95]        :                                       
+[  96]        :                                       jc closeErrorLabel
+[  97]        :                                       endm
+[  98]        :                                       
+[  99]        :                                       ; Удалить файл [Макрос]
+[ 100]        :                                       deleteFile MACRO nameOffset, labelGood, labelBad
+[ 101]        :                                       mov ah,41h        ; Функция DOS 41h (удалить файл)
+[ 102]        :                                       mov dx,nameOffset ; Адрес ASCIZ-строки с именем файла
+[ 103]        :                                       int 21h           ; Удалить файл
+[ 104]        :                                       
+[ 105]        :                                       jc deleteErrorLabel
+[ 106]        :                                       endm
+[ 107]        :                                       
+[ 108]        :                                       
+[ 109]        :                                       .model tiny
+[ 110]    0100:                                       .code
+[ 111]        :                                       org 100h
+[ 112]    0100:                                       START:
+[ 113]        :                                       
+[ 114]    0100: 89 26 BC 06                           mov end_SP,sp ; Сохранение SP
+[ 115]        :                                       
+[ 116]        :                                       ; Обработка параметров командной строки
+[ 117]    0104: 50 52 B4 09 BA 79 09 CD 21 5A 58      printStr paramsMessage     ; "Параметры командной строки:"
+[ 118]    010F: 50 52 B4 09 BA 76 09 CD 21 5A 58      printStr toNewLine         ; На новую строку
+[ 119]    011A: 50 52 B4 09 BA C6 09 CD 21 5A 58      printStr paramsFormat      ; Формат параметров
+[ 120]    0125: 50 52 B4 09 BA 76 09 CD 21 5A 58      printStr toNewLine
+[ 121]    0130: 50 52 B4 09 BA 76 09 CD 21 5A 58      printStr toNewLine
+[ 122]    013B: 50 52 B4 09 BA 92 09 CD 21 5A 58      printStr paramsYourMessage ; Ваши параметры
+[ 123]    0146: 50 52 B4 09 BA 76 09 CD 21 5A 58      printStr toNewLine
+[ 124]    0151: E8 F6 03                              call processCommandLine    ; Обработать параметры командной строки
+[ 125]    0154: 80 3E 73 09 03                        cmp paramsNumber,03h       ; Параметров должно быть три
+[ 126]    0159: 74 19                                 je paramsAreNormal
+[ 127]        :                                       
+[ 128]        :                                       ; Проблемы с параметрами
+[ 129]    015B: 50 52 B4 09 BA 76 09 CD 21 5A 58      printStr toNewLine
+[ 130]    0166: 50 52 B4 09 BA A3 09 CD 21 5A 58      printStr paramsError ; Ошибка
+[ 131]    0171: E9 81 03                              jmp exit             ; Выход из программы
+[ 132]        :                                       
+[ 133]        :                                       ; С параметрами всё нормально
+[ 134]    0174:                                       paramsAreNormal:
+[ 135]    0174: 8B 16 C0 06 B4 3D B0 02 CD 21 A3 BE   openFile source_file_offset, source_file_ID            ; Открыть исходный файл
+                06 73 03 E9 F4 02                   
+[ 136]    0186: BA E6 06                              lea dx, temp_file_name                                 ; Задать смещение имени
+[ 137]    0189: 89 16 F1 06                           mov temp_file_offset, dx                               ; временного файла
+[ 138]    018D: B4 3C B5 20 8B 16 F1 06 CD 21 A3 EF   createFile temp_file_offset,temp_file_ID               ; Создать временный файл
+                06 73 03 E9 EB 02                   
+[ 139]    019F: B4 3C B5 20 8B 16 E4 06 CD 21 A3 E2   createFile destination_file_offset,destination_file_ID ; Создать файл с результатом
+                06 73 03 E9 D9 02                   
+[ 140]        :                                       
+[ 141]    01B1: 50 52 B4 09 BA AA 08 CD 21 5A 58      printStr started
+[ 142]        :                                       
+[ 143]        :                                       ; Главный цикл
+[ 144]    01BC:                                       mainWhile:
+[ 145]        :                                       
+[ 146]        :                                       ; Считывание порции символов
+[ 147]    01BC: B4 3F 8B 1E BE 06 8B 0E 5F 09 BA FB   readChars source_file_ID, buffer_dose, buffer
+                08 CD 21 73 03 E9 CA 02             
+[ 148]        :                                       
+[ 149]        :                                       ; Поиск симола 0Dh в считанном буфере
+[ 150]    01D0:                                       search0Dh:
+[ 151]    01D0: A3 63 09                              mov charsRead,ax
+[ 152]    01D3: 8B 0E 63 09                           mov cx,charsRead ; Количество считанных символов
+[ 153]    01D7: B0 0D                                 mov al,0Dh       ; Символ 0Dh
+[ 154]    01D9: BF FB 08                              lea di,buffer    ; Смещение буфера
+[ 155]    01DC: F2 AE                                 repne scasb      ; Сравниваем, пока не равны
+[ 156]    01DE: 74 2A                                 jz Exists0Dh     ; ZF = 1?
+[ 157]        :                                       
+[ 158]        :                                       ; Действие, если нет символа 0Dh
+[ 159]    01E0:                                       NotExists0Dh:
+[ 160]        :                                       
+[ 161]    01E0: 8B 16 63 09                           mov dx,charsRead           ; Число символов в порции =
+[ 162]    01E4: 89 16 65 09                           mov charsOfStringInDose,dx ; = число считанных символов
+[ 163]    01E8: C6 06 62 09 00                        mov isEndOfString,00h      ; Конца строки нет
+[ 164]        :                                       
+[ 165]        :                                       ; Поиск символа NULL в считанном буфере
+[ 166]    01ED: 8B 0E 63 09                           mov cx,charsRead          ; Количество считанных символов
+[ 167]    01F1: B0 00                                 mov al,0h                 ; Символ NULL
+[ 168]    01F3: BF FB 08                              lea di,buffer             ; Смещение буфера
+[ 169]    01F6: F2 AE                                 repne scasb               ; Сравниваем, пока не равны
+[ 170]    01F8: 75 2E                                 jnz writeCharsInTempFile  ; ZF <> 0?
+[ 171]        :                                       
+[ 172]        :                                       ; Действие, если есть символ NULL
+[ 173]    01FA: FF 0E 65 09                           dec charsOfStringInDose  ; charsOfStringInDose--
+[ 174]    01FE: C6 06 62 09 01                        mov isEndOfString,01h    ; Конец строки
+[ 175]    0203: C6 06 61 09 01                        mov isEndOfFile,01h      ; Конец файла
+[ 176]    0208: EB 1E                                 jmp writeCharsInTempFile
+[ 177]        :                                       
+[ 178]        :                                       ; Действие, если есть символ 0Dh
+[ 179]    020A:                                       Exists0Dh:
+[ 180]        :                                       
+[ 181]        :                                       ; Определения числа символов строки в порции
+[ 182]        :                                       ; charsOfStringInDose = charsRead - CX + 1
+[ 183]    020A: 8B 16 63 09                           mov dx,charsRead
+[ 184]    020E: 89 16 65 09                           mov charsOfStringInDose,dx
+[ 185]    0212: 29 0E 65 09                           sub charsOfStringInDose,cx
+[ 186]    0216: FF 06 65 09                           inc charsOfStringInDose
+[ 187]    021A: C6 06 62 09 01                        mov isEndOfString,01h
+[ 188]        :                                       
+[ 189]        :                                       ; Кейс когда .. .. .. .. 0Dh, порция закончилась
+[ 190]        :                                       ; то есть в порцию не влезло 0Ah
+[ 191]    021F: 8B 1E 65 09                           mov bx,charsOfStringInDose
+[ 192]    0223: C6 87 FA 08 0A                        mov buffer[bx-1],0Ah
+[ 193]        :                                       
+[ 194]        :                                       
+[ 195]        :                                       ; Запись символов во временный файл
+[ 196]    0228:                                       writeCharsInTempFile:
+[ 197]    0228: B4 40 8B 1E EF 06 8B 0E 65 09 BA FB   writeChars temp_file_ID,charsOfStringInDose,buffer ; Записать символы
+                08 CD 21 73 03 E9 6E 02             
+[ 198]    023C: 8B 16 65 09                           mov dx,charsOfStringInDose                         ; charactersInString +=
+[ 199]    0240: 01 16 67 09                           add charsInString,dx                               ; += charOfStringInDose
+[ 200]        :                                       
+[ 201]        :                                       ; Проверка, конец ли строки
+[ 202]    0244: 80 3E 62 09 00                        cmp isEndOfString,0h
+[ 203]    0249: 75 03 E9 60 01                        je notEndOfString
+[ 204]        :                                       
+[ 205]        :                                       ; Действие, если в порции есть конец строки
+[ 206]    024E:                                       endOfString:
+[ 207]        :                                       
+[ 208]        :                                       ; Установка курсора в source_file
+[ 209]    024E: 8B 1E 63 09                           mov bx,charsRead
+[ 210]    0252: 89 1E 69 09                           mov cursorOffset,bx
+[ 211]    0256: 8B 1E 65 09                           mov bx,charsOfStringInDose
+[ 212]    025A: 29 1E 69 09                           sub cursorOffset,bx                       ; cursorOffset =
+[ 213]    025E: F7 1E 69 09                           neg cursorOffset                          ; = -(charsRead - charsOfStringInDose)
+[ 214]    0262: B4 42 8B 1E BE 06 B9 00 00 8B 16 69   setCursor source_file_ID,cursorOffset,01h ; Установить курсор
+                09 B0 01 CD 21 73 03 E9 42 02       
+[ 215]        :                                       
+[ 216]        :                                       
+[ 217]        :                                       
+[ 218]        :                                       ; Проверка, подходит ли строка из файла под условие
+[ 219]        :                                       ; "не содержать ни одного символа из заданных"
+[ 220]    0278: B4 42 8B 1E EF 06 B9 00 00 BA 00 00   setCursor temp_file_ID,00h,00h ; Курсор на начало файла
+                B0 00 CD 21 73 03 E9 2D 02          
+[ 221]    028D: 8B 16 67 09                           mov dx,charsInString     ; charsInStringCopy =
+[ 222]    0291: 89 16 6F 09                           mov charsInStringCopy,dx ; charsInString
+[ 223]    0295: 8B 16 5F 09                           mov dx,buffer_dose       ; Сравнить
+[ 224]    0299: 39 16 6F 09                           cmp charsInStringCopy,dx ; charsInStringCopy и buffer_dose
+[ 225]    029D: 76 40                                 jbe skipCheckCycle       ; if charsInStringCopy <= buffer_dose
+[ 226]        :                                       
+[ 227]        :                                       ; Цикл сравнения порциями
+[ 228]    029F:                                       checkCycle:
+[ 229]    029F: B4 3F 8B 1E EF 06 8B 0E 5F 09 BA FB   readChars temp_file_ID buffer_dose, buffer ; Считать символы
+                08 CD 21 73 03 E9 E7 01             
+[ 230]    02B3: 8B 16 5F 09 89 16 6D 09 E8 3C 02      checkBufferMacro buffer_dose               ; Проверить
+[ 231]    02BE: 80 3E 71 09 00                        cmp contains,00h                           ; Если порция не содержит символы
+[ 232]    02C3: 74 08                                 je continueCheckInCycle                    ; Продолжить проверять порциями
+[ 233]    02C5: C6 06 72 09 01                        mov lastStringWasDeleted,01h               ; Иначе – последняя строка была удалена
+[ 234]    02CA: E9 C6 00                              jmp resetTempfile                          ; Сбросить временный файл
+[ 235]        :                                       
+[ 236]    02CD:                                       continueCheckInCycle:
+[ 237]    02CD: 8B 16 5F 09                           mov dx,buffer_dose       ;
+[ 238]    02D1: 29 16 6F 09                           sub charsInStringCopy,dx ; charsInStringCopy -= buffer_dose
+[ 239]        :                                       
+[ 240]    02D5: 8B 16 5F 09                           mov dx,buffer_dose       ; Сравнение charsInStringCopy
+[ 241]    02D9: 39 16 6F 09                           cmp charsInStringCopy,dx ; и buffer_dose
+[ 242]    02DD: 77 C0                                 ja checkCycle                ; charsInStringCopy > buffer_dose?
+[ 243]        :                                       
+[ 244]        :                                       ; charsInStringCopy <= buffer_dose
+[ 245]    02DF:                                       skipCheckCycle:
+[ 246]    02DF: B4 3F 8B 1E EF 06 8B 0E 6F 09 BA FB   readChars temp_file_ID charsInStringCopy, buffer ; Считать символы
+                08 CD 21 73 03 E9 A7 01             
+[ 247]    02F3: 8B 16 6F 09 89 16 6D 09 E8 FC 01      checkBufferMacro charsInStringCopy               ; Проверить
+[ 248]    02FE: 80 3E 71 09 00                        cmp contains,00h                                 ; Если порция не содержит символы
+[ 249]    0303: 74 08                                 je transferString                                ; Переслать строку в конечный файл
+[ 250]    0305: C6 06 72 09 01                        mov lastStringWasDeleted,01h                     ; Иначе – последняя строка была удалена
+[ 251]    030A: E9 86 00                              jmp resetTempfile                                ; Сбросить временный файл
+[ 252]        :                                       
+[ 253]        :                                       
+[ 254]        :                                       
+[ 255]        :                                       ; Пересылка строки из temp_file в destination_file
+[ 256]        :                                       ; Проверка на условие "не содержать символы" пройдена
+[ 257]    030D:                                       transferString:
+[ 258]    030D: C6 06 72 09 00                        mov lastStringWasDeleted,00h   ; Последняя строка не была удалена
+[ 259]    0312: B4 42 8B 1E EF 06 B9 00 00 BA 00 00   setCursor temp_file_ID,00h,00h ; Курсор на начало файла
+                B0 00 CD 21 73 03 E9 93 01          
+[ 260]    0327: 8B 16 5F 09                           mov dx,buffer_dose             ;
+[ 261]    032B: 39 16 67 09                           cmp charsInString,dx           ;
+[ 262]    032F: 76 3A                                 jbe skipTransferCycle          ; charsInString <= buffer_dose?
+[ 263]        :                                       
+[ 264]        :                                       ; Цикл пересылки строки порциями
+[ 265]    0331:                                       transferCycle:
+[ 266]    0331: B4 3F 8B 1E EF 06 8B 0E 5F 09 BA FB   readChars temp_file_ID buffer_dose, buffer         ; Считать символы
+                08 CD 21 73 03 E9 55 01             
+[ 267]    0345: B4 40 8B 1E E2 06 8B 0E 5F 09 BA FB   writeChars destination_file_ID buffer_dose, buffer ; Записать символы
+                08 CD 21 73 03 E9 51 01             
+[ 268]        :                                       
+[ 269]    0359: 8B 16 5F 09                           mov dx,buffer_dose   ;
+[ 270]    035D: 29 16 67 09                           sub charsInString,dx ; charsInString -= buffer_dose
+[ 271]        :                                       
+[ 272]    0361: 8B 16 5F 09                           mov dx,buffer_dose   ; Сравнение charsInString
+[ 273]    0365: 39 16 67 09                           cmp charsInString,dx ; и buffer_dose
+[ 274]    0369: 77 C6                                 ja transferCycle         ; charsInString > buffer_dose?
+[ 275]        :                                       
+[ 276]        :                                       ; charsInString <= buffer_dose
+[ 277]    036B:                                       skipTransferCycle:
+[ 278]    036B: B4 3F 8B 1E EF 06 8B 0E 67 09 BA FB   readChars temp_file_ID charsInString, buffer         ; Считать символы
+                08 CD 21 73 03 E9 1B 01             
+[ 279]    037F: B4 40 8B 1E E2 06 8B 0E 67 09 BA FB   writeChars destination_file_ID charsInString, buffer ; Записать символы
+                08 CD 21 73 03 E9 17 01             
+[ 280]        :                                       
+[ 281]        :                                       ; Сбросить временный файл
+[ 282]    0393:                                       resetTempfile:
+[ 283]    0393: C7 06 67 09 00 00                     mov charsInString,0h           ; charsInString = 0
+[ 284]    0399: B4 42 8B 1E EF 06 B9 00 00 BA 00 00   setCursor temp_file_ID,00h,00h ; Курсор на начало файла
+                B0 00 CD 21 73 03 E9 0C 01          
+[ 285]        :                                       
+[ 286]        :                                       ; Действие, если в порции нет конца строки
+[ 287]    03AE:                                       notEndOfString:
+[ 288]    03AE: C6 06 62 09 00                        mov isEndOfString,0h ; Не конец строки
+[ 289]    03B3: 80 3E 61 09 01                        cmp isEndOfFile,01h  ; Сравнение
+[ 290]        :                                       
+[ 291]    03B8: 74 03 E9 FF FD                        jne mainWhile ; Конец файла?
+[ 292]        :                                       
+[ 293]    03BD: 8B 1E EF 06 B4 3E CD 21 73 03 E9 00   closeFile temp_file_ID      ; Закрыть временный файл
+                01                                  
+[ 294]    03CA: B4 41 8B 16 F1 06 CD 21 73 03 E9 03   deleteFile temp_file_offset ; Удалить временный файл
+                01                                  
+[ 295]        :                                       
+[ 296]        :                                       
+[ 297]        :                                       ; Обработка ситуации, когда последняя строка
+[ 298]        :                                       ; была удалена => от нее осталась пустая строка
+[ 299]        :                                       ; (от символов 0Dh,0Ah предыдущей строки)
+[ 300]    03D7: 80 3E 72 09 01                        cmp lastStringWasDeleted,01d ; Если не была удалена
+[ 301]    03DC: 74 03 E9 09 01                        jne exitSuccessful                     ; Выход
+[ 302]        :                                       
+[ 303]    03E1: B4 42 8B 1E E2 06 B9 00 00 BA 00 00   setCursor destination_file_ID,00h,00h    ; Установить курсор на конец файла
+                B0 00 CD 21 73 03 E9 C4 00          
+[ 304]    03F6: B4 3F 8B 1E E2 06 B9 02 00 BA FB 08   readChars destination_file_ID,02h,buffer ; Считать два символа
+                CD 21 73 03 E9 91 00                
+[ 305]    0409: 3D 02 00                              cmp ax,02h                               ; AX - число считанных
+[ 306]    040C: 73 03 E9 D9 00                        jb exitSuccessful                                  ; AX < 2 => выход
+[ 307]        :                                       
+[ 308]    0411: C7 06 69 09 02 00                     mov cursorOffset,02h                           ;
+[ 309]    0417: F7 1E 69 09                           neg cursorOffset                               ; cursorOffset = -2
+[ 310]    041B: B4 42 8B 1E E2 06 B9 00 00 8B 16 69   setCursor destination_file_ID,cursorOffset,02h ; Установить курсор за 2 символа до конца
+                09 B0 02 CD 21 73 03 E9 89 00       
+[ 311]    0431: B4 3F 8B 1E E2 06 B9 02 00 BA FB 08   readChars destination_file_ID,02h,buffer       ; Считать в буфер два символа
+                CD 21 72 59                         
+[ 312]    0441: 80 3E FB 08 0D                        cmp buffer,0Dh                                 ; Первый считанный 0Dh?
+[ 313]    0446: 74 03 E9 9F 00                        jne exitSuccessful                             ; Не 0Dh => выход успешный
+[ 314]    044B: BB FB 08                              lea bx,buffer                                  ; Смещение буфера в bx
+[ 315]    044E: C6 07 20                              mov [bx],' '                                   ; Заполнение первого и второго
+[ 316]    0451: C6 47 01 20                           mov [bx + 1],' '                               ; элемента буфера
+[ 317]    0455: B4 42 8B 1E E2 06 B9 00 00 8B 16 69   setCursor destination_file_ID,cursorOffset,02h ; Установить курсор за 2 символа до конца
+                09 B0 02 CD 21 72 52                
+[ 318]    0468: B4 40 8B 1E E2 06 B9 02 00 BA FB 08   writeChars destination_file_ID,02h,buffer      ; Записать 2 символа из буфера в файл
+                CD 21 72 32                         
+[ 319]    0478: EB 70                                 jmp exitSuccessful                             ; Выход учпешный
+[ 320]        :                                       
+[ 321]        :                                       
+[ 322]        :                                       ; Обработка ошибок
+[ 323]    047A:                                       openErrorLabel:
+[ 324]    047A: 50 52 B4 09 BA F3 06 CD 21 5A 58      printStr openError
+[ 325]    0485: E8 7C 01                              call errorHandler
+[ 326]    0488: EB 6B                                 jmp exit
+[ 327]        :                                       
+[ 328]    048A:                                       createErrorLabel:
+[ 329]    048A: 50 52 B4 09 BA 08 07 CD 21 5A 58      printStr createError
+[ 330]    0495: E8 6C 01                              call errorHandler
+[ 331]    0498: EB 5B                                 jmp exit
+[ 332]        :                                       
+[ 333]    049A:                                       readingErrorLabel:
+[ 334]    049A: 50 52 B4 09 BA 1E 07 CD 21 5A 58      printStr readingError
+[ 335]    04A5: E8 5C 01                              call errorHandler
+[ 336]    04A8: EB 4B                                 jmp exit
+[ 337]        :                                       
+[ 338]    04AA:                                       writingErrorLabel:
+[ 339]    04AA: 50 52 B4 09 BA 2E 07 CD 21 5A 58      printStr writingError
+[ 340]    04B5: E8 4C 01                              call errorHandler
+[ 341]    04B8: EB 3B                                 jmp exit
+[ 342]        :                                       
+[ 343]    04BA:                                       cursorErrorLabel:
+[ 344]    04BA: 50 52 B4 09 BA 3E 07 CD 21 5A 58      printStr cursorError
+[ 345]    04C5: E8 3C 01                              call errorHandler
+[ 346]    04C8: EB 2B                                 jmp exit
+[ 347]        :                                       
+[ 348]    04CA:                                       closeErrorLabel:
+[ 349]    04CA: 50 52 B4 09 BA 5A 07 CD 21 5A 58      printStr closeError
+[ 350]    04D5: E8 2C 01                              call errorHandler
+[ 351]    04D8: EB 1B                                 jmp exit
+[ 352]        :                                       
+[ 353]    04DA:                                       deleteErrorLabel:
+[ 354]    04DA: 50 52 B4 09 BA 6F 07 CD 21 5A 58      printStr deleteError
+[ 355]    04E5: E8 1C 01                              call errorHandler
+[ 356]    04E8: EB 0B                                 jmp exit
+[ 357]        :                                       
+[ 358]        :                                       ; Завершение программы
+[ 359]    04EA:                                       exitSuccessful:
+[ 360]    04EA: 50 52 B4 09 BA C9 08 CD 21 5A 58      printStr successfulCompleted
+[ 361]        :                                       
+[ 362]    04F5:                                       exit:
+[ 363]    04F5: 8B 26 BC 06                           mov sp,end_SP ; Восстановить SP
+[ 364]    04F9: C3                                    ret           ; Завершение COM-программы
+[ 365]        :                                       
+[ 366]        :                                       ; [Процедура] – результат в contains
+[ 367]        :                                       ; Есть ли символы в порции строки
+[ 368]    04FA:                                       checkBuffer PROC near
+[ 369]    04FA: C6 06 71 09 00                        mov contains,0h
+[ 370]        :                                       
+[ 371]    04FF: BE 00 00                              mov si,0h ; SI = 0 [счетчик]
+[ 372]    0502:                                       for1:
+[ 373]    0502: BA 00 00                              mov dx,0h         ; DX = 0
+[ 374]    0505: 8A 94 FB 08                           mov dl,buffer[si] ; DX = текущий символ из порции
+[ 375]    0509: 56                                    push si           ; Сохранение SI
+[ 376]        :                                       
+[ 377]    050A: BE 00 00                              mov si,0h            ; SI = 0 [счетчик]
+[ 378]    050D: 8B 3E 6B 09                           mov di,symbolsOffset ; DI = смещение на начало символов
+[ 379]    0511:                                       for2:
+[ 380]    0511: 3A 15                                 cmp dl,byte ptr [di] ; Сравнение символа из порции с
+[ 381]    0513: 75 07                                 jne not_equals       ; символом из набора символов
+[ 382]    0515: C6 06 71 09 01                        mov contains,01h     ; contains = 1
+[ 383]    051A: 5E                                    pop si               ; Восстановление SP
+[ 384]    051B: C3                                    ret                  ; Выход из процедуры
+[ 385]        :                                       
+[ 386]        :                                       ; Не равен
+[ 387]    051C:                                       not_equals:
+[ 388]        :                                       
+[ 389]        :                                       ; Условие выхода из цикла
+[ 390]    051C: 47                                    inc di              ; DI++
+[ 391]    051D: 80 3D 00                              cmp byte ptr [di],0 ; Если не конец массива
+[ 392]    0520: 75 EF                                 jne for2
+[ 393]        :                                       
+[ 394]    0522: 5E                                    pop si ; Восстановление SI
+[ 395]        :                                       
+[ 396]        :                                       ; Условие выхода из цикла
+[ 397]    0523: 46                                    inc si                   ; SI++
+[ 398]    0524: 3B 36 6D 09                           cmp si,bufferNumberCheck ; Сравнение
+[ 399]    0528: 72 D8                                 jb for1 ; if si < bufferNumberCheck
+[ 400]        :                                       
+[ 401]    052A: C3                                    ret
+[ 402]        :                                       checkBuffer endp
+[ 403]        :                                       
+[ 404]        :                                       ; [Макрос] – есть ли символы в порции строки
+[ 405]        :                                       checkBufferMacro MACRO number
+[ 406]        :                                       mov dx,number
+[ 407]        :                                       mov bufferNumberCheck,dx
+[ 408]        :                                       call checkBuffer
+[ 409]        :                                       endm
+[ 410]        :                                       
+[ 411]        :                                       
+[ 412]        :                                       ; Распечатать число параметров [Процедура]
+[ 413]    052B:                                       printParamsNumber PROC near
+[ 414]    052B: 80 06 73 09 30                        add paramsNumber,48d
+[ 415]    0530: B4 06 8A 16 73 09 CD 21               printSymb paramsNumber
+[ 416]    0538: 80 2E 73 09 30                        sub paramsNumber,48d
+[ 417]    053D: B4 06 B2 29 CD 21                     printSymb ')'
+[ 418]    0543: B4 06 B2 20 CD 21                     printSymb ' '
+[ 419]    0549: C3                                    ret
+[ 420]        :                                       printParamsNumber endp
+[ 421]        :                                       
+[ 422]        :                                       ; [Процедура] – обработка командной строки
+[ 423]    054A:                                       processCommandLine PROC near
+[ 424]    054A: FC                                    cld          ; Для команд строковой обработки
+[ 425]    054B: 8B EC                                 mov bp,sp    ; Сохранить текущую вершину стека в BP
+[ 426]    054D: 8A 0E 80 00                           mov cl,[80h] ; Размер командной строки
+[ 427]    0551: 80 F9 01                              cmp cl,1     ; Проверка длины командной строки
+[ 428]    0554: 7E 76                                 jle end      ; выход из программы
+[ 429]        :                                       
+[ 430]        :                                       ; Преобразовать список параметров в PSP так, чтобы
+[ 431]        :                                       ; каждый параметр заканчивался нулем (ASCIZ-строка)
+[ 432]        :                                       ; адреса всех параметров поместить в стек
+[ 433]        :                                       ; в переменную paramsNumber записать число параметров
+[ 434]        :                                       
+[ 435]    0556: B9 FF FF                              mov cx,0FFFFh ; Для команд работы со строками
+[ 436]    0559: BF 81 00                              mov di,81h ; Начало командной строки в ES:DI
+[ 437]        :                                       
+[ 438]    055C:                                       find_param:
+[ 439]    055C: 80 3E 73 09 02                        cmp paramsNumber, 02d
+[ 440]    0561: 74 6C                                 je thirdParam
+[ 441]    0563: B0 20                                 mov al,' '         ; AL = пробел
+[ 442]    0565: F3 AE                                 repz scasb         ; Искать не пробел
+[ 443]    0567: 4F                                    dec di             ; DI = адрес начала параметра
+[ 444]    0568: 57                                    push di            ; Сохранить адрес в стек
+[ 445]    0569: 89 3E 74 09                           mov paramOffset,di ; Для будущей операции вывода параметра
+[ 446]    056D: FE 06 73 09                           inc paramsNumber   ; Увеличить paramsNumber на 1
+[ 447]    0571: 8B F7                                 mov si,di          ; SI = DI для следующей команды lodsb
+[ 448]        :                                       
+[ 449]    0573:                                       scan_params:
+[ 450]    0573: AC                                    lodsb           ; Прочитать символ из параметра
+[ 451]    0574: 3C 0D                                 cmp al,0Dh      ; Если 0Dh – последний параметр
+[ 452]    0576: 74 2A                                 je params_ended ; Параметры закончились
+[ 453]    0578: 3C 20                                 cmp al,20h      ; Сравнение с пробелом
+[ 454]    057A: 75 F7                                 jne scan_params ; Текущий параметр не закончился
+[ 455]        :                                       
+[ 456]        :                                       
+[ 457]    057C: E8 AC FF                              call printParamsNumber       ; Распечатать число параметров
+[ 458]    057F: 4E                                    dec si                       ; SI = первый байт после параметра
+[ 459]    0580: C6 04 24                              mov [si],'$'                 ; Записать в него $
+[ 460]    0583: 50 52 B4 09 8B 16 74 09 CD 21 5A 58   printStrByOffset paramOffset ; Распечатать параметр
+                                                    
+[ 461]    058F: 50 52 B4 09 BA 76 09 CD 21 5A 58      printStr toNewLine           ; Переход на новую строку
+[ 462]    059A: C6 04 00                              mov [si],0                   ; Записать в него 0
+[ 463]    059D: 8B FE                                 mov di,si                    ; DI = SI для команды scasb
+[ 464]    059F: 47                                    inc di                       ; DI = следующий после нуля символ
+[ 465]    05A0: EB BA                                 jmp find_param               ; Продолжить разбор командной строки
+[ 466]        :                                       
+[ 467]    05A2:                                       params_ended:
+[ 468]    05A2: 4E                                    dec si                       ; SI = первый байт после конца
+[ 469]        :                                       ; последнего параметра
+[ 470]    05A3: C6 04 24                              mov [si],'$'                 ; Записать в него $
+[ 471]    05A6: 50 52 B4 09 8B 16 74 09 CD 21 5A 58   printStrByOffset paramOffset ; Распечатать параметр
+                                                    
+[ 472]    05B2: 50 52 B4 09 BA 76 09 CD 21 5A 58      printStr toNewLine           ; Переход на новую строку
+[ 473]    05BD: C6 04 00                              mov [si],0                   ; Записать в него 0
+[ 474]        :                                       
+[ 475]    05C0:                                       pop_from_stack:
+[ 476]    05C0: 8F 06 6B 09                           pop symbolsOffset
+[ 477]    05C4: 8F 06 E4 06                           pop destination_file_offset
+[ 478]    05C8: 8F 06 C0 06                           pop source_file_offset
+[ 479]        :                                       
+[ 480]    05CC:                                       end:
+[ 481]    05CC: 8B E5                                 mov sp,bp ; Восстановить SP
+[ 482]    05CE: C3                                    ret       ; Выход из процедуры
+[ 483]        :                                       
+[ 484]    05CF:                                       thirdParam:
+[ 485]    05CF: 80 3D 0D                              cmp [di],0Dh                 ; Сравнить текущий символ с концом строки
+[ 486]    05D2: 74 F8                                 je end                       ; Конец строки => конец
+[ 487]    05D4: 57                                    push di                      ; Не конец => адрес начала symbols
+[ 488]    05D5: 89 3E 74 09                           mov paramOffset,di           ; Для будущей операции вывода параметра
+[ 489]    05D9: B0 0D                                 mov al,0Dh                   ; Символ конца строки параметров
+[ 490]    05DB: F2 AE                                 repnz scasb                  ; Идем вперед пока не найдем
+[ 491]    05DD: 4F                                    dec di                       ; Стать на символ 0Dh
+[ 492]    05DE: FE 06 73 09                           inc paramsNumber             ; Увеличить paramsNumber на 1
+[ 493]    05E2: E8 46 FF                              call printParamsNumber       ; Распечатать число параметров
+[ 494]    05E5: C6 05 24                              mov [di],'$'                 ; $ вместо 0Dh
+[ 495]    05E8: 50 52 B4 09 8B 16 74 09 CD 21 5A 58   printStrByOffset paramOffset ; Распечатать параметр
+                                                    
+[ 496]    05F4: 50 52 B4 09 BA 76 09 CD 21 5A 58      printStr toNewLine           ; Переход на новую строку
+[ 497]    05FF: C6 05 00                              mov [di],0                   ; 0 вместо $, который вместо 0Dh
+[ 498]    0602: EB BC                                 jmp pop_from_stack           ; Достаем параметры из стека
+[ 499]        :                                       processCommandLine endp
+[ 500]        :                                       
+[ 501]        :                                       ; Процедура-обработчик ошибок
+[ 502]    0604:                                       errorHandler PROC near
+[ 503]    0604: 3D 02 00                              cmp ax,02h
+[ 504]    0607: 74 30                                 je open02h
+[ 505]    0609: 3D 03 00                              cmp ax,03h
+[ 506]    060C: 74 38                                 je open03h
+[ 507]    060E: 3D 04 00                              cmp ax,04h
+[ 508]    0611: 74 40                                 je open04h
+[ 509]    0613: 3D 05 00                              cmp ax,05h
+[ 510]    0616: 74 48                                 je open05h
+[ 511]    0618: 3D 06 00                              cmp ax,06h
+[ 512]    061B: 74 50                                 je open06h
+[ 513]    061D: 3D 0C 00                              cmp ax,0Ch
+[ 514]    0620: 74 58                                 je open0Ch
+[ 515]    0622: 3D 0F 00                              cmp ax,0Fh
+[ 516]    0625: 74 60                                 je open0Fh
+[ 517]    0627: 3D 10 00                              cmp ax,10h
+[ 518]    062A: 74 68                                 je open10h
+[ 519]    062C: 3D 12 00                              cmp ax,12h
+[ 520]    062F: 74 70                                 je open12h
+[ 521]    0631: 3D 50 00                              cmp ax,50h
+[ 522]    0634: 74 78                                 je open50h
+[ 523]    0636: E9 82 00                              jmp errorHandlerExit
+[ 524]    0639:                                       open02h:
+[ 525]    0639: 50 52 B4 09 BA 85 07 CD 21 5A 58      printStr error02hMsg
+[ 526]    0644: EB 75                                 jmp errorHandlerExit
+[ 527]    0646:                                       open03h:
+[ 528]    0646: 50 52 B4 09 BA 9C 07 CD 21 5A 58      printStr error03hMsg
+[ 529]    0651: EB 68                                 jmp errorHandlerExit
+[ 530]    0653:                                       open04h:
+[ 531]    0653: 50 52 B4 09 BA B3 07 CD 21 5A 58      printStr error04hMsg
+[ 532]    065E: EB 5B                                 jmp errorHandlerExit
+[ 533]    0660:                                       open05h:
+[ 534]    0660: 50 52 B4 09 BA D1 07 CD 21 5A 58      printStr error05hMsg
+[ 535]    066B: EB 4E                                 jmp errorHandlerExit
+[ 536]    066D:                                       open06h:
+[ 537]    066D: 50 52 B4 09 BA E7 07 CD 21 5A 58      printStr error06hMsg
+[ 538]    0678: EB 41                                 jmp errorHandlerExit
+[ 539]    067A:                                       open0Ch:
+[ 540]    067A: 50 52 B4 09 BA FA 07 CD 21 5A 58      printStr error0ChMsg
+[ 541]    0685: EB 34                                 jmp errorHandlerExit
+[ 542]    0687:                                       open0Fh:
+[ 543]    0687: 50 52 B4 09 BA 16 08 CD 21 5A 58      printStr error0FhMsg
+[ 544]    0692: EB 27                                 jmp errorHandlerExit
+[ 545]    0694:                                       open10h:
+[ 546]    0694: 50 52 B4 09 BA 3E 08 CD 21 5A 58      printStr error10hMsg
+[ 547]    069F: EB 1A                                 jmp errorHandlerExit
+[ 548]    06A1:                                       open12h:
+[ 549]    06A1: 50 52 B4 09 BA 6E 08 CD 21 5A 58      printStr error12hMsg
+[ 550]    06AC: EB 0D                                 jmp errorHandlerExit
+[ 551]    06AE:                                       open50h:
+[ 552]    06AE: 50 52 B4 09 BA 8A 08 CD 21 5A 58      printStr error50hMsg
+[ 553]    06B9: EB 00                                 jmp errorHandlerExit
+[ 554]    06BB:                                       errorHandlerExit:
+[ 555]    06BB: C3                                    ret
+[ 556]        :                                       errorHandler endp
+[ 557]        :                                       
+[ 558]        :                                       ; Данные программы
+[ 559]        :                                       
+[ 560]    06BC: 00 00                                 end_SP dw 0 ; Адрес SP для ret в конце
+[ 561]        :                                       
+[ 562]        :                                       ;source_file_name  db 'd:\data.txt',0 ; Исходный файл
+[ 563]    06BE: 00 00                                 source_file_ID     dw 0               ; Дескриптор
+[ 564]    06C0: 00 00                                 source_file_offset dw 0
+[ 565]    06C2: 0A 0D 45 72 72 6F 72 20 6F 70 65 6E   source_file_error  db 0Ah, 0Dh, 'Error opening the source file$'
+                69 6E 67 20 74 68 65 20 73 6F 75 72 
+                63 65 20 66 69 6C 65 24             
+[ 566]        :                                       
+[ 567]        :                                       ;destination_file_name  db 'd:\result.txt',0 ; Файл с результатом
+[ 568]    06E2: 00 00                                 destination_file_ID     dw 0                   ; Дескриптор
+[ 569]    06E4: 00 00                                 destination_file_offset dw 0
+[ 570]        :                                       
+[ 571]    06E6: 74 65 6D 70 2E 74 78 74 00            temp_file_name   db 'temp.txt',0    ; Временный файл
+[ 572]    06EF: 00 00                                 temp_file_ID     dw 0               ; Дескриптор
+[ 573]    06F1: 00 00                                 temp_file_offset dw 0
+[ 574]        :                                       
+[ 575]    06F3: 0A 0D 46 69 6C 65 20 6F 70 65 6E 69   openError    db 0Ah, 0Dh, 'File opening error$'
+                6E 67 20 65 72 72 6F 72 24          
+[ 576]    0708: 0A 0D 46 69 6C 65 20 63 72 65 61 74   createError  db 0Ah, 0Dh, 'File creation error$'
+                69 6F 6E 20 65 72 72 6F 72 24       
+[ 577]    071E: 0A 0D 52 65 61 64 69 6E 67 20 65 72   readingError db 0Ah, 0Dh, 'Reading error$'
+                72 6F 72 24                         
+[ 578]    072E: 0A 0D 57 72 69 74 69 6E 67 20 65 72   writingError db 0Ah, 0Dh, 'Writing error$'
+                72 6F 72 24                         
+[ 579]    073E: 0A 0D 43 75 72 73 6F 72 20 69 6E 73   cursorError  db 0Ah, 0Dh, 'Cursor installation error$'
+                74 61 6C 6C 61 74 69 6F 6E 20 65 72 
+                72 6F 72 24                         
+[ 580]    075A: 0A 0D 46 69 6C 65 20 63 6C 6F 73 69   closeError   db 0Ah, 0Dh, 'File closing error$'
+                6E 67 20 65 72 72 6F 72 24          
+[ 581]    076F: 0A 0D 46 69 6C 65 20 64 65 6C 65 74   deleteError  db 0Ah, 0Dh, 'File deletion error$'
+                69 6F 6E 20 65 72 72 6F 72 24       
+[ 582]        :                                       
+[ 583]    0785: 0A 0D 30 32 68 20 2D 20 66 69 6C 65   error02hMsg   db 0Ah, 0Dh, '02h - file not found$'
+                20 6E 6F 74 20 66 6F 75 6E 64 24    
+[ 584]    079C: 0A 0D 30 33 68 20 2D 20 70 61 74 68   error03hMsg   db 0Ah, 0Dh, '03h - path not found$'
+                20 6E 6F 74 20 66 6F 75 6E 64 24    
+[ 585]    07B3: 0A 0D 30 34 68 20 2D 20 74 6F 6F 20   error04hMsg   db 0Ah, 0Dh, '04h - too much opened files$'
+                6D 75 63 68 20 6F 70 65 6E 65 64 20 
+                66 69 6C 65 73 24                   
+[ 586]    07D1: 0A 0D 30 35 68 20 2D 20 61 63 63 65   error05hMsg   db 0Ah, 0Dh, '05h - access denied$'
+                73 73 20 64 65 6E 69 65 64 24       
+[ 587]    07E7: 0A 0D 30 36 68 20 2D 20 69 6E 76 61   error06hMsg   db 0Ah, 0Dh, '06h - invalid ID$'
+                6C 69 64 20 49 44 24                
+[ 588]    07FA: 0A 0D 30 43 68 20 2D 20 69 6E 76 61   error0ChMsg   db 0Ah, 0Dh, '0Ch - invalid access mode$'
+                6C 69 64 20 61 63 63 65 73 73 20 6D 
+                6F 64 65 24                         
+[ 589]    0816: 0A 0D 30 46 68 20 2D 20 61 20 6E 6F   error0FhMsg   db 0Ah, 0Dh, '0Fh - a nonexistent disk is specified$'
+                6E 65 78 69 73 74 65 6E 74 20 64 69 
+                73 6B 20 69 73 20 73 70 65 63 69 66 
+                69 65 64 24                         
+[ 590]    083E: 0A 0D 31 30 68 20 2D 20 74 68 65 20   error10hMsg   db 0Ah, 0Dh, '10h - the current directory cannot be deleted$'
+                63 75 72 72 65 6E 74 20 64 69 72 65 
+                63 74 6F 72 79 20 63 61 6E 6E 6F 74 
+                20 62 65 20 64 65 6C 65 74 65 64 24 
+                                                    
+[ 591]    086E: 0A 0D 31 32 68 20 2D 20 69 6E 76 61   error12hMsg   db 0Ah, 0Dh, '12h - invalid access mode$'
+                6C 69 64 20 61 63 63 65 73 73 20 6D 
+                6F 64 65 24                         
+[ 592]    088A: 0A 0D 35 30 68 20 2D 20 74 68 65 20   error50hMsg   db 0Ah, 0Dh, '50h - the file already exists$'
+                66 69 6C 65 20 61 6C 72 65 61 64 79 
+                20 65 78 69 73 74 73 24             
+[ 593]        :                                       
+[ 594]    08AA: 0A 0D 54 68 65 20 70 72 6F 67 72 61   started             db 0Ah, 0Dh, 'The program has been started$'
+                6D 20 68 61 73 20 62 65 65 6E 20 73 
+                74 61 72 74 65 64 24                
+[ 595]    08C9: 0A 0D 54 68 65 20 70 72 6F 67 72 61   successfulCompleted db 0Ah, 0Dh, 'The program has successfully completed its work$'
+                6D 20 68 61 73 20 73 75 63 63 65 73 
+                73 66 75 6C 6C 79 20 63 6F 6D 70 6C 
+                65 74 65 64 20 69 74 73 20 77 6F 72 
+                6B 24                               
+[ 596]        :                                       
+[ 597]    08FB: 00 00 00 00 00 00 00 00 00 00 00 00   buffer      db 100 DUP(0) ; Буфер данных
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00                         
+[ 598]    095F: 32 00                                 buffer_dose dw 50d        ; Размер порции
+[ 599]        :                                       
+[ 600]    0961: 00                                    isEndOfFile   db 0 ; [bool] – конец ли файла
+[ 601]    0962: 00                                    isEndOfString db 0 ; [bool] – конец ли строки
+[ 602]        :                                       
+[ 603]    0963: 00 00                                 charsRead           dw 0 ; Считано символов
+[ 604]    0965: 00 00                                 charsOfStringInDose dw 0 ; Символов строки в порции
+[ 605]    0967: 00 00                                 charsInString       dw 0 ; Символов в строке
+[ 606]        :                                       
+[ 607]    0969: 00 00                                 cursorOffset         dw 0 ; Смещение курсора
+[ 608]        :                                       
+[ 609]        :                                       ;symbols           db '0123456789',0 ; Символы, которых быть не дложно
+[ 610]    096B: 00 00                                 symbolsOffset dw 0 ; Смещение на символы, которых быть не должно
+[ 611]        :                                       
+[ 612]    096D: 00 00                                 bufferNumberCheck    dw 0 ; Количество символов из буфера для проверки
+[ 613]    096F: 00 00                                 charsInStringCopy    dw 0 ; Символов в строке (копия)
+[ 614]    0971: 00                                    contains             db 0 ; [bool] – есть ли в первых charsOfStringInDose
+[ 615]        :                                       ; символах из buffer 1 из символов symbols
+[ 616]    0972: 00                                    lastStringWasDeleted db 0 ; [bool] - последняя стркоа была удалена
+[ 617]        :                                       
+[ 618]    0973: 00                                    paramsNumber db 0 ; Число параметров командной стркои
+[ 619]    0974: 00 00                                 paramOffset  dw 0 ; Смещение параметра
+[ 620]        :                                       
+[ 621]    0976: 0A 0D 24                              toNewLine         db 0Ah, 0Dh, '$'
+[ 622]    0979: 43 6F 6D 6D 61 6E 64 20 6C 69 6E 65   paramsMessage     db 'Command line parameters:$'
+                20 70 61 72 61 6D 65 74 65 72 73 3A 
+                24                                  
+[ 623]    0992: 59 6F 75 72 20 70 61 72 61 6D 65 74   paramsYourMessage db 'Your parameters:$'
+                65 72 73 3A 24                      
+[ 624]    09A3: 59 6F 75 20 6E 65 65 64 20 74 6F 20   paramsError       db 'You need to enter three parameters$' ;
+                65 6E 74 65 72 20 74 68 72 65 65 20 
+                70 61 72 61 6D 65 74 65 72 73 24    
+[ 625]    09C6: 31 20 2D 20 73 6F 75 72 63 65 20 66   paramsFormat      db '1 - source file name (exists)',0Ah,0Dh,'2 - destination file name (will be created or overwritten)',0Ah,0Dh,'3 - character set (according to the task condition)$'
+                69 6C 65 20 6E 61 6D 65 20 28 65 78 
+                69 73 74 73 29 0A 0D 32 20 2D 20 64 
+                65 73 74 69 6E 61 74 69 6F 6E 20 66 
+                69 6C 65 20 6E 61 6D 65 20 28 77 69 
+                6C 6C 20 62 65 20 63 72 65 61 74 65 
+                64 20 6F 72 20 6F 76 65 72 77 72 69 
+                74 74 65 6E 29 0A 0D 33 20 2D 20 63 
+                68 61 72 61 63 74 65 72 20 73 65 74 
+                20 28 61 63 63 6F 72 64 69 6E 67 20 
+                74 6F 20 74 68 65 20 74 61 73 6B 20 
+                63 6F 6E 64 69 74 69 6F 6E 29 24    
+[ 626]        :                                       
+[ 627]        :                                       end START
+[ 628]        :                                       
+[ 629]        :                                       
+[ 630]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================

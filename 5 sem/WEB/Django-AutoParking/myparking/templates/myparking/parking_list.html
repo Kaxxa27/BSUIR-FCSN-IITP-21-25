@@ -1,0 +1,72 @@
+{% extends "base_generic.html"%}
+{% load static %}
+
+{% block style %}
+  <link rel="stylesheet" href="{% static 'myparking/css/parking_list.css' %}">
+{% endblock %}
+
+{% block title%}
+<title>Parkings</title>
+{% endblock %}
+
+{% block content%}
+
+ <div class="row">
+     <div class="col-sm-4">
+         <p><form method="get" action="{% url 'parking_list' %}">
+             <label for="filter_busy">Фильтр по занятости:</label>
+             <p>
+                 <select id="filter_busy" name="busy">
+                     <option value="" {% if request.GET.busy == '' %}selected{% endif %}>Все</option>
+                     <option value="busy" {% if request.GET.busy == 'busy' %}selected{% endif %}>Занято</option>
+                     <option value="free" {% if request.GET.busy == 'free' %}selected{% endif %}>Свободно</option>
+                 </select>
+             </p>
+             <p>
+                 <label for="filter_min_price">Минимальная цена:</label>
+                 <input type="number" placeholder="$" id="filter_min_price" name="min_price" value="{{ request.GET.min_price }}" step="1">
+             </p>
+             <p>
+                 <label for="filter_max_price">Максимальная цена:</label>
+                 <input type="number" placeholder="$" id="filter_max_price" name="max_price" value="{{ request.GET.max_price }}" step="1">
+             </p>
+             <button type="submit">Применить</button>
+         </form></p>
+         <p>Всего парковочных мест: {{ parkings_count }}</p>
+     </div>
+     <div class="col-sm-8">
+        <h1>Список парковочных мест</h1>
+         <table >
+             <thead>
+                 <tr>
+                     <th>Номер места</th>
+                     <th>Цена/Месяц</th>
+                     <th>Занято</th>
+                     <th>Машины на парковке</th>
+                 </tr>
+             </thead>
+             <tbody>
+                 {% for parking in parkings %}
+                 <tr>
+                     <td>{{ parking.number }}</td>
+                     <td>{{ parking.price }}$</td>
+                     <td>{{ parking.is_busy }}</td>
+                     <td>
+                         {% if not parking.is_busy %}
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'rent_parking' parking.id %}" class="btn btn-primary">Аренда</a>
+                            {% else %}
+                                <a href="" class="btn btn-primary" disabled>Аренда</a>
+                            {% endif %}
+                         {% else %}
+                            <label>Место занято!</label>
+                         {% endif %}
+                     </td>
+
+                 </tr>
+                 {% endfor %}
+             </tbody>
+         </table>
+     </div>
+ </div>
+{% endblock %}

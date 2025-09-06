@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/Lab8">
+        <file>NewData.txt</file>
+    </qresource>
+</RCC>

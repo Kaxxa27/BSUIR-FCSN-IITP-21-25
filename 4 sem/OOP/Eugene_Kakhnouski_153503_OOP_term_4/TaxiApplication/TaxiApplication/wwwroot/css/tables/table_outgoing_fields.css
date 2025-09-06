@@ -1,0 +1,64 @@
+﻿@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
+
+.container-for-table-outgoing-fields {
+    display: flex;
+    justify-content: center;
+    height: 100vh; /* устанавливаем высоту для контейнера */
+}
+
+.table-outgoing-fields-div {
+    width: auto;
+    height: min-content;
+    margin-top: 40px;
+    border-radius: 20px;
+    padding: 35px;
+    background: linear-gradient(to bottom right, #8E2DE2, #4A00E0);
+}
+
+.table-outgoing-fields {
+    border: 3px solid black;
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+}
+
+.table-outgoing-fields tr td:nth-child(2) {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.table-outgoing-fields td {
+    font-weight: bold;
+    height: 50px;
+    color: black;
+}
+
+/* Background-color of the odd rows */
+.table-outgoing-fields tr:nth-child(odd) {
+    background: linear-gradient(to bottom right, #acb6e5, #86fde8);
+}
+
+/* Background-color of the even rows */
+.table-outgoing-fields tr:nth-child(even) {
+    background: linear-gradient(to bottom right, #acb6e5, #86fde8);
+}
+
+.table-outgoing-fields th {
+    background: #00FA9A;
+}
+
+.table-outgoing-fields td:first-child {
+    color: black;
+}
+
+.table-outgoing-fields td:hover {
+    /*background-color: crimson;*/
+    background-color: mediumslateblue;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    transition-duration: 0.8s;
+}

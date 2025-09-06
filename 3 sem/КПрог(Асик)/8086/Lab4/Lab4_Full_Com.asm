@@ -1,0 +1,790 @@
+; Распечатать строку [Макрос]
+printStr macro str
+    push ax
+    push dx
+    
+    mov ah,09h ; Номер функции DOS   
+    lea dx,str ; Смещение str в DX   
+    int 21h    ; 21 прерывание
+    
+    pop dx
+    pop ax     
+endm
+
+; Распечатать символ [Макрос]
+printSymb macro ascii 
+   mov ah,06h
+   mov dl,ascii
+   int 21h 
+endm
+
+; Распечатать строку по смещению [Макрос]
+printStrByOffset macro offset
+    push ax
+    push dx
+    
+    mov ah,09h    ; Номер функции DOS   
+    mov dx,offset ; Смещение в DX   
+    int 21h       ; 21 прерывание
+    
+    pop dx
+    pop ax     
+endm
+
+; Открыть файл [Макрос]
+openFile MACRO nameOffset, id 
+    mov dx,nameOffset ; Адрес ASCIZ-строки с именем файла
+    mov ah,3Dh        ; Функция DOS 3Dh (открыть существующий файл)  
+    mov al,02h        ; 02 - для чтения и записи
+    int 21h           ; Открыть файл    
+    mov id,ax         ; Сохранить дескриптор
+    
+    jc openErrorLabel
+endm
+
+; Создать файл [Макрос]
+createFile MACRO nameOffset, id 
+    mov ah,3Ch        ; Функция DOS 3Ch (создать файл)
+    mov ch,00100000b  ; Атрибут файла
+    mov dx,nameOffset ; Адрес ASCIZ-строки с именем файла
+    int 21h           ; Создать файл
+    mov id,ax         ; Сохранить дескриптор
+    
+    jc createErrorLabel  
+endm    
+
+; Считать символы [Макрос]
+readChars MACRO id, number, buf
+    mov ah,3Fh    ; Функция DOS (чтение из файла)
+    mov bx,id     ; Загрузка дескриптора
+    mov cx,number ; Количество считываемых символов
+    lea dx,buf    ; Загрузка буфера 
+    int 21h       ; Считать данные
+    
+    jc readingErrorLabel    
+endm
+ 
+; Записать символы [Макрос]
+writeChars MACRO id, number, buf
+    mov ah,40h    ; Функция DOS (запись в файл)
+    mov bx,id     ; Дескриптор
+    mov cx,number ; Количество записываемых символов
+    lea dx,buf    ; Буфер 
+    int 21h       ; Записать данные
+    
+    jc writingErrorLabel
+endm
+ 
+; Установить курсор [Макрос]
+setCursor MACRO id, distance, type 
+    mov ah,42h      ; Функция DOS (переместить указатель чтения/записи)
+    mov bx,id       ; Идентификатор
+    mov cx,0h       ;
+    mov dx,distance ;
+    mov al,type     ; Относительно чего
+    int 21h         ; Переместить указатель 
+    
+    jc cursorErrorLabel 
+endm
+
+; Закрыть файл [Макрос]
+closeFile MACRO id
+    mov bx,id  ; Дескриптор
+    mov ah,3Eh ; Функция DOS 3Eh
+    int 21h    ; Закрыть файл
+
+    jc closeErrorLabel 
+endm 
+
+; Удалить файл [Макрос]
+deleteFile MACRO nameOffset, labelGood, labelBad
+    mov ah,41h        ; Функция DOS 41h (удалить файл)
+    mov dx,nameOffset ; Адрес ASCIZ-строки с именем файла 
+    int 21h           ; Удалить файл
+    
+    jc deleteErrorLabel  
+endm
+
+
+    .model tiny
+    .code         
+    org 100h
+START: 
+    
+    mov end_SP,sp ; Сохранение SP
+    
+    ; Обработка параметров командной строки
+   ; printStr paramsMessage     ; "Параметры командной строки:" 
+   ;printStr toNewLine         ; На новую строку
+    ;printStr paramsFormat      ; Формат параметров
+    ;printStr toNewLine      
+   ; printStr toNewLine     
+   ; printStr paramsYourMessage ; Ваши параметры  
+   ; printStr toNewLine   
+   
+   printStr Start_Info_String
+   printStr New_Line
+      
+    call processCommandLine    ; Обработать параметры командной строки
+    cmp paramsNumber,03h       ; Параметров должно быть три
+    je paramsAreNormal
+    
+    ; Проблемы с параметрами
+    printStr toNewLine
+    printStr paramsError ; Ошибка
+    jmp exit             ; Выход из программы
+    
+    ; С параметрами всё нормально
+    paramsAreNormal:
+    openFile source_file_offset, source_file_ID            ; Открыть исходный файл      
+    lea dx, temp_file_name                                 ; Задать смещение имени 
+    mov temp_file_offset, dx                               ; временного файла 
+    createFile temp_file_offset,temp_file_ID               ; Создать временный файл    
+    createFile destination_file_offset,destination_file_ID ; Создать файл с результатом
+    
+   ; printStr started
+    
+    ; Главный цикл 
+    mainWhile:
+         
+        printStr Load_InfoString
+        printStr New_Line
+         
+        ; Считывание порции символов
+        readChars source_file_ID, buffer_dose, buffer
+       
+        ; Поиск симола 0Dh в считанном буфере
+        search0Dh:
+        mov charsRead,ax
+        mov cx,charsRead ; Количество считанных символов   
+        mov al,0Dh       ; Символ 0Dh 
+        lea di,buffer    ; Смещение буфера
+        repne scasb      ; Сравниваем, пока не равны 
+        jz Exists0Dh     ; ZF = 1?  
+        
+        ; Действие, если нет символа 0Dh
+        NotExists0Dh: 
+        
+            mov dx,charsRead           ; Число символов в порции = 
+            mov charsOfStringInDose,dx ; = число считанных символов
+            mov isEndOfString,00h      ; Конца строки нет
+            
+            ; Поиск символа NULL в считанном буфере
+            mov cx,charsRead          ; Количество считанных символов  
+            mov al,0h                 ; Символ NULL
+            lea di,buffer             ; Смещение буфера
+            repne scasb               ; Сравниваем, пока не равны
+            jnz writeCharsInTempFile  ; ZF <> 0?
+         
+                ; Действие, если есть символ NULL
+                dec charsOfStringInDose  ; charsOfStringInDose--   
+                mov isEndOfString,01h    ; Конец строки
+                mov isEndOfFile,01h      ; Конец файла
+                jmp writeCharsInTempFile
+                 
+        ; Действие, если есть символ 0Dh
+        Exists0Dh:
+        
+            ; Определения числа символов строки в порции
+            ; charsOfStringInDose = charsRead - CX + 1   
+            mov dx,charsRead 
+            mov charsOfStringInDose,dx
+            sub charsOfStringInDose,cx
+            inc charsOfStringInDose
+            mov isEndOfString,01h
+        
+            ; Кейс когда .. .. .. .. 0Dh, порция закончилась
+            ; то есть в порцию не влезло 0Ah
+            mov bx,charsOfStringInDose
+            mov buffer[bx-1],0Ah
+        
+        
+        ; Запись символов во временный файл
+        writeCharsInTempFile:  
+        writeChars temp_file_ID,charsOfStringInDose,buffer ; Записать символы 
+        mov dx,charsOfStringInDose                         ; charactersInString +=
+        add charsInString,dx                               ; += charOfStringInDose 
+        
+        ; Проверка, конец ли строки
+        cmp isEndOfString,0h
+        je notEndOfString
+        
+        ; Действие, если в порции есть конец строки
+        endOfString:
+        
+            ; Установка курсора в source_file
+            mov bx,charsRead
+            mov cursorOffset,bx
+            mov bx,charsOfStringInDose
+            sub cursorOffset,bx                       ; cursorOffset =
+            neg cursorOffset                          ; = -(charsRead - charsOfStringInDose) 
+            setCursor source_file_ID,cursorOffset,01h ; Установить курсор
+             
+             
+  
+            ; Проверка, подходит ли строка из файла под условие
+            ; "не содержать ни одного символа из заданных"
+            setCursor temp_file_ID,00h,00h ; Курсор на начало файла   
+            mov dx,charsInString     ; charsInStringCopy =
+            mov charsInStringCopy,dx ; charsInString 
+            mov dx,buffer_dose       ; Сравнить
+            cmp charsInStringCopy,dx ; charsInStringCopy и buffer_dose
+            jbe skipCheckCycle       ; if charsInStringCopy <= buffer_dose  
+            
+            ; Цикл сравнения порциями
+            checkCycle:
+                readChars temp_file_ID buffer_dose, buffer ; Считать символы 
+                checkBufferMacro buffer_dose               ; Проверить
+               
+                cmp contains,01h
+                je Inc_Result  
+                
+                cmp contains,00h                           ; Если порция не содержит символы
+                je continueCheckInCycle                    ; Продолжить проверять порциями
+                mov lastStringWasDeleted,01h               ; Иначе – последняя строка была удалена
+                jmp resetTempfile                          ; Сбросить временный файл
+                
+                continueCheckInCycle:
+                mov dx,buffer_dose       ;
+                sub charsInStringCopy,dx ; charsInStringCopy -= buffer_dose  
+               
+                mov dx,buffer_dose       ; Сравнение charsInStringCopy    
+                cmp charsInStringCopy,dx ; и buffer_dose 
+            ja checkCycle                ; charsInStringCopy > buffer_dose? 
+            
+            ; charsInStringCopy <= buffer_dose 
+            skipCheckCycle: 
+            readChars temp_file_ID charsInStringCopy, buffer ; Считать символы
+            checkBufferMacro charsInStringCopy               ; Проверить
+          
+            cmp contains,01h
+            ;je resetTempfile
+            je Inc_Result
+            
+            
+           ; cmp contains,00h                                 ; Если порция не содержит символы
+          ;  je transferString                                ; Переслать строку в конечный файл
+            mov lastStringWasDeleted,01h                     ; Иначе – последняя строка была удалена
+            jmp resetTempfile                                ; Сбросить временный файл
+                  
+            
+            ; Сбросить временный файл
+            resetTempfile:                                                      
+            mov charsInString,0h           ; charsInString = 0 
+            setCursor temp_file_ID,00h,00h ; Курсор на начало файла
+            
+        ; Действие, если в порции нет конца строки
+        notEndOfString:
+            mov isEndOfString,0h ; Не конец строки
+            cmp isEndOfFile,01h  ; Сравнение
+        
+    jne mainWhile ; Конец файла?
+            
+    closeFile temp_file_ID      ; Закрыть временный файл
+    deleteFile temp_file_offset ; Удалить временный файл  
+    
+    
+    ; Обработка ситуации, когда последняя строка
+    ; была удалена => от нее осталась пустая строка
+    ; (от символов 0Dh,0Ah предыдущей строки)
+    cmp lastStringWasDeleted,01d ; Если не была удалена
+    jne exitSuccessful                     ; Выход
+     
+    setCursor destination_file_ID,00h,00h    ; Установить курсор на конец файла
+    readChars destination_file_ID,02h,buffer ; Считать два символа 
+    cmp ax,02h                               ; AX - число считанных
+    jb exitSuccessful                                  ; AX < 2 => выход
+      
+    mov cursorOffset,02h                           ; 
+    neg cursorOffset                               ; cursorOffset = -2
+    setCursor destination_file_ID,cursorOffset,02h ; Установить курсор за 2 символа до конца
+    readChars destination_file_ID,02h,buffer       ; Считать в буфер два символа
+    cmp buffer,0Dh                                 ; Первый считанный 0Dh?
+    jne exitSuccessful                             ; Не 0Dh => выход успешный
+    lea bx,buffer                                  ; Смещение буфера в bx
+    mov [bx],' '                                   ; Заполнение первого и второго
+    mov [bx + 1],' '                               ; элемента буфера
+    setCursor destination_file_ID,cursorOffset,02h ; Установить курсор за 2 символа до конца
+    writeChars destination_file_ID,02h,buffer      ; Записать 2 символа из буфера в файл  
+    jmp exitSuccessful                             ; Выход учпешный
+    
+    
+    ; Обработка ошибок
+openErrorLabel:  
+    printStr openError
+    call errorHandler
+    jmp exit
+    
+createErrorLabel: 
+    printStr createError
+    call errorHandler
+    jmp exit
+    
+readingErrorLabel:  
+    printStr readingError
+    call errorHandler
+    jmp exit
+    
+writingErrorLabel: 
+    printStr writingError
+    call errorHandler
+    jmp exit
+    
+cursorErrorLabel:
+    printStr cursorError
+    call errorHandler
+    jmp exit
+    
+closeErrorLabel:
+    printStr closeError
+    call errorHandler
+    jmp exit 
+
+deleteErrorLabel:
+    printStr deleteError
+    call errorHandler
+    jmp exit  
+
+    ; Завершение программы
+exitSuccessful:
+    printStr successfulCompleted
+    
+exit:
+    mov sp,end_SP ; Восстановить SP 
+    
+    
+    printStr New_Line
+    printStr Result_Info_String 
+    Print_Number Result
+    
+    
+    ret           ; Завершение COM-программы 
+    
+        
+Inc_Result: 
+    inc Result
+    mov contains, 0d
+    jmp resetTempfile
+    
+    
+; [Процедура] – результат в contains
+; Есть ли символы в порции строки    
+checkBuffer PROC near
+     ; mov contains,0h 
+    
+    mov si,0h ; SI = 0 [счетчик]
+    dec si
+     for1: 
+        inc si
+        
+        mov isFor1_Or_2, 1
+        
+        cmp contains, 1d
+         je Exit_Loop
+         
+        cmp si,bufferNumberCheck
+        je Exit_Loop    
+              
+        mov dx,0h         ; DX = 0   
+        mov dl,buffer[si] ; DX = текущий символ из порции 
+      ;  push si           ; Сохранение SI 
+      
+       ; mov si,0h         ; SI = 0 [счетчик] 
+         
+        mov Count_For_FindString, 0d
+        mov Count_MainString_Copy, si
+        
+        push dx
+        mov dx,Size_FindString
+        mov Size_FindString_Copy, dx
+        pop dx
+        
+        for2: 
+           mov Checking_Symbol, dl 
+           
+           Start_For2: 
+            push si
+            mov si,Count_For_FindString 
+          ;  cmp dl,Find_String[Count_For_FindString]; Сравнение символа из порции с 
+            
+            push dx
+            mov dl,Checking_Symbol
+            cmp dl,Find_String[si]; 
+            pop dx
+            
+            jne not_equals ; символом из набора символов   
+            
+           ;-----Если символы равны----------------------------  
+           
+            mov isFor1_Or_2, 2 
+           
+            pop si
+            mov contains,01h   ; contains = 1  
+            inc Count_MainString_Copy
+            inc Count_For_FindString
+            
+            push si 
+            mov si,Count_MainString_Copy 
+           ; mov dl, Find_String[Count_MainString_Copy] 
+           
+            push dx
+           ; mov dl,Checking_Symbol
+            mov dl, buffer[si] 
+           ; mov dl, Find_String[si]  
+            mov Checking_Symbol,dl
+            pop dx 
+            
+            pop si
+            
+            dec Size_FindString_Copy  ; Size-- искомого слова               
+            cmp Size_FindString_Copy,0 ; Сравнение
+            ;jz for1 
+            je for1 ; 
+            
+            jmp Start_For2 
+           ;--------------------------------------------------
+           
+          
+                
+           ; Не равен
+           not_equals:  
+           
+           cmp isFor1_Or_2, 1
+           je  not_eq_For1
+                      
+           mov contains, 0d 
+           pop si       
+           
+           dec Size_FindString_Copy  ; Size-- искомого слова               
+            cmp Size_FindString_Copy,0 ; Сравнение
+            ;jz for1 
+            je for1 ;
+            
+            ;jmp for1
+            jmp Start_For2   
+                  
+          not_eq_For1:
+           mov contains, 0d 
+           pop si 
+           jmp for1
+
+    Exit_Loop:
+     ret  
+                
+checkBuffer endp
+
+; [Макрос] – есть ли символы в порции строки 
+checkBufferMacro MACRO number
+    mov dx,number
+    mov bufferNumberCheck,dx
+    call checkBuffer 
+endm 
+
+ ;====================Процедура вывода числа====================  
+
+    Print_Number_Proc PROC near 
+    
+    mov cx,0h ; Количество цифр у числа
+    
+    ; Добавление цифр в тек
+    pushDigitsWhile:
+        mov dx,0h
+        mov ax,Number_General ; AX = число
+        div ten              ; DX:AX / ten = DX:AX
+   
+        mov Number_General,ax ; numberGeneral уже /= 10
+
+        add dx,48d ; DX += 48 (перевод в ASCII)
+        push dx ; DX = текущая цифра числа
+        
+        inc cx ; CX ++  
+        
+        ; Условие выхода из цикла
+        cmp Number_General,0h
+    jne pushDigitsWhile 
+    
+    ; Доставание из стека и печать цифр
+    printDigitsWhile: 
+        mov dx,0h
+        mov ax,Number_General ; AX = число
+        div ten              ; DX:AX / ten = DX:AX
+   
+        mov Number_General,ax ; numberGeneral уже /= 10
+
+        ; Цифра числа DX 
+        ; прерывание берет ASCII символа из DL
+        pop dx
+        mov ah,06h
+        int 21h
+        
+        
+        ; Условие выхода из цикла  
+        dec cx
+        cmp cx,0h
+    jne printDigitsWhile 
+  
+    ret
+    
+    Print_Number_Proc endp
+
+   ; Макрос - передает число в процедуру [Number_General]  
+    Print_Number macro digit    
+    
+    push ax
+    
+    mov ax,digit 
+    mov Number_General,ax
+    call Print_Number_Proc 
+                               
+    pop ax
+    endm      
+    ;=================================================================
+    
+; Распечатать число параметров [Процедура] 
+printParamsNumber PROC near
+    add paramsNumber,48d
+    printSymb paramsNumber
+    sub paramsNumber,48d
+    printSymb ')'
+    printSymb ' '    
+    ret
+printParamsNumber endp 
+
+; [Процедура] – обработка командной строки
+processCommandLine PROC near  
+    cld          ; Для команд строковой обработки       
+    mov bp,sp    ; Сохранить текущую вершину стека в BP
+    mov cl,[80h] ; Размер командной строки
+    cmp cl,1     ; Проверка длины командной строки
+    jle end      ; выход из программы
+    
+    ; Преобразовать список параметров в PSP так, чтобы
+    ; каждый параметр заканчивался нулем (ASCIZ-строка)
+    ; адреса всех параметров поместить в стек
+    ; в переменную paramsNumber записать число параметров
+    
+    mov cx,0FFFFh ; Для команд работы со строками
+    mov di,81h ; Начало командной строки в ES:DI
+    
+find_param:
+    cmp paramsNumber, 02d
+    je thirdParam
+    mov al,' '         ; AL = пробел
+    repz scasb         ; Искать не пробел
+    dec di             ; DI = адрес начала параметра 
+    push di            ; Сохранить адрес в стек
+    mov paramOffset,di ; Для будущей операции вывода параметра
+    inc paramsNumber   ; Увеличить paramsNumber на 1
+    mov si,di          ; SI = DI для следующей команды lodsb
+    
+scan_params:
+    lodsb           ; Прочитать символ из параметра
+    cmp al,0Dh      ; Если 0Dh – последний параметр
+    je params_ended ; Параметры закончились
+    cmp al,20h      ; Сравнение с пробелом
+    jne scan_params ; Текущий параметр не закончился
+    
+    
+   ; call printParamsNumber       ; Распечатать число параметров  
+    dec si                       ; SI = первый байт после параметра 
+    mov [si],'$'                 ; Записать в него $
+   ; printStrByOffset paramOffset ; Распечатать параметр
+    printStr toNewLine           ; Переход на новую строку
+    mov [si],0                   ; Записать в него 0
+    mov di,si                    ; DI = SI для команды scasb
+    inc di                       ; DI = следующий после нуля символ
+    jmp find_param               ; Продолжить разбор командной строки
+    
+params_ended:
+    dec si                       ; SI = первый байт после конца 
+                                 ; последнего параметра
+    mov [si],'$'                 ; Записать в него $
+  ;  printStrByOffset paramOffset ; Распечатать параметр
+    printStr toNewLine           ; Переход на новую строку
+    mov [si],0                   ; Записать в него 0
+
+pop_from_stack: 
+   ; pop word ptr Find_String 
+    
+    pop symbolsOffset
+    pop destination_file_offset  
+    pop source_file_offset 
+    
+end:     
+    mov sp,bp ; Восстановить SP  
+    ret       ; Выход из процедуры 
+    
+thirdParam:    
+    cmp [di],0Dh                 ; Сравнить текущий символ с концом строки
+    je end                       ; Конец строки => конец
+    push di                      ; Не конец => адрес начала symbols
+    mov paramOffset,di           ; Для будущей операции вывода параметра 
+    mov al,0Dh                   ; Символ конца строки параметров
+    repnz scasb                  ; Идем вперед пока не найдем
+    dec di                       ; Стать на символ 0Dh
+    inc paramsNumber             ; Увеличить paramsNumber на 1  
+  ;  call printParamsNumber       ; Распечатать число параметров
+    mov [di],'$'                 ; $ вместо 0Dh
+  ;  printStrByOffset paramOffset ; Распечатать параметр
+    printStr toNewLine           ; Переход на новую строку
+    mov [di],0                   ; 0 вместо $, который вместо 0Dh 
+    jmp pop_from_stack           ; Достаем параметры из стека 
+processCommandLine endp   
+
+; Процедура-обработчик ошибок
+errorHandler PROC near 
+    cmp ax,02h
+    je open02h 
+    cmp ax,03h
+    je open03h
+    cmp ax,04h
+    je open04h
+    cmp ax,05h 
+    je open05h
+    cmp ax,06h
+    je open06h
+    cmp ax,0Ch
+    je open0Ch
+    cmp ax,0Fh
+    je open0Fh    
+    cmp ax,10h
+    je open10h
+    cmp ax,12h
+    je open12h  
+    cmp ax,50h
+    je open50h        
+    jmp errorHandlerExit  
+open02h:
+    printStr error02hMsg
+    jmp errorHandlerExit    
+open03h:
+    printStr error03hMsg
+    jmp errorHandlerExit  
+open04h:
+    printStr error04hMsg
+    jmp errorHandlerExit  
+open05h:
+    printStr error05hMsg
+    jmp errorHandlerExit  
+open06h:
+    printStr error06hMsg
+    jmp errorHandlerExit   
+open0Ch:
+    printStr error0ChMsg
+    jmp errorHandlerExit  
+open0Fh:
+    printStr error0FhMsg
+    jmp errorHandlerExit  
+open10h:
+    printStr error10hMsg
+    jmp errorHandlerExit    
+open12h:
+    printStr error12hMsg
+    jmp errorHandlerExit   
+open50h:
+    printStr error50hMsg
+    jmp errorHandlerExit   
+errorHandlerExit:
+    ret  
+errorHandler endp
+
+; Данные программы 
+    
+    ;****************************************
+    ;Info_Strings
+    Start_Info_String db 'The program has started execution....$'
+    Load_InfoString db 'Loading...Please, wait ^_^$'
+    Result_Info_String db 'The number of lines with *WORD*: $'   
+    ;Result_Info_String  db 'Result: $'
+    ; Символы перехода на новую строку (v,<)    
+    New_Line db 0Ah, 0Dh, '$'
+   
+    ; Число для передачи в процедуру
+    Number_General dw 0  
+    
+    isFor1_Or_2 db 0 ; bool - нахождение в цикле 1 - первый цикл, 2 - второй
+    
+  ;  Find_String db 0 ; Искомое слово 
+    Find_String db 'jeka' ; Искомое слово 
+    
+    Count_For_FindString dw 0  ; Счетчик для цикла идущего по проверяемому слову
+    Count_MainString_Copy dw 0 ; Счетчик для доп цикла пробега по строке
+    Size_FindString dw 4 ; Размер искомого слова
+    Size_FindString_Copy dw 0
+    Result dw 0 ; Кол-во строк с заданным словом
+    
+    Checking_Symbol db 0 ; проверяемый символ
+    ; Для алгоритма перевода числа 
+    TEN dw 10d  
+    
+    ;****************************************
+    
+    end_SP dw 0 ; Адрес SP для ret в конце
+    
+    ;source_file_name  db 'd:\data.txt',0 ; Исходный файл
+    source_file_ID     dw 0               ; Дескриптор
+    source_file_offset dw 0
+    source_file_error  db 0Ah, 0Dh, 'Error opening the source file$' 
+    
+    ;destination_file_name  db 'd:\result.txt',0 ; Файл с результатом
+    destination_file_ID     dw 0                   ; Дескриптор 
+    destination_file_offset dw 0
+       
+    temp_file_name   db 'temp.txt',0    ; Временный файл
+    temp_file_ID     dw 0               ; Дескриптор    
+    temp_file_offset dw 0 
+     
+    openError    db 0Ah, 0Dh, 'File opening error$' 
+    createError  db 0Ah, 0Dh, 'File creation error$' 
+    readingError db 0Ah, 0Dh, 'Reading error$'
+    writingError db 0Ah, 0Dh, 'Writing error$'
+    cursorError  db 0Ah, 0Dh, 'Cursor installation error$'
+    closeError   db 0Ah, 0Dh, 'File closing error$'
+    deleteError  db 0Ah, 0Dh, 'File deletion error$'
+    
+    error02hMsg   db 0Ah, 0Dh, '02h - file not found$'  
+    error03hMsg   db 0Ah, 0Dh, '03h - path not found$' 
+    error04hMsg   db 0Ah, 0Dh, '04h - too much opened files$'
+    error05hMsg   db 0Ah, 0Dh, '05h - access denied$'  
+    error06hMsg   db 0Ah, 0Dh, '06h - invalid ID$' 
+    error0ChMsg   db 0Ah, 0Dh, '0Ch - invalid access mode$'  
+    error0FhMsg   db 0Ah, 0Dh, '0Fh - a nonexistent disk is specified$' 
+    error10hMsg   db 0Ah, 0Dh, '10h - the current directory cannot be deleted$'       
+    error12hMsg   db 0Ah, 0Dh, '12h - invalid access mode$' 
+    error50hMsg   db 0Ah, 0Dh, '50h - the file already exists$' 
+     
+    started             db 0Ah, 0Dh, 'The program has been started$'
+    successfulCompleted db 0Ah, 0Dh, 'END PROGRAMM$'  
+    
+    buffer      db 100 DUP(0) ; Буфер данных    
+    buffer_dose dw 50d        ; Размер порции
+    
+    isEndOfFile   db 0 ; [bool] – конец ли файла 
+    isEndOfString db 0 ; [bool] – конец ли строки 
+    
+    charsRead           dw 0 ; Считано символов    
+    charsOfStringInDose dw 0 ; Символов строки в порции
+    charsInString       dw 0 ; Символов в строке
+    
+    cursorOffset        dw 0 ; Смещение курсора
+    
+    ;symbols           db '0123456789',0 ; Символы, которых быть не дложно
+    symbolsOffset dw 0 ; Смещение на символы, которых быть не должно
+    
+    bufferNumberCheck    dw 0 ; Количество символов из буфера для проверки
+    charsInStringCopy    dw 0 ; Символов в строке (копия)
+    contains             db 0 ; [bool] – есть ли в первых charsOfStringInDose 
+                              ; символах из buffer 1 из символов symbols     
+    lastStringWasDeleted db 0 ; [bool] - последняя стркоа была удалена                       
+                           
+    paramsNumber db 0 ; Число параметров командной стркои
+    paramOffset  dw 0 ; Смещение параметра 
+    
+    toNewLine         db 0Ah, 0Dh, '$'                  
+    paramsMessage     db 'Command line parameters:$' 
+    paramsYourMessage db 'Your parameters:$'     
+    paramsError       db 'Please, enter THREE PARAMETERS$' ;
+    paramsFormat      db '1 - source file name (exists)',0Ah,0Dh,'2 - destination file name (will be created or overwritten)',0Ah,0Dh,'3 - character set (according to the task condition)$'    
+   
+end START     
+

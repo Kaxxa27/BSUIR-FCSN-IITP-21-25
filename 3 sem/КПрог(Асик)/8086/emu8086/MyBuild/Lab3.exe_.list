@@ -1,0 +1,571 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+Lab3.exe_ -- emu8086 assembler version: 4.05  
+ 
+[ 13.12.2022  --  20:00:15 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ; Распечатать строку [Макрос]
+[   2]        :                                       Print macro str
+[   3]        :                                       push ax
+[   4]        :                                       push dx
+[   5]        :                                       
+[   6]        :                                       mov ah,09h ; Номер функции DOS
+[   7]        :                                       lea dx,str ; Смещение str в DX
+[   8]        :                                       int 21h    ; 21 прерывание
+[   9]        :                                       
+[  10]        :                                       pop dx
+[  11]        :                                       pop ax
+[  12]        :                                       endm
+[  13]        :                                       
+[  14]        :                                       ; Распечатать символ [Макрос]
+[  15]        :                                       printSymb macro ascii
+[  16]        :                                       mov ah,06h
+[  17]        :                                       mov dl,ascii
+[  18]        :                                       int 21h
+[  19]        :                                       endm
+[  20]        :                                       
+[  21]        :                                       ; Макрос для вывода элементов массива на консоль
+[  22]        :                                       Output_Array_In_Console macro
+[  23]        :                                       
+[  24]        :                                       lea si, Array  ; SI смещение массива Array
+[  25]        :                                       mov Array_Counter, 0d ; Занулить переменную
+[  26]        :                                       
+[  27]        :                                       dec Array_Size ; Для исправления индексов, потом оно восстанавливается
+[  28]        :                                       
+[  29]        :                                       Print New_Line
+[  30]        :                                       Print Output_Array_Str
+[  31]        :                                       
+[  32]        :                                       Output:
+[  33]        :                                       Print Probel_Str
+[  34]        :                                       Print_Number [si] ; Вывод всех чисел массива
+[  35]        :                                       Print Comma_Str
+[  36]        :                                       add si,2d
+[  37]        :                                       mov dx, Array_Size
+[  38]        :                                       cmp dx,Array_Counter
+[  39]        :                                       jz End_Macro
+[  40]        :                                       inc Array_Counter
+[  41]        :                                       jmp Output
+[  42]        :                                       
+[  43]        :                                       End_Macro:
+[  44]        :                                       inc Array_Size
+[  45]        :                                       endm
+[  46]        :                                       
+[  47]        :                                       ; Модель памяти (код в 1 сегменте, данные и стек в DGROUP)
+[  48]        :                                       .model small
+[  49]        :                                       
+[  50]        :                                       ; Сегмент кода
+[  51]        :                                       .code
+[  52]        :                                       
+[  53]        :                                       ; Начало прогарммы
+[  54]    0000:                                       START:
+[  55]        :                                       
+[  56]    0000: B8 36 00                              mov ax,@data  ; @data - идентификатор сегмента данных
+[  57]    0003: 8E D8                                 mov ds,ax     ; Адрес сегмента данных — в DS
+[  58]    0005: 8E C0                                 mov es,ax     ; Адрес сегмента данных — в ES
+[  59]        :                                       
+[  60]        :                                       
+[  61]        :                                       
+[  62]        :                                       ;====Задание максимальной длины для вводимого числа======
+[  63]    0007: BF AF 01                              lea di,String_Number ; Смещение строки в DI
+[  64]    000A: B0 06                                 mov al,06d           ; Максимальное число символов для ввода
+[  65]    000C: AA                                    stosb                ; AL в ES:DI
+[  66]        :                                       ;========================================================
+[  67]        :                                       
+[  68]        :                                       
+[  69]        :                                       ;=================== Задание  ===================
+[  70]    000D: 50 52 B4 09 BA 5C 01 CD 21 5A 58      Print Task_Str
+[  71]    0018: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[  72]        :                                       ;========================================================
+[  73]        :                                       
+[  74]        :                                       
+[  75]        :                                       ;===================Ввод размера массива ( 0 < size < 30) ===================
+[  76]    0023:                                       Enter_Array_Size:
+[  77]        :                                       
+[  78]    0023: 50 52 B4 09 BA 0D 01 CD 21 5A 58      Print Enter_ArraySize_Str
+[  79]    002E: E8 D3 01                              call Enter_Number
+[  80]    0031: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[  81]        :                                       
+[  82]        :                                       ; Array_Size = Main_Number
+[  83]    003C: 8B 16 B9 01                           mov dx, Main_Number
+[  84]    0040: 89 16 C3 01                           mov Array_Size, dx
+[  85]        :                                       
+[  86]    0044: 83 3E C3 01 1E                        cmp Array_Size, 30d; Если больше чем 30 элементов
+[  87]    0049: 76 03 E9 4A 02                        ja Exeption_Array_Size_More_Than_30
+[  88]        :                                       
+[  89]    004E: 83 3E C3 01 00                        cmp Array_Size, 0d; Если 0 элементов
+[  90]    0053: 75 03 E9 64 02                        jz Exeption_Array_Size_Less_Than_1
+[  91]        :                                       ;========================================================
+[  92]        :                                       
+[  93]        :                                       
+[  94]        :                                       ;===================Заполнение массива===================
+[  95]        :                                       
+[  96]    0058: 50 52 B4 09 BA 32 01 CD 21 5A 58      Print Enter_Numbers_In_Array_Str
+[  97]        :                                       
+[  98]    0063: C7 06 BD 01 00 00                     mov Array_Counter, 0d
+[  99]    0069: BE C5 01                              lea si, Array
+[ 100]    006C:                                       Enter_Numbers_In_Array_Loop_Start:
+[ 101]        :                                       
+[ 102]    006C: 8B 16 BD 01                           mov dx, Array_Counter
+[ 103]        :                                       
+[ 104]    0070: 3B 16 C3 01                           cmp dx, Array_Size
+[ 105]    0074: 74 40                                 jz After_Entering_Array
+[ 106]        :                                       
+[ 107]    0076: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[ 108]    0081: 50 52 B4 09 BA 4A 01 CD 21 5A 58 50   Print_Number Array_Counter
+                A1 BD 01 A3 BB 01 E8 CD 01 50 52 B4 
+                09 BA 4C 01 CD 21 5A 58 58          
+[ 109]    00A2: 56                                    push si
+[ 110]    00A3: E8 5E 01                              call Enter_Number   ; Число в Main_Number
+[ 111]    00A6: 5E                                    pop si
+[ 112]        :                                       
+[ 113]    00A7: 8B 16 B9 01                           mov dx, Main_Number ; Число Main_Number -> Array[index]
+[ 114]    00AB: 89 14                                 mov [si], dx
+[ 115]    00AD: 83 C6 02                              add si, 2d
+[ 116]        :                                       
+[ 117]    00B0: FF 06 BD 01                           inc Array_Counter  ; Index для вывода [0],[1]...
+[ 118]        :                                       
+[ 119]    00B4: EB B6                                 jmp Enter_Numbers_In_Array_Loop_Start
+[ 120]        :                                       ;========================================================
+[ 121]        :                                       
+[ 122]    00B6:                                       After_Entering_Array: ; Продолжение программы после заполнения массива
+[ 123]        :                                       
+[ 124]        :                                       ; Алгоритм подсчета наиболее встречающегося элемента в массиве
+[ 125]        :                                       ;====================Главный алгоритм====================
+[ 126]    00B6: BE C5 01                              lea si, Array  ; SI смещение массива Array, SI = Начало массива
+[ 127]        :                                       
+[ 128]    00B9: C7 06 BD 01 00 00                     mov Array_Counter, 0d; Счетчик массива для всего массива
+[ 129]    00BF: C7 06 BF 01 00 00                     mov Pod_Array_Counter, 0d; Счетчик для прохода в подмассиве
+[ 130]        :                                       
+[ 131]    00C5: A1 C3 01                              mov ax, Array_Size ; Размер массива в AX
+[ 132]        :                                       
+[ 133]    00C8: BA 00 00                              mov dx, 0d
+[ 134]    00CB:                                       While:
+[ 135]        :                                       
+[ 136]    00CB: 3B 06 BD 01                           cmp ax, Array_Counter
+[ 137]    00CF: 74 49                                 jz Out_Of_Algoritm
+[ 138]        :                                       
+[ 139]    00D1: 89 36 19 02                           mov Curr_Address, si; В текущий адрес помещаем элемент массива, сохраняем
+[ 140]        :                                       ; inc Counter ; Как минимум всегда один такой элемент
+[ 141]    00D5: 56                                    push si ; Сохраняем адрес текущего  элемента
+[ 142]        :                                       
+[ 143]    00D6: BE C5 01                              lea si, Array
+[ 144]    00D9:                                       Inside_While:
+[ 145]        :                                       
+[ 146]    00D9: 3B 06 BF 01                           cmp ax, Pod_Array_Counter
+[ 147]    00DD: 74 18                                 jz After_Inside_While
+[ 148]        :                                       
+[ 149]    00DF: FF 06 BF 01                           inc Pod_Array_Counter
+[ 150]        :                                       
+[ 151]        :                                       ;add si,2d ; Переход к след. элементу массива
+[ 152]    00E3: 8B 14                                 mov dx,[si] ; В DX = след. элемент массива
+[ 153]        :                                       
+[ 154]    00E5: 8B 1E 19 02                           mov bx, Curr_Address
+[ 155]    00E9: 8B 1F                                 mov bx, [bx]
+[ 156]    00EB: 3B D3                                 cmp dx, bx ; Если такой же элемент, то надо Counter++
+[ 157]    00ED: 75 03 E9 0B 01                        jz If_Same_Element
+[ 158]        :                                       
+[ 159]    00F2:                                       Continue: ; В Counter у нас кол-во одинаковых элементов по адресу Curr_Address
+[ 160]    00F2: 83 C6 02                              add si,2d ; Переход к след. элементу массива
+[ 161]    00F5: EB E2                                 jmp Inside_While
+[ 162]        :                                       
+[ 163]    00F7:                                       After_Inside_While:
+[ 164]    00F7: 5E                                    pop si
+[ 165]        :                                       ; В Max_Counter заносим максимальное кол-во элементов
+[ 166]        :                                       
+[ 167]    00F8: 8B 16 17 02                           mov dx, Max_Counter
+[ 168]    00FC: 3B 16 15 02                           cmp dx, Counter
+[ 169]    0100: 7D 03 E9 E5 00                        jl Counter_In_MaxCounter     ; Если Max_Counter <  Counter => Max_Counter = Counter
+[ 170]        :                                       
+[ 171]    0105:                                       Posle_Proverki:
+[ 172]        :                                       
+[ 173]    0105: 83 C6 02                              add si, 02d
+[ 174]    0108: FF 06 BD 01                           inc Array_Counter
+[ 175]    010C: C7 06 15 02 00 00                     mov Counter, 0d
+[ 176]    0112: C7 06 BF 01 00 00                     mov Pod_Array_Counter, 0d
+[ 177]    0118: EB B1                                 jmp While
+[ 178]        :                                       ;========================================================
+[ 179]        :                                       
+[ 180]    011A:                                       Out_Of_Algoritm:
+[ 181]        :                                       
+[ 182]        :                                       ; В Next_Address хранится адрес нашего самого часто втречающегося элемента
+[ 183]    011A: 8B 1E 1B 02                           mov bx, Next_Address
+[ 184]    011E: 8B 17                                 mov dx, [bx]
+[ 185]        :                                       
+[ 186]        :                                       ; Вывод результата
+[ 187]        :                                       
+[ 188]    0120: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[ 189]    012B: 50 52 B4 09 BA 9A 01 CD 21 5A 58      Print Answer_Str
+[ 190]    0136: 50 52 B4 09 BA 4A 01 CD 21 5A 58 50   Print_Number dx
+                8B C2 A3 BB 01 E8 19 01 50 52 B4 09 
+                BA 4C 01 CD 21 5A 58 58             
+[ 191]        :                                       
+[ 192]    0156: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[ 193]    0161: BE C5 01 C7 06 BD 01 00 00 FF 0E C3   Output_Array_In_Console ; Макрос для вывода элементов массива на консоль
+                01 50 52 B4 09 BA 0A 01 CD 21 5A 58 
+                50 52 B4 09 BA A3 01 CD 21 5A 58 50 
+                52 B4 09 BA AB 01 CD 21 5A 58 50 52 
+                B4 09 BA 4A 01 CD 21 5A 58 50 8B 04 
+                A3 BB 01 E8 C0 00 50 52 B4 09 BA 4C 
+                01 CD 21 5A 58 58 50 52 B4 09 BA AD 
+                01 CD 21 5A 58 83 C6 02 8B 16 C3 01 
+                3B 16 BD 01 74 06 FF 06 BD 01 EB B7 
+                FF 06 C3 01                         
+[ 194]        :                                       
+[ 195]    01D1: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[ 196]    01DC: 50 52 B4 09 BA 4E 01 CD 21 5A 58      Print End_Programm_Str
+[ 197]    01E7: E9 63 01                              jmp end
+[ 198]        :                                       
+[ 199]        :                                       
+[ 200]        :                                       
+[ 201]        :                                       ;==================== Прыжки для алгоритма ====================
+[ 202]    01EA:                                       Counter_In_MaxCounter:
+[ 203]    01EA: 8B 16 15 02                           mov dx, Counter ;   Max_Counter = Counter
+[ 204]    01EE: 89 16 17 02                           mov Max_Counter, dx
+[ 205]    01F2: 8B 16 19 02                           mov dx, Curr_Address
+[ 206]    01F6: 89 16 1B 02                           mov Next_Address, dx ; в Next_Address хранится самый встречабщийся элемент
+[ 207]    01FA: E9 08 FF                              jmp Posle_Proverki
+[ 208]        :                                       
+[ 209]    01FD:                                       If_Same_Element: ; Если такой же элемент
+[ 210]    01FD: FF 06 15 02                           inc Counter ; Увеличить счетчик таких элементов
+[ 211]    0201: E9 EE FE                              jmp Continue
+[ 212]        :                                       ;========================================================
+[ 213]        :                                       
+[ 214]        :                                       
+[ 215]        :                                       ;====================Процедура ввода числа====================
+[ 216]        :                                       
+[ 217]        :                                       ; Работает правильно, в Main_Number = Введеное число
+[ 218]    0204:                                       Enter_Number PROC near
+[ 219]        :                                       
+[ 220]    0204: 5D                                    pop bp; Загрузить в стек адрес возвращения
+[ 221]    0205:                                       Enter_Number_Loop_Start:
+[ 222]        :                                       
+[ 223]        :                                       ; Ввод числа в строку
+[ 224]    0205: B4 0A                                 mov ah,0Ah           ; Функция DOS (считать строку символов из STDIN в буфер)
+[ 225]    0207: BA AF 01                              lea dx,String_Number; Смещение строки в DX
+[ 226]    020A: CD 21                                 int 21h
+[ 227]        :                                       
+[ 228]        :                                       
+[ 229]        :                                       ; Вычисление длины введеного числа
+[ 230]    020C: BE AF 01                              lea si, String_Number ; Смещение в SI наше число String_Number
+[ 231]    020F: 46                                    inc si     ; SI++  ; Возможно не надо !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+[ 232]    0210: B8 00 00                              mov ax, 0d ; Занулить AX
+[ 233]    0213: AC                                    lodsb      ; DS:SI в AL
+[ 234]    0214: 8B C8                                 mov cx,ax  ; CX = длина введеного числа
+[ 235]        :                                       
+[ 236]    0216: 83 F9 00                              cmp cx, 0d ; Если длина = 0, то Exeption_NumberIsZero ->
+[ 237]    0219: 75 03 E9 C2 00                        jz Exeption_NumberIsZero
+[ 238]        :                                       
+[ 239]    021E: C7 06 B9 01 00 00                     mov Main_Number, 0d; Занулим главное число
+[ 240]        :                                       ; Будем в AX хранить степент 10 (TEN) ->
+[ 241]        :                                       ; 1234 -> 4 * 10^0 + 3 * 10^1 + 2 * 10^2 + 1 * 10^3 = 1234
+[ 242]    0224: B8 01 00                              mov ax, 01d ; Будем в AX хранить степень 10
+[ 243]        :                                       
+[ 244]    0227:                                       NumberStr_In_Number_Loop:
+[ 245]    0227: BB 00 00                              mov bx, 0d; Занулим BX
+[ 246]    022A: 8B F1                                 mov si, cx; SI = CX -> идем с конца слова, можно было так же поменять флаг DF(направления)
+[ 247]    022C: 46                                    inc si;
+[ 248]    022D: 8A 9C AF 01                           mov bl, String_Number[si]
+[ 249]        :                                       
+[ 250]        :                                       ; Проверка на то, что введеное число(str) является числом(int)
+[ 251]    0231:                                       Proverka_Na_SymbolASCII:
+[ 252]        :                                       
+[ 253]    0231: 80 FB 30                              cmp bl, 48d; Сверка с нулем [ASCII] 48d = 0
+[ 254]    0234: 7D 03 E9 F0 00                        jl Exeption_Invalid_Number; bl < 48d
+[ 255]        :                                       
+[ 256]    0239: 80 FB 39                              cmp bl, 57d; Сверка с 9 [ASCII] 57d = 9
+[ 257]    023C: 7E 03 E9 E8 00                        jg Exeption_Invalid_Number; bl > 57d
+[ 258]        :                                       
+[ 259]    0241: 80 EB 30                              sub bl, 48d; Получить реальное число, "N" - 48 = N
+[ 260]        :                                       
+[ 261]    0244: 50                                    push ax; Сохранение AX
+[ 262]        :                                       
+[ 263]    0245: F8                                    clc; Очистить CF
+[ 264]    0246: F7 E3                                 mul bx; bl = bl * AX -> Реальное число * 10^ax  ; BX !!!!!
+[ 265]        :                                       
+[ 266]    0248: 73 03 E9 B7 00                        jc Exeption_OverFlow   ; Если есть флаг переноса от mul
+[ 267]    024D: 01 06 B9 01                           add Main_Number, ax    ;  Main_Number + ax = Полноценное число
+[ 268]    0251: 73 03 E9 AE 00                        jc Exeption_OverFlow   ; Если есть флаг переноса от add
+[ 269]        :                                       
+[ 270]    0256: 58                                    pop ax; Восстановление AX
+[ 271]        :                                       
+[ 272]    0257: F7 26 C1 01                           mul TEN; Увеличиваем AX * 10
+[ 273]    025B: 49                                    dec cx; Уменьшаем счетчик
+[ 274]        :                                       
+[ 275]    025C: 83 F9 00                              cmp cx,0d
+[ 276]        :                                       
+[ 277]    025F: 75 C6                                 jne NumberStr_In_Number_Loop
+[ 278]        :                                       
+[ 279]    0261: 55                                    push bp ; Загрузить их стека адерс для ret
+[ 280]        :                                       
+[ 281]    0262: C3                                    ret ;Вернуться туда, откуда была вызвана PROC
+[ 282]        :                                       
+[ 283]        :                                       Enter_Number endp
+[ 284]        :                                       ;=======================================================
+[ 285]        :                                       
+[ 286]        :                                       
+[ 287]        :                                       ;====================Процедура вывода числа====================
+[ 288]        :                                       
+[ 289]    0263:                                       Print_Number_Proc PROC near
+[ 290]        :                                       
+[ 291]    0263: B9 00 00                              mov cx,0h ; Количество цифр у числа
+[ 292]        :                                       
+[ 293]        :                                       ; Добавление цифр в тек
+[ 294]    0266:                                       pushDigitsWhile:
+[ 295]    0266: BA 00 00                              mov dx,0h
+[ 296]    0269: A1 BB 01                              mov ax,Number_General ; AX = число
+[ 297]    026C: F7 36 C1 01                           div ten              ; DX:AX / ten = DX:AX
+[ 298]        :                                       
+[ 299]    0270: A3 BB 01                              mov Number_General,ax ; numberGeneral уже /= 10
+[ 300]        :                                       
+[ 301]    0273: 83 C2 30                              add dx,48d ; DX += 48 (перевод в ASCII)
+[ 302]    0276: 52                                    push dx ; DX = текущая цифра числа
+[ 303]        :                                       
+[ 304]    0277: 41                                    inc cx ; CX ++
+[ 305]        :                                       
+[ 306]        :                                       ; Условие выхода из цикла
+[ 307]    0278: 83 3E BB 01 00                        cmp Number_General,0h
+[ 308]    027D: 75 E7                                 jne pushDigitsWhile
+[ 309]        :                                       
+[ 310]        :                                       ; Доставание из стека и печать цифр
+[ 311]    027F:                                       printDigitsWhile:
+[ 312]    027F: BA 00 00                              mov dx,0h
+[ 313]    0282: A1 BB 01                              mov ax,Number_General ; AX = число
+[ 314]    0285: F7 36 C1 01                           div ten              ; DX:AX / ten = DX:AX
+[ 315]        :                                       
+[ 316]    0289: A3 BB 01                              mov Number_General,ax ; numberGeneral уже /= 10
+[ 317]        :                                       
+[ 318]        :                                       ; Цифра числа DX
+[ 319]        :                                       ; прерывание берет ASCII символа из DL
+[ 320]    028C: 5A                                    pop dx
+[ 321]    028D: B4 06                                 mov ah,06h
+[ 322]    028F: CD 21                                 int 21h
+[ 323]        :                                       
+[ 324]        :                                       
+[ 325]        :                                       ; Условие выхода из цикла
+[ 326]    0291: 49                                    dec cx
+[ 327]    0292: 83 F9 00                              cmp cx,0h
+[ 328]    0295: 75 E8                                 jne printDigitsWhile
+[ 329]        :                                       
+[ 330]    0297: C3                                    ret
+[ 331]        :                                       
+[ 332]        :                                       Print_Number_Proc endp
+[ 333]        :                                       
+[ 334]        :                                       ; Макрос - передает число в процедуру [Number_General]
+[ 335]        :                                       Print_Number macro digit
+[ 336]        :                                       
+[ 337]        :                                       Print Index_Array_Start_Str
+[ 338]        :                                       
+[ 339]        :                                       push ax
+[ 340]        :                                       
+[ 341]        :                                       mov ax,digit
+[ 342]        :                                       mov Number_General,ax
+[ 343]        :                                       call Print_Number_Proc
+[ 344]        :                                       
+[ 345]        :                                       Print Index_Array_End_Str
+[ 346]        :                                       
+[ 347]        :                                       pop ax
+[ 348]        :                                       endm
+[ 349]        :                                       ;=================================================================
+[ 350]        :                                       
+[ 351]        :                                       ;====================Exeption_Array_Size_More_Than_30==============
+[ 352]    0298:                                       Exeption_Array_Size_More_Than_30:
+[ 353]    0298: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[ 354]    02A3: 50 52 B4 09 BA AB 00 CD 21 5A 58      Print Exeption_Array_Size_More_Than_30_Str
+[ 355]    02AE: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[ 356]    02B9: E9 67 FD                              jmp Enter_Array_Size
+[ 357]        :                                       ;=======================================================
+[ 358]        :                                       
+[ 359]        :                                       ;====================Exeption_Array_Size_Less_Than_1==============
+[ 360]    02BC:                                       Exeption_Array_Size_Less_Than_1:
+[ 361]    02BC: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[ 362]    02C7: 50 52 B4 09 BA E0 00 CD 21 5A 58      Print Exeption_Array_Size_Less_Than_1_Str
+[ 363]    02D2: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[ 364]    02DD: E9 43 FD                              jmp Enter_Array_Size
+[ 365]        :                                       ;=======================================================
+[ 366]        :                                       
+[ 367]        :                                       ;====================Exeption_NumberIsZero==============
+[ 368]    02E0:                                       Exeption_NumberIsZero:
+[ 369]    02E0: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[ 370]    02EB: 50 52 B4 09 BA 00 00 CD 21 5A 58      Print Exeption_NumberIsZero_Str
+[ 371]    02F6: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[ 372]    0301: E9 01 FF                              jmp Enter_Number_Loop_Start
+[ 373]        :                                       ;=======================================================
+[ 374]        :                                       
+[ 375]        :                                       ;====================Exeption_OverFlow==============
+[ 376]    0304:                                       Exeption_OverFlow:
+[ 377]    0304: 58                                    pop ax; Восстановление AX
+[ 378]    0305: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[ 379]    0310: 50 52 B4 09 BA 71 00 CD 21 5A 58      Print Exeption_OverFlow_Str
+[ 380]    031B: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[ 381]    0326: E9 DC FE                              jmp Enter_Number_Loop_Start
+[ 382]        :                                       ;=======================================================
+[ 383]        :                                       
+[ 384]        :                                       ;====================Exeption_Invalid_Number==============
+[ 385]    0329:                                       Exeption_Invalid_Number:
+[ 386]    0329: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[ 387]    0334: 50 52 B4 09 BA 34 00 CD 21 5A 58      Print Exeption_Invalid_Number_Str
+[ 388]    033F: 50 52 B4 09 BA 0A 01 CD 21 5A 58      Print New_Line
+[ 389]    034A: E9 B8 FE                              jmp Enter_Number_Loop_Start
+[ 390]        :                                       ;=======================================================
+[ 391]        :                                       
+[ 392]        :                                       ;====================Конец программы====================
+[ 393]    034D:                                       end:
+[ 394]    034D: B8 00 4C                              mov ax,4C00h   ; 4C (выход из программы) в AH
+[ 395]        :                                       ; 00 (успешное звершение) в AL
+[ 396]    0350: CD 21                                 int 21h        ; Функция DOS "Завершить программу"
+[ 397]        :                                       ;=======================================================
+[ 398]        :                                       
+[ 399]        :                                       ; Сегмент данных
+[ 400]        :                                       .data
+[ 401]        :                                       
+[ 402]        :                                       ;Exceptions
+[ 403]    0360: 59 6F 75 20 64 69 64 6E 27 74 20 65   Exeption_NumberIsZero_Str db "You didn't enter a number, please repeat the input!$"
+                6E 74 65 72 20 61 20 6E 75 6D 62 65 
+                72 2C 20 70 6C 65 61 73 65 20 72 65 
+                70 65 61 74 20 74 68 65 20 69 6E 70 
+                75 74 21 24                         
+[ 404]    0394: 54 68 65 20 6E 75 6D 62 65 72 20 69   Exeption_Invalid_Number_Str db "The number is entered in the wrong format, repeat the input!$"
+                73 20 65 6E 74 65 72 65 64 20 69 6E 
+                20 74 68 65 20 77 72 6F 6E 67 20 66 
+                6F 72 6D 61 74 2C 20 72 65 70 65 61 
+                74 20 74 68 65 20 69 6E 70 75 74 21 
+                24                                  
+[ 405]    03D1: 4F 6F 70 73 2C 20 79 6F 75 27 76 65   Exeption_OverFlow_Str db "Oops, you've caught an overflow(65535), repeat the input!$"
+                20 63 61 75 67 68 74 20 61 6E 20 6F 
+                76 65 72 66 6C 6F 77 28 36 35 35 33 
+                35 29 2C 20 72 65 70 65 61 74 20 74 
+                68 65 20 69 6E 70 75 74 21 24       
+[ 406]        :                                       
+[ 407]    040B: 54 68 65 20 73 69 7A 65 20 6F 66 20   Exeption_Array_Size_More_Than_30_Str db "The size of the array exceeds the allowed size (30)!$"
+                74 68 65 20 61 72 72 61 79 20 65 78 
+                63 65 65 64 73 20 74 68 65 20 61 6C 
+                6C 6F 77 65 64 20 73 69 7A 65 20 28 
+                33 30 29 21 24                      
+[ 408]    0440: 41 72 72 61 79 20 73 69 7A 65 20 69   Exeption_Array_Size_Less_Than_1_Str db "Array size is less than allowed size(1) !$"
+                73 20 6C 65 73 73 20 74 68 61 6E 20 
+                61 6C 6C 6F 77 65 64 20 73 69 7A 65 
+                28 31 29 20 21 24                   
+[ 409]        :                                       
+[ 410]        :                                       ; Strings
+[ 411]    046A: 0A 0D 24                              New_Line db 0Ah, 0Dh, '$'; Переход на новую строку
+[ 412]    046D: 45 6E 74 65 72 20 61 72 72 61 79 20   Enter_ArraySize_Str db "Enter array size ( 1 <= size <= 30):$"
+                73 69 7A 65 20 28 20 31 20 3C 3D 20 
+                73 69 7A 65 20 3C 3D 20 33 30 29 3A 
+                24                                  
+[ 413]    0492: 45 6E 74 65 72 20 6E 75 6D 62 65 72   Enter_Numbers_In_Array_Str db "Enter numbers in array:$"
+                73 20 69 6E 20 61 72 72 61 79 3A 24 
+                                                    
+[ 414]    04AA: 5B 24                                 Index_Array_Start_Str db "[$"
+[ 415]    04AC: 5D 24                                 Index_Array_End_Str db "]$"
+[ 416]    04AE: 50 72 6F 67 72 61 6D 6D 20 45 4E 44   End_Programm_Str db "Programm END.$"
+                2E 24                               
+[ 417]        :                                       
+[ 418]    04BC: 54 61 73 6B 3A 20 46 69 6E 64 20 74   Task_Str db "Task : Find the most frequently occurring number in the array.$"
+                68 65 20 6D 6F 73 74 20 66 72 65 71 
+                75 65 6E 74 6C 79 20 6F 63 63 75 72 
+                72 69 6E 67 20 6E 75 6D 62 65 72 20 
+                69 6E 20 74 68 65 20 61 72 72 61 79 
+                2E 24                               
+[ 419]    04FA: 41 6E 73 77 65 72 3A 20 24            Answer_Str db "Answer: $"
+[ 420]        :                                       ; Строки для красивого вывода массива
+[ 421]    0503: 41 72 72 61 79 3A 20 24               Output_Array_Str db "Array: $"
+[ 422]    050B: 20 24                                 Probel_Str db ' $'
+[ 423]    050D: 2C 24                                 Comma_Str db ',$'
+[ 424]        :                                       
+[ 425]        :                                       ; ВВОД ЧИСЕЛ
+[ 426]    050F: 00 00 00 00 00 00 00 00 00 00         String_Number db 10 DUP(?) ; Строка, в которую вводим число
+[ 427]    0519: 00 00                                 Main_Number dw 0d           ; Введенное число (высчитывается)
+[ 428]        :                                       
+[ 429]        :                                       ; Число для передачи в процедуру
+[ 430]    051B: 00 00                                 Number_General dw 0
+[ 431]        :                                       
+[ 432]        :                                       ; Счетчик для ввода чисел в массив
+[ 433]    051D: 00 00                                 Array_Counter dw 0
+[ 434]    051F: 00 00                                 Pod_Array_Counter dw 0
+[ 435]        :                                       
+[ 436]        :                                       ; Для алгоритма перевода числа
+[ 437]    0521: 0A 00                                 TEN dw 10d
+[ 438]        :                                       
+[ 439]        :                                       
+[ 440]        :                                       ; МАССИВ
+[ 441]    0523: 0A 00                                 Array_Size dw 10   ; Заполняемое число элементов массива
+[ 442]    0525: 00 00 00 00 00 00 00 00 00 00 00 00   Array dw 40 DUP(?) ; Массив чисел
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00             
+[ 443]        :                                       
+[ 444]        :                                       
+[ 445]        :                                       ; Основной алгоритм
+[ 446]    0575: 00 00                                 Counter dw 0
+[ 447]    0577: 00 00                                 Max_Counter dw 0
+[ 448]        :                                       
+[ 449]    0579: 00 00                                 Curr_Address dw 0
+[ 450]    057B: 00 00                                 Next_Address dw 0
+[ 451]        :                                       
+[ 452]        :                                       
+[ 453]        :                                       ; Символы перехода на новую строку (v,<)
+[ 454]    057D: 0A 0D 24                              toNewLine db 0Ah, 0Dh, '$'
+[ 455]        :                                       
+[ 456]        :                                       ; Строка для передачи в процедуру
+[ 457]    0580: 00 00                                 strGeneral_offset dw 0
+[ 458]    0582: 00                                    strGeneral_size db 0
+[ 459]        :                                       
+[ 460]        :                                       ; Сегмент стека (256 байт)
+[ 461]        :                                       .stack 100h
+[ 462]        :                                       
+[ 463]        :                                       ; Конец программы
+[ 464]        :                                       end START
+[ 465]        :                                       
+[ 466]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: 90      -   bytes on last page (l.byte)
+0003: 00      -   bytes on last page (h.byte)
+0004: 05      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 59      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 00      -   SP - stack pointer (l.byte)
+0011: 01      -   SP - stack pointer (h.byte)
+0012: 7C      -   check sum (l.byte)
+0013: 01      -   check sum (h.byte)
+0014: 00      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 00      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: 01      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 00      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================

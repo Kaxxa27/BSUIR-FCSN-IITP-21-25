@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QGraphicsView" name="graphicsView">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>11</y>
+      <width>791</width>
+      <height>531</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Меню</string>
+    </property>
+    <widget class="QMenu" name="menu_2">
+     <property name="title">
+      <string>Добавить</string>
+     </property>
+     <addaction name="action_2"/>
+     <addaction name="action"/>
+     <addaction name="action_3"/>
+     <addaction name="action_4"/>
+     <addaction name="action_5"/>
+     <addaction name="action_6"/>
+     <addaction name="action_7"/>
+     <addaction name="action_8"/>
+    </widget>
+    <addaction name="menu_2"/>
+    <addaction name="action_9"/>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_2">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Прямоугольник</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>Квадрат</string>
+   </property>
+  </action>
+  <action name="action_3">
+   <property name="text">
+    <string>Круг</string>
+   </property>
+  </action>
+  <action name="action_4">
+   <property name="text">
+    <string>Ромб</string>
+   </property>
+  </action>
+  <action name="action_5">
+   <property name="text">
+    <string>Треугольник</string>
+   </property>
+  </action>
+  <action name="action_6">
+   <property name="text">
+    <string>Шестиугольник</string>
+   </property>
+  </action>
+  <action name="action_7">
+   <property name="text">
+    <string>Звезда</string>
+   </property>
+  </action>
+  <action name="action_8">
+   <property name="text">
+    <string>Линия</string>
+   </property>
+  </action>
+  <action name="action_9">
+   <property name="text">
+    <string>Рисование</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

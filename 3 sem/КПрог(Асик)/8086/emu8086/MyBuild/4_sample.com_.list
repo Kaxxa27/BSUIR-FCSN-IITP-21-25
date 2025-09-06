@@ -1,0 +1,113 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+4_sample.com_ -- emu8086 assembler version: 4.05  
+ 
+[ 22.10.2023  --  16:43:02 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       org 100h
+[   2]        :                                       
+[   3]    0100: B4 04                                 mov ah, 4
+[   4]    0102: B0 04                                 mov al, 4
+[   5]    0104: 3A E0                                 cmp ah, al
+[   6]    0106: 90                                    nop
+[   7]        :                                       
+[   8]    0107: B4 04                                 mov ah, 4
+[   9]    0109: B0 03                                 mov al, 3
+[  10]    010B: 3A E0                                 cmp ah, al
+[  11]    010D: 90                                    nop
+[  12]        :                                       
+[  13]        :                                       ; -5 = 251 = 0fbh
+[  14]        :                                       
+[  15]        :                                       ; (signed)
+[  16]        :                                       ; 1 is greater then -5
+[  17]    010E: B4 01                                 mov ah, 1
+[  18]    0110: B0 FB                                 mov al, -5
+[  19]    0112: 3A E0                                 cmp ah, al
+[  20]    0114: 90                                    nop
+[  21]        :                                       
+[  22]        :                                       ; (unsigned)
+[  23]        :                                       ; 1 is below 251
+[  24]    0115: B4 01                                 mov ah, 1
+[  25]    0117: B0 FB                                 mov al, 251
+[  26]    0119: 3A E0                                 cmp ah, al
+[  27]    011B: 90                                    nop
+[  28]        :                                       
+[  29]        :                                       ; (signed)
+[  30]        :                                       ; -3 is less then -2
+[  31]    011C: B4 FD                                 mov ah, -3
+[  32]    011E: B0 FE                                 mov al, -2
+[  33]    0120: 3A E0                                 cmp ah, al
+[  34]    0122: 90                                    nop
+[  35]        :                                       
+[  36]        :                                       ; (signed)
+[  37]        :                                       ; -2 is greater then -3
+[  38]    0123: B4 FE                                 mov ah, -2
+[  39]    0125: B0 FD                                 mov al, -3
+[  40]    0127: 3A E0                                 cmp ah, al
+[  41]    0129: 90                                    nop
+[  42]        :                                       
+[  43]        :                                       ; (unsigned)
+[  44]        :                                       ; 255 is above 1
+[  45]    012A: B4 FF                                 mov ah, 255
+[  46]    012C: B0 01                                 mov al, 1
+[  47]    012E: 3A E0                                 cmp ah, al
+[  48]    0130: 90                                    nop
+[  49]        :                                       
+[  50]        :                                       ; now a little game:
+[  51]    0131: BA 5E 01                              game:  mov dx, offset msg1
+[  52]    0134: B4 09                                 mov ah, 9
+[  53]    0136: CD 21                                 int 21h
+[  54]        :                                       
+[  55]        :                                       ; read character in al:
+[  56]    0138: B4 01                                 mov ah, 1
+[  57]    013A: CD 21                                 int 21h
+[  58]        :                                       
+[  59]    013C: 3C 30                                 cmp al, '0'
+[  60]    013E: 72 1D                                 jb stop
+[  61]        :                                       
+[  62]    0140: 3C 39                                 cmp al, '9'
+[  63]    0142: 77 19                                 ja stop
+[  64]        :                                       
+[  65]    0144: 3C 35                                 cmp al, '5'
+[  66]    0146: 72 07                                 jb below
+[  67]    0148: 77 0A                                 ja above
+[  68]    014A: BA 8F 01                              mov dx, offset equal_5
+[  69]    014D: EB 08                                 jmp print
+[  70]    014F: BA A3 01                              below: mov dx, offset below_5
+[  71]    0152: EB 03                                 jmp print
+[  72]    0154: BA B5 01                              above: mov dx, offset above_5
+[  73]    0157: B4 09                                 print: mov ah, 9
+[  74]    0159: CD 21                                 int 21h
+[  75]    015B: EB D4                                 jmp game  ; loop.
+[  76]        :                                       
+[  77]        :                                       
+[  78]    015D: C3                                    stop: ret  ; stop
+[  79]        :                                       
+[  80]        :                                       
+[  81]    015E: 65 6E 74 65 72 20 61 20 6E 75 6D 62   msg1 db "enter a number or any other character to exit:  $"
+                65 72 20 6F 72 20 61 6E 79 20 6F 74 
+                68 65 72 20 63 68 61 72 61 63 74 65 
+                72 20 74 6F 20 65 78 69 74 3A 20 20 
+                24                                  
+[  82]    018F: 20 69 73 20 66 69 76 65 21 20 28 65   equal_5 db " is five! (equal)", 0Dh,0Ah, "$"
+                71 75 61 6C 29 0D 0A 24             
+[  83]    01A3: 20 69 73 20 62 65 6C 6F 77 20 66 69   below_5 db " is below five!" , 0Dh,0Ah, "$"
+                76 65 21 0D 0A 24                   
+[  84]    01B5: 20 69 73 20 61 62 6F 76 65 20 66 69   above_5 db " is above five!" , 0Dh,0Ah, "$"
+                76 65 21 0D 0A 24                   
+[  85]        :                                       
+[  86]        :                                       
+[  87]        :                                       
+[  88]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================

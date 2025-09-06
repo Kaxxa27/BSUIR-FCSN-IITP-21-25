@@ -1,0 +1,43 @@
+{% extends "base_generic.html"%}
+{% load static %}
+{% load sub_filter %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'myparking/css/promo_codes.css' %}">
+{% endblock %}
+
+
+{% block title%}
+<title>Promo Codes</title>
+{% endblock %}
+
+{% block content%}
+
+<div class="main-container">
+    <div class="important">
+        <p><strong>Важно!</strong></p>
+    <p>Промокоды действуют только на аренду нового паркинга!</p>
+    <p>И не действуют на последующие платежи!</p>
+    </div>
+
+    <div class="grid-container">
+        {% if promo %}
+        {% for prom in promo %}
+        <div class="promo-block">
+            <div class="block-image">
+                <img class="promo-image" src="{% static 'myparking/images/promo/promo.jpg' %}" alt="Promo Photo">
+            </div>
+            <div class="promo-summary text-20">
+                <p><b>{{ prom.code }}</b> - {{ prom.description }}</p>
+                <p><b> Кол-во: {{ prom.max_usage_count|sub:prom.current_usage_count }}</b></p>
+                <p><b> Действует до {{ prom.valid_to }}</b></p>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No promocodes available.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

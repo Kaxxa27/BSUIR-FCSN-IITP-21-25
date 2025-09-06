@@ -1,0 +1,16 @@
+|- ProgramType: Program
+    |- PreprocessorDirective: #include
+        |- Header file: <iostream>
+    |- StdNamespace: std
+    |- Statement: ;
+    |- Function: int main
+        |- Parameters: Parameters
+        |- Block: int
+            |- Cout: cout
+                |- Operator Input: <<
+                |- Value: str "Hello!"
+            |- Statement: ;
+            |- ReturnStatement: return
+                |- Value: int 0
+                |- Statement: ;
+        |- End Block: main

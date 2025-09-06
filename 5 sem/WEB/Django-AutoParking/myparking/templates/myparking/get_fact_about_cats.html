@@ -1,0 +1,12 @@
+{% extends "base_generic.html"%}
+
+{% block title%}
+<title>Fatc about cats.</title>
+{% endblock %}
+
+{% block content%}
+<h1>Fact: {{ fact }}</h1>
+{% if error_message %}
+<h1>{{error_message}}</h1>
+{% endif %}
+{% endblock %}

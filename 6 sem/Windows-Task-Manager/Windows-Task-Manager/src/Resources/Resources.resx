@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="AppIcon_Cyan" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AppIcon_Cyan.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Device_Down" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Device_Down.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Device_Info" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Device_Info.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Device_Warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Device_Warning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="frmMain" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>frmMain.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="frmPreferences" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>frmPreferences.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="frmProcess_Affinity" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>frmProcess_Affinity.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="frmProcess_Details" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>frmProcess_Details.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="frmProcess_Files" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>frmProcess_Files.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="frmService_Details" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>frmService_Details.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="frmUser_BannerConnect" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>frmUser_BannerConnect.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="frmUser_BannerMessage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>frmUser_BannerMessage.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="frmUser_Connect" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>frmUser_Connect.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="frmUser_Details" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>frmUser_Details.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="frmUser_Message" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>frmUser_Message.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pbProcessDetails" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>pbProcessDetails.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pbUserDetails" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>pbUserDetails.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Process_Black" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Process_Black.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Process_Empty" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Process_Empty.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Process_Info" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Process_Info.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="Service" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        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
+        53/x89JL/wnvW1fvQ3D1WgAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="Service_Device" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Service_Device.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Service_Disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Service_Disabled.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Service_Gear" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Service_Gear.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Service_Running" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Service_Running.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Service_Stoped" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Service_Stoped.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="State_Play" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\State_Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="State_Stop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\State_Stop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="User_Active" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\User.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="User_Down" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\User_Down.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="winpc_logo1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>winpc_logo1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="winpc_logo2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>winpc_logo2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="winpc_logo3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>winpc_logo3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="winpc_logo4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>winpc_logo4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="winpc_logo5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>winpc_logo5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="winpc_logo6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>winpc_logo6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="winpc_logo7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>winpc_logo7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="winpc_logo8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>winpc_logo8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>

@@ -1,0 +1,114 @@
+{% extends "base_generic.html"%}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'myparking/css/about.css' %}">
+<link rel="stylesheet" href="{% static 'myparking/css/scroll.css' %}">
+{% endblock %}
+
+{% block title%}
+<title>About</title>
+{% endblock %}
+
+{% block content%}
+
+<div class="main-container my-align-center">
+    <div>
+
+        <section id="scroll-container">
+            <img src="{% static 'myparking/images/scroll/parking.png' %}" id="bg" />
+            <h1 id="text">ByKaxxa</h1>
+            <img src="{% static 'myparking/images/scroll/left-car.png' %}" id="left-car" />
+            <img src="{% static 'myparking/images/scroll/right-car.png' %}" id="right-car" />
+        </section>
+
+        <dl>
+            <dt>Информация о компании:</dt>
+            <dd>
+                Автостоянка <abbr title="ООО Автопарковка Kaxxa">ByKaxxa</abbr> - это современная сеть автомобильных парковок, предоставляющая высококачественные услуги
+                хранения и обслуживания транспортных средств.
+                Компания была основана в 2017 году и с тех пор стремится предоставлять удобные и
+                безопасные места для парковки автомобилей, мотоциклов и других транспортных средств.
+            </dd>
+            <dt>История по годам:</dt>
+            <dd>
+                <ul type="circle">
+                    <li><strong>2017</strong>: Основание компании "ByKaxxa". Постройка первой технологичной автостоянки.</li>
+                    <li><strong>2019</strong>: Запуск нашей первой крупной автостоянки в центре Минска.</li>
+                    <li><strong>2023</strong>: Улучшение технологий безопасности и предоставления услуг по аренде.</li>
+                </ul>
+            </dd>
+            <dt>Реквизиты:</dt>
+            <dd>
+                <ul type="circle">
+                    <li>Юридический адрес: ул. Гикало, 9, Минск, Беларусь</li>
+                    <li>УНП: 1234567890</li>
+                    <li>ГЛН: 0987654321</li>
+                    <li>Контактный телефон: +375 (29) 777-77-87</li>
+                    <li>Электронная почта: info@parking-bykaxxa.com</li>
+                </ul>
+            </dd>
+        </dl>
+        <div class="block-logo-promo">
+            <div>
+                <p class="text-bold35"><b>Наш логотип:</b></p>
+                <img class="image-logo" src="{% static 'myparking/images/logo/bykaxxa_logo.png' %}" alt="Logo">
+                <a href="{% static 'myparking/images/logo/bykaxxa_logo.png' %}" download>Скачать логотип</a>
+            </div>
+            <div>
+                <p class="text-bold35"><b>Наш промо ролик:</b></p>
+                <video class="promo-video" controls autoplay loop>
+                    <source src="{% static 'myparking/video/promo/video_preview.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div>
+                <audio controls>
+                    <source src="{% static 'myparking/audio/gimn/gimn.mp3' %}">
+                </audio>
+            </div>
+        </div>
+        <div>
+            <div itemscope itemtype="https://schema.org/Car" >
+                <h1 itemprop="summaryCar">
+                    Новая машина!</h1>
+                <p>
+                    <span itemprop="typeCar">Матиз</span>
+                    <span itemprop="licenseCar">
+                        778899
+                    </span>
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="sertificat text-align-center dancing-script-font">
+        <p>Сертификат</p>
+        <div>
+            <p>Единый реестр автостоянок</p>
+            <p><b>Свидетельство</b></p>
+            <p>о внесении сведений</p>
+            <p>Общество ограниченной ответственности "<i>ByKaxxa</i>"</p>
+            <p><u>Реестровый номер: 2727</u></p>
+        </div>
+    </div>
+
+    <div>
+        <iframe width="100%" height="400" src="https://www.youtube.com/embed/BtAfPfCqUBg?si=sAdNtNtmYQNf9Mtp?mute=1"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+        </iframe>
+    </div>
+
+</div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'myparking/js/about/scroll.js' %}"></script>
+{% endblock %}

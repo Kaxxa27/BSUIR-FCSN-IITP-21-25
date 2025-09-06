@@ -1,0 +1,76 @@
+< THE SYMBOL TABLE >  Lab3(VAR6).com_  --  emu8086 assembler version: 4.05 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+CODE                     	00000     	-5        	SEGMENT   	(ITSELF)  
+START                    	00100     	-1        	LABEL     	code      
+FOR                      	00113     	-1        	LABEL     	code      
+GETRESULT                	00135     	-1        	LABEL     	code      
+SHOW                     	0013B     	-1        	LABEL     	code      
+INVALID                  	0015C     	-1        	LABEL     	code      
+SHOWMESSAGE              	0016D     	-1        	NEAR      	code      
+ENTERSTRING              	0018E     	-1        	NEAR      	code      
+ADDZEROCHARACTER         	0019F     	-1        	NEAR      	code      
+SHIFT                    	001AD     	-1        	NEAR      	code      
+WHILENOTEND              	001B3     	-1        	LABEL     	code      
+PREPARETOSHIFT           	001BB     	-1        	LABEL     	code      
+SHIFTSTR                 	001C4     	-1        	LABEL     	code      
+ENDSHIFT                 	001D0     	-1        	LABEL     	code      
+REPLACETABSONSPACES      	001D1     	-1        	NEAR      	code      
+WHILE                    	001D4     	-1        	LABEL     	code      
+CONTINUEFIND             	001D9     	-1        	LABEL     	code      
+REPLACEONSPACE           	001E1     	-1        	LABEL     	code      
+ENDREPLACE               	001E6     	-1        	LABEL     	code      
+ISVALID                  	001E7     	-1        	NEAR      	code      
+FOR0                     	00210     	-1        	LABEL     	code      
+JUSTSPACESINEND          	00227     	-1        	LABEL     	code      
+JUSTSPACESCYCLE          	00229     	-1        	LABEL     	code      
+SETZEROCHARACTER         	00239     	-1        	LABEL     	code      
+CHECKONOVERFLOW          	00244     	-1        	LABEL     	code      
+THREEDIGIT               	00253     	-1        	LABEL     	code      
+CONTINUECHECK            	00258     	-1        	LABEL     	code      
+FIRSTISZERO              	00270     	-1        	LABEL     	code      
+THREEDIGITWITHSIGN       	00278     	-1        	LABEL     	code      
+ALLRIGHT                 	0027C     	-1        	LABEL     	code      
+NOTVALID                 	00283     	-1        	LABEL     	code      
+ISEXIT                   	0028A     	-1        	LABEL     	code      
+EXITV                    	0028F     	-1        	LABEL     	code      
+FINDSUM                  	00290     	-1        	NEAR      	code      
+SUMCYCLE                 	002A3     	-1        	LABEL     	code      
+CONTINUECYCLE            	002AA     	-1        	LABEL     	code      
+MINUS                    	002AF     	-1        	LABEL     	code      
+PLUS                     	002B9     	-1        	LABEL     	code      
+ENDFINDSUM               	002C1     	-1        	LABEL     	code      
+MAKEPOSITIVE             	002C2     	-1        	LABEL     	code      
+RETURNNEGATIVE           	002CD     	-1        	NEAR      	code      
+ENDOPERATION             	002D8     	-1        	LABEL     	code      
+DIVIDE                   	002D9     	-1        	NEAR      	code      
+CONTINUEDIVIDE           	002E0     	-1        	LABEL     	code      
+FLOATCYCLE               	00303     	-1        	LABEL     	code      
+TODIGIT                  	00324     	-1        	NEAR      	code      
+INSTACK                  	00336     	-1        	LABEL     	code      
+BUILDDIGIT               	0033E     	-1        	LABEL     	code      
+MAKENEGATIVE             	00353     	-1        	LABEL     	code      
+ENDTODIGIT               	00355     	-1        	LABEL     	code      
+SHOWMINUS                	0035F     	-1        	NEAR      	code      
+ENDOP                    	00372     	-1        	LABEL     	code      
+SHOWDIGIT                	00373     	-1        	NEAR      	code      
+SHOWDIGITCYCLE           	0037E     	-1        	LABEL     	code      
+EXIT                     	00394     	-1        	LABEL     	code      
+HELLO                    	0039C     	1         	VAR       	code      
+ERROR                    	00410     	1         	VAR       	code      
+MESSAGE                  	00434     	1         	VAR       	code      
+RESULT                   	0043B     	1         	VAR       	code      
+BUFFER                   	00446     	1         	VAR       	code      
+ARRAY                    	0044D     	1         	VAR       	code      
+SUM                      	0046B     	2         	VAR       	code      
+SIZE                     	0046D     	1         	VAR       	code      
+INTEGER                  	0046E     	1         	VAR       	code      
+FLOAT                    	0046F     	2         	VAR       	code      
+TEMP                     	00471     	1         	VAR       	code      
+POSITIVE                 	00472     	1         	VAR       	code      
+VALID                    	00473     	1         	VAR       	code      
+===================================================================================================
+[ 01.12.2022  --  9:05:30 ] 
+< END >
+ 

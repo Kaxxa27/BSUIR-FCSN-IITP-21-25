@@ -1,0 +1,147 @@
+﻿@model TaxiApplication.BLL.ViewModels.TaxiOrderViewModel
+@{
+	ViewBag.Title = "CreatingTaxiOrder";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+	<form asp-controller="Client" asp-action="CreateTaxiOrder" asp-area="Client" method="post">
+		<div class="row">
+			<div class="col-sm-8">
+				<div class="createorder-block">
+
+					<h1 class="createorder-style">Заказ:</h1>
+					
+					<div class="row">
+						<div class="col-sm-6">
+							<p>
+								<label class="createorder-label" asp-for="Route.StartLocation">Начальная точка:</label>
+								<input class="form-control createorder-start-input" asp-for="Route.StartLocation" data-val-required="Введите начальную точку маршрута." autocomplete="off" />
+								<div asp-validation-summary="ModelOnly" class="login-style-for-errors"></div>
+								<span asp-validation-for="Route.StartLocation" class="login-style-for-errors"></span>
+							</p>
+							<p>
+								<label class="createorder-label" asp-for="Route.EndLocation">Конечная точка:</label>
+								<input class="form-control createorder-start-input" asp-for="Route.EndLocation" data-val-required="Введите конечную точку маршрута." autocomplete="off" />
+								<div asp-validation-summary="ModelOnly" class="login-style-for-errors"></div>
+								<span asp-validation-for="Route.EndLocation" class="login-style-for-errors"></span>
+							</p>
+						</div>
+						<div class="col-sm-6">
+
+							<div class="mb-3">
+								<label class="createorder-label" asp-for="Route.Description">Описание:</label>
+								<textarea class="form-control createorder-textarea" asp-for="Route.Description" autocomplete="off"></textarea>
+							</div>				
+						</div>
+		
+						<button class="btn-block create-order-btn" type="submit" value="Сделать заказ">Сделать заказ</button>	
+					</div>
+				</div>
+				<div class="createorder-block createorder-margin">			
+					
+					<div class="row">
+						<div class="col-sm-6">
+							<label class="createorder-label" asp-for="Order.Tariff">Тарифы: </label>
+							<select class="form-select" asp-for="Order.Tariff" asp-items="Html.GetEnumSelectList<TaxiApplication.Domain.Enum.Tariff>()"></select>
+						</div>
+						<div class="col-sm-6">
+							<label class="createorder-label" asp-for="Order.PaymentMethod">Метод оплаты: </label>
+							<p><select class="form-select" asp-for="Order.PaymentMethod" asp-items="Html.GetEnumSelectList<TaxiApplication.Domain.Enum.PaymentMethod>()"></select></p>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-6">
+							<label class="createorder-label" asp-for="Order.DriverGenderPreference">Пол водителя: </label>
+							<p><select class="form-select" asp-for="Order.DriverGenderPreference" asp-items="Html.GetEnumSelectList<TaxiApplication.Domain.Enum.DriverGender>()"></select></p>
+						</div>
+						<div class="col-sm-6">
+							<label class="createorder-label" asp-for="Order.NumberOfPassengers">Кол-во пассажиров: </label>
+							<input class="form-control" asp-for="Order.NumberOfPassengers" value="1"/>
+							<div asp-validation-summary="ModelOnly" class="login-style-for-errors"></div>
+							<span asp-validation-for="Order.NumberOfPassengers" class="login-style-for-errors"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="createorder-block height-800">
+					<h1 class="createorder-style">Ваши предпочтения:</h1>
+
+					<div class="form-check">
+						<input class="form-check-input  createorder-checkbox" type="checkbox" asp-for="Order.IsPetFriendly" id="IsPetFriendly_CheckBox">
+						<label class="createorder-label" for="IsPetFriendly_CheckBox">Домашние животные</label>
+					</div>
+
+					<div class="form-check">
+						<input class="form-check-input  createorder-checkbox" type="checkbox" asp-for="Order.IsMusicPreferenceNeeded" id="IsMusicPreferenceNeeded_CheckBox" checked>
+						<label class="createorder-label" for="IsMusicPreferenceNeeded_CheckBox">Музыка</label>
+					</div>
+
+					<div class="form-check">
+						<input class="form-check-input  createorder-checkbox" type="checkbox" asp-for="Order.IsChildSeatNeeded" id="IsChildSeatNeeded_CheckBox">
+						<label class="createorder-label" for="IsChildSeatNeeded_CheckBox">Детское кресло</label>
+					</div>
+
+					<div class="form-check">
+						<input class="form-check-input  createorder-checkbox" type="checkbox" asp-for="Order.IsRoundTrip" id="IsRoundTrip_CheckBox">
+						<label class="createorder-label" for="IsRoundTrip_CheckBox">Поездка туда и обратно</label>
+					</div>
+
+					<div class="form-check">
+						<input class="form-check-input  createorder-checkbox" type="checkbox" asp-for="Order.IsSmokingAllowed" id="IsSmokingAllowed_CheckBox">
+						<label class="createorder-label" for="IsSmokingAllowed_CheckBox">Возможность курения</label>
+					</div>
+
+					<div class="form-check">
+						<input class="form-check-input  createorder-checkbox" type="checkbox" asp-for="Order.IsQuietRideNeeded" id="IsQuietRideNeeded_CheckBox">
+						<label class="createorder-label" for="IsQuietRideNeeded_CheckBox">Тихая езда</label>
+					</div>
+
+					<div class="form-check">
+						<input class="form-check-input  createorder-checkbox" type="checkbox" asp-for="Order.IsAirConditioningNeeded" id="IsAirConditioningNeeded_CheckBox" checked>
+						<label class="createorder-label" for="IsAirConditioningNeeded_CheckBox">Кондиционер</label>
+					</div>
+
+					<div class="form-check">
+						<input class="form-check-input  createorder-checkbox" type="checkbox" asp-for="Order.IsBaggageAssistanceNeeded" id="IsBaggageAssistanceNeeded_CheckBox">
+						<label class="createorder-label" for="IsBaggageAssistanceNeeded_CheckBox">Помощь с багажом</label>
+					</div>
+
+					<div class="form-check">
+						<input class="form-check-input  createorder-checkbox" type="checkbox" asp-for="Order.IsTollRoadsPreferred" id="IsTollRoadsPreferred_CheckBox">
+						<label class="createorder-label" for="IsTollRoadsPreferred_CheckBox">Платная дорога</label>
+					</div>
+
+					<div class="form-check">
+						<input class="form-check-input  createorder-checkbox" type="checkbox" asp-for="Order.IsWheelchairAccessible" id="IsWheelchairAccessible_CheckBox">
+						<label class="createorder-label" for="IsWheelchairAccessible_CheckBox">Инвалидная коляска</label>
+					</div>
+
+					<div class="form-check">
+						<input class="form-check-input  createorder-checkbox" type="checkbox" asp-for="Order.IsDriverProficientInEnglish" id="IsDriverProficientInEnglish_CheckBox">
+						<label class="createorder-label" for="IsDriverProficientInEnglish_CheckBox">Проф. Английский</label>
+					</div>
+
+					<div class="form-check">
+						<input class="form-check-input  createorder-checkbox" type="checkbox" asp-for="Order.IsMeetAndGreetNeeded" id="IsMeetAndGreetNeeded_CheckBox">
+						<label class="createorder-label" for="IsMeetAndGreetNeeded_CheckBox">Встреча и приветствие</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	
+	@*Скрипты для валидации свойств модели на строное клиента.*@
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
+
+</body>
+</html>

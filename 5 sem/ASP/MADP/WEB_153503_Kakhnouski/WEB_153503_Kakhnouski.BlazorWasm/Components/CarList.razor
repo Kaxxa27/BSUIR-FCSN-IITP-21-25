@@ -1,0 +1,47 @@
+﻿@inject IDataService DataService
+@implements IDisposable
+
+<h1>Car list</h1>
+
+@if (DataService.CarList is null || !DataService.Success)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tl in DataService.CarList!)
+            {
+                <tr>
+                    <td>@tl.Name</td>
+                    <td>@tl.Description</td>
+                    <td>@tl.Price</td>
+                    <td> <button class="btn btn-primary" @onclick="() => CarSelected.Invoke(tl.Id)">Подробнее</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    [Parameter]
+    public Action<int>? CarSelected { get; set; }
+
+    protected override void OnInitialized()
+    {
+        DataService.DataChanged += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        DataService.DataChanged -= StateHasChanged;
+    }
+}

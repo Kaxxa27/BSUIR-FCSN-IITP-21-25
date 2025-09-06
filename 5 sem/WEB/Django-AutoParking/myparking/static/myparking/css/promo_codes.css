@@ -1,0 +1,33 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* Распределение по 3 элемента в строке */
+    grid-gap: 20px; /* Расстояние между элементами */
+}
+
+/* Добавьте стили для элементов внутри grid-container по вашему усмотрению */
+.promo-block {
+    /* Стили для каждой секции (промокода) */
+    border: 2px solid black;
+    margin-top: 20px;
+}
+
+.promo-image {
+    max-width: 100%;
+}
+
+.promo-summary {
+    /* Стили для описания промокода */
+    text-overflow: ellipsis; /* Добавление многоточия только в случае полного переполнения */
+    overflow: hidden;
+    min-height: 200px;
+    padding: 5px;
+    background: LightSkyBlue;
+    white-space: normal; /* Разрешить перенос текста */
+}
+
+.important
+{
+    font-size: 30px;
+}
+
+

@@ -1,0 +1,55 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+simple.bin_ -- emu8086 assembler version: 4.05  
+ 
+[ 22.10.2023  --  17:27:15 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ; this sample shows how to access virtual ports (0 to 0FFFFh).
+[   2]        :                                       ; these ports are emulated in this file: c:\emu8086.io
+[   3]        :                                       
+[   4]        :                                       ; this new technology allows to make external add-on devices
+[   5]        :                                       ; for emu8086, such as led displays, thermostat, stepper-motor, etc...
+[   6]        :                                       
+[   7]        :                                       ; "devices" folder contains sample device that works with this sample.
+[   8]        :                                       ; (with visual basic source code).
+[   9]        :                                       
+[  10]        :                                       #start=simple.exe#
+[  11]        :                                       
+[  12]        :                                       #make_bin#
+[  13]        :                                       
+[  14]        :                                       name "simple"
+[  15]        :                                       
+[  16]        :                                       ; write byte value 0A7h into the port 110:
+[  17]    0000: B0 A7                                 mov al, 0A7h
+[  18]    0002: E6 6E                                 out 110, al
+[  19]        :                                       
+[  20]        :                                       ; write word value 1234h into the port 112:
+[  21]    0004: B8 34 12                              mov ax, 1234h
+[  22]    0007: E7 70                                 out 112, ax
+[  23]        :                                       
+[  24]    0009: B8 00 00                              mov ax, 0 ; reset register.
+[  25]        :                                       
+[  26]        :                                       ; read byte from port 110 into AL:
+[  27]    000C: E4 6E                                 in al, 110
+[  28]        :                                       
+[  29]        :                                       ; read word from port 112 into AX:
+[  30]    000E: E5 70                                 in ax, 112
+[  31]        :                                       
+[  32]        :                                       
+[  33]    0010: F4                                    hlt
+[  34]        :                                       
+[  35]        :                                       
+[  36]        :                                       
+[  37]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================

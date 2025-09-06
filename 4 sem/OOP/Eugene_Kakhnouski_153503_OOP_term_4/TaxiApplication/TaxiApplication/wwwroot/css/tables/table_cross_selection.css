@@ -1,0 +1,64 @@
+﻿.container-for-table-cross-sel {
+    display: flex;
+    justify-content: center;
+    height: 100vh; /* устанавливаем высоту для контейнера */
+}
+
+
+.table-cross-sel-div {
+    position: center;
+    width: auto;
+    margin-top: 50px;
+}
+
+.table-cross-sel {
+    width: auto;
+    border-collapse: collapse;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    
+}
+
+.table-cross-sel tr td:nth-child(2) {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.table-cross-sel th,td {
+    padding: 15px;
+    background-color: rgba(255,255,255,0.2);
+    color: white;
+}
+
+.table-cross-sel th {
+    text-align: left;
+}
+
+.table-cross-sel th {
+    background-color: #55608f; 
+}
+
+
+.table-cross-sel tr:hover {  
+    background-color: rgba(255,255,255,0.3);  
+}
+
+.table-cross-sel td:hover {
+    position: relative;
+}
+
+.table-cross-sel td:hover:before {
+    position: relative;
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -9999px;
+    bottom: -9999px;
+    background-color: rgba(255,255,255,0.2);
+    z-index: -1;
+}
+

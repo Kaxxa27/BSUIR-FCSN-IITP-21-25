@@ -1,0 +1,29 @@
+﻿
+@{
+	ViewBag.Title = "AddItem";
+}
+<h2> Add Item</h2>
+
+<form asp-action="AddItem" asp-controller="Home">
+	<div>
+		<p>
+			<label>Add Name</label>
+			<input name="Name"/>
+		</p>
+		<p>
+			<label>Add Surname</label>
+			<input name="Surname" />
+		</p>
+		<p>
+			<label>Add Password</label>
+			<input name="Password" />
+		</p>
+		<input hidden="hidden" name="Role" value="@TaxiApplication.Domain.Enum.Role.Client" />
+		<input hidden="hidden" name="PhoneNumber" value="66666" />
+		<input hidden="hidden" name="Email" value="DENIS@@gmail.ru"/>
+		<p>
+			<input type="submit" value="Add User"/>
+		</p>
+
+	</div>
+</form>

@@ -1,0 +1,6 @@
+#!/bin/sh 
+branch=$(git branch --show-current);
+if [ "$branch" = "master" ] && [ ! -e .nobump ]; then
+    touch .bump
+fi
+exit

@@ -1,0 +1,35 @@
+  ADDR B1 B2 B3 B4 C:\BSUIR\3 sem\КПрог(Асик)\Motorola MC68HC11\    PAGE       1
+
+                    org $8000
+
+  8000 86 00        ldaa #0 ;  -     A
+  8002 C6 FF        ldab #$ff ;    ff -> 0
+  8004 CE 82 00     ldx #$8200 ;
+
+                   ;  ,
+                   ;
+
+                   MainLoopODDNumbers
+                    ;   X,
+                    ;  SkipNumberBecauseItsEven
+
+  8007 1F 00 01 03  brclr 0,x,#%0000001 SkipNumberBecauseItsEven
+  800B 0D           sec ;
+  800C 89 00        adca #0 ;
+
+                   ;
+                   ;     0,
+
+                   SkipNumberBecauseItsEven
+  800E 08           inx
+  800F 5A           decb
+  8010 26 F5        bne MainLoopODDNumbers
+
+                   ;
+  8012 20 FE       end bra *
+
+  Symbol Table 
+
+  MAINLOOPODDNUMBERS 8007
+  END                8012
+  SKIPNUMBERBECAUSEITSEVEN 800E

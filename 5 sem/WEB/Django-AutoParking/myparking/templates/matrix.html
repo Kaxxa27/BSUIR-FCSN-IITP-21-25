@@ -1,0 +1,42 @@
+{% extends "base_generic.html"%}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'myparking/css/matrix.css' %}">
+{% endblock %}
+
+
+{% block title%}
+<title>Matrix N*N</title>
+{% endblock %}
+
+{% block content%}
+    <div>
+        <div>
+            <label class="text-bold20">Размер матрицы: </label>
+            <input type="number" id="sizeTable" placeholder="Size">
+        </div> 
+        <div>
+            <label class="text-bold20">Максимальное кол-во выделенных ячеек: </label>
+            <input type="number" id="maxSelection" placeholder="Максимальное количество выделений в ряду/столбце">
+        </div>
+        <div>
+            <button id="generate_btn">Generate table</button>
+            <button id="transpontaj_btn">Transponas</button>
+        </div>
+        <div>
+            <button id="add_row_btn">Add Row</button>
+            <button id="add_col_btn">Add Column</button>
+        </div>
+        <div>
+            <table id="table"></table>
+        </div>
+    </div>
+
+   
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'myparking/js/matrix/matrix.js' %}"></script>
+{% endblock %}
+

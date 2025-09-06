@@ -1,0 +1,21 @@
+.block-review{
+    align-items: stretch;
+    margin: 10px;
+    padding: 2px;
+}
+
+.review-div{
+    float: left;
+    border-radius: 10px;
+    background: PaleGoldenrod;
+    padding: 30px 40px 30px 40px;
+    margin: 10px;
+}
+
+.review-summary{
+    padding: 10px 10px 10px 30px;
+}
+
+.clear {
+    clear: both;
+}

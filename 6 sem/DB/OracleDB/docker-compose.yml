@@ -1,0 +1,27 @@
+version: '3.5'
+services:
+  oracle-db:
+    image: container-registry.oracle.com/database/enterprise:latest
+    container_name: oracle_db
+    environment:
+      - ORACLE_PWD=123456
+    ports:
+      - 1521:1521
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+      - oracle-backup:/opt/oracle/backup
+    restart: unless-stopped
+
+volumes:
+  oracle-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: C:/Tools/Oracle/oracle-data
+      o: bind
+  oracle-backup:
+    driver: local
+    driver_opts:
+      type: none
+      device: C:/Tools/Oracle/oracle-backup
+      o: bind

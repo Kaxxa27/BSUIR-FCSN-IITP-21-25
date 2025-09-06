@@ -1,0 +1,25 @@
+  ADDR B1 B2 B3 B4 C:\BSUIR\3 sem\КПрог(Асик)\Lab3\Lab3.asm         PAGE       1
+
+                    org $8000
+  8000 86 AC        ldaa #%10101100 ;  A
+  8002 C6 00        ldab #%00000000 ;  B
+  8004 B7 80 01     staa $8001      ;  A
+  8007 46           rora            ;     A
+                                    ;    C
+  8008 59           rolb            ;     B
+                                    ;    C
+  8009 46           rora
+  800A 59           rolb
+  800B 46           rora
+  800C 59           rolb
+  800D 46           rora
+  800E 59           rolb
+  800F 46           rora
+  8010 59           rolb
+  8011 46           rora
+  8012 59           rolb
+  8013 46           rora
+  8014 59           rolb
+  8015 46           rora
+  8016 59           rolb
+  8017 B6 80 01     ldaa $8001 ;     A

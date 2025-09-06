@@ -1,0 +1,221 @@
+<LinearLayout
+    android:id="@+id/rootLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/shadows">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/showPinButton"
+        android:layout_width="210dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/dark_lava"
+        android:onClick="showPin"
+        android:textSize="24dp"
+        android:text="SHOW PIN"
+        android:textColor="#FFEBCE" />
+
+    <TextView
+        android:id="@+id/pinInputTextView"
+        android:layout_width="180dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="40dp"
+        android:background="@color/milk_coffee"
+        android:textColor="#5C4033"
+        android:clickable="false"
+        android:gravity="center"
+        android:text=""
+        android:textSize="24sp"
+        tools:ignore="MissingConstraints" />
+
+    <GridLayout
+        android:id="@+id/numberPad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:columnCount="3"
+        android:rowCount="4">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button1"
+            android:layout_width="95dp"
+            android:layout_height="65dp"
+            android:layout_rowWeight="1"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/milk_coffee"
+            android:textColor="#5C4033"
+            android:onClick="appendDigit"
+            android:text="1"
+            android:textSize="24sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button2"
+            android:layout_width="95dp"
+            android:layout_height="65dp"
+            android:layout_marginEnd="10dp"
+            android:layout_rowWeight="1"
+            android:backgroundTint="@color/milk_coffee"
+            android:textColor="#5C4033"
+            android:onClick="appendDigit"
+            android:text="2"
+            android:textSize="24sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button3"
+            android:layout_width="95dp"
+            android:layout_height="65dp"
+            android:layout_rowWeight="1"
+            android:backgroundTint="@color/milk_coffee"
+            android:textColor="#5C4033"
+            android:onClick="appendDigit"
+            android:text="3"
+            android:textSize="24sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button4"
+            android:layout_width="95dp"
+            android:layout_height="65dp"
+            android:layout_rowWeight="1"
+            android:backgroundTint="@color/milk_coffee"
+            android:textColor="#5C4033"
+            android:onClick="appendDigit"
+            android:text="4"
+            android:textSize="24sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button5"
+            android:layout_width="95dp"
+            android:layout_height="65dp"
+            android:layout_rowWeight="1"
+            android:backgroundTint="@color/milk_coffee"
+            android:textColor="#5C4033"
+            android:onClick="appendDigit"
+            android:text="5"
+            android:textSize="24sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button6"
+            android:layout_width="95dp"
+            android:layout_height="65dp"
+            android:layout_rowWeight="1"
+            android:backgroundTint="@color/milk_coffee"
+            android:textColor="#5C4033"
+            android:onClick="appendDigit"
+            android:text="6"
+            android:textSize="24sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button7"
+            android:layout_width="95dp"
+            android:layout_height="65dp"
+            android:layout_rowWeight="1"
+            android:backgroundTint="@color/milk_coffee"
+            android:textColor="#5C4033"
+            android:onClick="appendDigit"
+            android:text="7"
+            android:textSize="24sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button8"
+            android:layout_width="95dp"
+            android:layout_height="65dp"
+            android:layout_rowWeight="1"
+            android:backgroundTint="@color/milk_coffee"
+            android:textColor="#5C4033"
+            android:onClick="appendDigit"
+            android:text="8"
+            android:textSize="24sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button9"
+            android:layout_width="95dp"
+            android:layout_height="65dp"
+            android:layout_rowWeight="1"
+            android:backgroundTint="@color/milk_coffee"
+            android:textColor="#5C4033"
+            android:onClick="appendDigit"
+            android:text="9"
+            android:textSize="24sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_clear_all"
+            android:layout_width="95dp"
+            android:layout_height="65dp"
+            android:layout_rowWeight="2"
+            android:backgroundTint="@color/dark_lava"
+            android:textColor="#FFEBCE"
+            android:onClick="deleteAll"
+            android:text="С"
+            android:textSize="24sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button0"
+            android:layout_width="95dp"
+            android:layout_height="65dp"
+            android:layout_rowWeight="3"
+            android:backgroundTint="@color/milk_coffee"
+            android:textColor="#5C4033"
+            android:onClick="appendDigit"
+            android:text="0"
+            android:textSize="24sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/delete_button"
+            android:layout_width="95dp"
+            android:layout_height="65dp"
+            android:layout_rowWeight="2"
+            android:backgroundTint="@color/dark_lava"
+            android:textColor="#FFEBCE"
+            android:onClick="deleteDigit"
+            android:text="⌫"
+            android:textSize="24sp" />
+    </GridLayout>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/loginButton"
+        android:layout_width="210dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="70dp"
+        android:backgroundTint="@color/dark_lava"
+        android:onClick="login"
+        android:padding="0dp"
+        android:text="Enter with PIN"
+        android:textColor="#FFEBCE"
+        android:textSize="24dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/setPinButton"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/dark_lava"
+        android:onClick="setPin"
+        android:padding="0dp"
+        android:text="Setup PIN"
+        android:textColor="#FFEBCE"
+        android:textSize="24dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/biometricAuthButton"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:text="ENTER WITH TOUCH ID"
+        android:backgroundTint="@color/dark_lava"
+        android:textColor="#FFEBCE"
+        android:textSize="24dp"
+        android:padding="0dp"
+        android:onClick="biometricAuth"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        />
+</LinearLayout>

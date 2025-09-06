@@ -1,0 +1,62 @@
+[
+    {
+        "L/L_SSE": 9.0,
+        "durationL": 9,
+        "durationL_SSE": 1,
+        "n": 100
+    },
+    {
+        "L/L_SSE": 1.5837210917424822,
+        "durationL": 22804,
+        "durationL_SSE": 14399,
+        "n": 1000100
+    },
+    {
+        "L/L_SSE": 1.7872657580919933,
+        "durationL": 50358,
+        "durationL_SSE": 28176,
+        "n": 2000100
+    },
+    {
+        "L/L_SSE": 1.7942236588145013,
+        "durationL": 77157,
+        "durationL_SSE": 43003,
+        "n": 3000100
+    },
+    {
+        "L/L_SSE": 1.7558642560452251,
+        "durationL": 101877,
+        "durationL_SSE": 58021,
+        "n": 4000100
+    },
+    {
+        "L/L_SSE": 1.695494819243194,
+        "durationL": 126489,
+        "durationL_SSE": 74603,
+        "n": 5000100
+    },
+    {
+        "L/L_SSE": 1.7160253231702396,
+        "durationL": 148812,
+        "durationL_SSE": 86719,
+        "n": 6000100
+    },
+    {
+        "L/L_SSE": 1.771546517368515,
+        "durationL": 168653,
+        "durationL_SSE": 95201,
+        "n": 7000100
+    },
+    {
+        "L/L_SSE": 1.787163029525032,
+        "durationL": 194908,
+        "durationL_SSE": 109060,
+        "n": 8000100
+    },
+    {
+        "L/L_SSE": 1.7670996732026143,
+        "durationL": 216293,
+        "durationL_SSE": 122400,
+        "n": 9000100
+    }
+]

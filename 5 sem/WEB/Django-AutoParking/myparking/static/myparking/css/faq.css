@@ -1,0 +1,48 @@
+details p {
+    font-style: italic;
+    padding-left: 40px;
+}
+
+
+.terms {
+    background-color: lightgrey;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.terms h3 {
+    font-size: 34px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+dl {
+    margin: 0;
+}
+
+dt {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+dd {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+em {
+    font-style: italic;
+    color: #0066cc;
+}
+
+
+
+
+
+
+

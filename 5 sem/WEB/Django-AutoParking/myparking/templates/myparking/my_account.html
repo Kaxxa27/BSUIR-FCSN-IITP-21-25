@@ -1,0 +1,30 @@
+{% extends "base_generic.html"%}
+{% load static %}
+
+{% block style %}
+  <link rel="stylesheet" href="{% static 'myparking/css/my_account.css' %}">
+{% endblock %}
+
+
+{% block title%}
+<title>My Account</title>
+{% endblock %}
+
+{% block content%}
+
+<div class="main-container">
+    <div class="block-account">
+        <div class="profile account-div account-bg-gradient-ocean-blue text-bold text-30">
+            <p>Имя: {{ user.username }}</p>
+            <p>Ваш счет: {{ user.account.amount }}$</p>
+            <p>Кол-во ваших парковок: {{ user.parkings.count }}</p>
+            <p>Кол-во неоплченных счетов: {{ un_paid_payments|length}}</p>
+        </div>
+        <div class="my-func func-div text-20">
+           <div>Меню:</div>
+           <a href="{% url 'create_review'%}">Оставить отзыв</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

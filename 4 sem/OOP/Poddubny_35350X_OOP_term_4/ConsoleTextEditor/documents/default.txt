@@ -1,0 +1,2 @@
+[i][b]ok[/b][/i]
+[green]green ok[/green]

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34616.47
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paint", "Paint\Paint.csproj", "{1BB4D593-290C-4C31-B878-C6350EC80492}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{BC343857-BFBE-45EC-80F7-7104FC59C386}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1BB4D593-290C-4C31-B878-C6350EC80492} = {1BB4D593-290C-4C31-B878-C6350EC80492}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1BB4D593-290C-4C31-B878-C6350EC80492}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BB4D593-290C-4C31-B878-C6350EC80492}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BB4D593-290C-4C31-B878-C6350EC80492}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BB4D593-290C-4C31-B878-C6350EC80492}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC343857-BFBE-45EC-80F7-7104FC59C386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC343857-BFBE-45EC-80F7-7104FC59C386}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC343857-BFBE-45EC-80F7-7104FC59C386}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC343857-BFBE-45EC-80F7-7104FC59C386}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B11557A7-497D-48CC-AE95-FDB008071232}
+	EndGlobalSection
+EndGlobal

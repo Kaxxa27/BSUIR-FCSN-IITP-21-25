@@ -29,6 +29,10 @@
 - [ALFecki](https://github.com/ALFecki)
 - [PaShampusik](https://github.com/PaShampusik)
 
+Благодарность, пожертвовавшим свом труды в данную коллекцию: 
+
+- [pxddubny](https://github.com/pxddubny)
+
 ---
 
 **Best regards,**  
